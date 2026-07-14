@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ThemeToggle } from "./ThemeToggle";
+import { DeveloperTerminalAnimation } from "./DeveloperTerminalAnimation";
 import { 
   Puzzle,
   FileText,
@@ -1298,6 +1299,28 @@ export default function LandingPage({ onNavigateToAuth, onQuickStart, onNavigate
                 </div>
               </motion.div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Developer API Section */}
+      <section className="py-24 bg-transparent border-t border-neutral-200/40 dark:border-neutral-800/60 px-6 lg:px-16 transition-colors duration-300">
+        <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="flex flex-col items-start text-left space-y-6">
+            <span className="text-[10px] font-mono font-bold tracking-widest text-neutral-800 dark:text-neutral-400 uppercase inline-flex items-center gap-2">
+              <Terminal className="w-3.5 h-3.5" /> DEVELOPER API
+            </span>
+            <h2 className="font-sans font-light tracking-tighter text-neutral-900 dark:text-white subpixel-antialiased text-3xl sm:text-4xl leading-[1.1]">
+              <span className="bg-gradient-to-r from-neutral-950 via-zinc-700 to-zinc-500 dark:from-white dark:via-zinc-200 dark:to-zinc-500 bg-clip-text text-transparent">
+                Integrate tracking flows with two lines of code.
+              </span>
+            </h2>
+            <p className="text-neutral-600 dark:text-neutral-400 text-sm md:text-base leading-relaxed max-w-lg font-sans">
+              Inject silent tracking pixel generation directly into your application backends. Authenticate your API key and receive absolute real-time stream callbacks instantly. Complete enterprise-grade intelligence without the overhead.
+            </p>
+          </div>
+          <div className="w-full relative">
+            <DeveloperTerminalAnimation />
           </div>
         </div>
       </section>
