@@ -21,7 +21,7 @@ export const DeveloperTerminalAnimation: React.FC = () => {
   // Main animation sequence
   useEffect(() => {
     let isMounted = true;
-    
+
     const runSequence = async () => {
       while (isMounted) {
         // Reset to initial state
@@ -29,9 +29,9 @@ export const DeveloperTerminalAnimation: React.FC = () => {
         setTypedText('');
         setShowPaste(false);
         setTelemetryLines(0);
-        
+
         await new Promise((r) => setTimeout(r, 1000));
-        
+
         // Phase 1: Typing Python header line
         const textToType = "import requests\n\nheaders = {\n    '";
         for (let i = 0; i <= textToType.length; i++) {
@@ -39,43 +39,43 @@ export const DeveloperTerminalAnimation: React.FC = () => {
           setTypedText(textToType.slice(0, i));
           await new Promise((r) => setTimeout(r, Math.random() * 30 + 40));
         }
-        
+
         // Pause before pasting
         await new Promise((r) => setTimeout(r, 600));
         if (!isMounted) return;
-        
+
         // Paste the glowing string
         setShowPaste(true);
-        
+
         // The exact moment of "BOOOM" transition
         await new Promise((r) => setTimeout(r, 800));
         if (!isMounted) return;
-        
+
         // Phase 2: BOOOM
         setPhase('TRANSITION');
-        
+
         // Fast transition flash
         await new Promise((r) => setTimeout(r, 150));
         if (!isMounted) return;
-        
+
         // Phase 3: Telemetry Stream
         setPhase('TELEMETRY');
         await new Promise((r) => setTimeout(r, 200));
-        
+
         // Reveal telemetry lines with dynamic delays
         for (let i = 1; i <= 3; i++) {
           if (!isMounted) return;
           setTelemetryLines(i);
           await new Promise((r) => setTimeout(r, Math.random() * 300 + 400));
         }
-        
+
         // Hold the final state before looping
         await new Promise((r) => setTimeout(r, 4500));
       }
     };
-    
+
     runSequence();
-    
+
     return () => {
       isMounted = false;
     };
@@ -97,7 +97,7 @@ export const DeveloperTerminalAnimation: React.FC = () => {
           <div className="w-3 h-3 rounded-full bg-[#2a2a2e]"></div>
         </div>
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <span className="text-[#555555] text-xs font-mono tracking-widest uppercase">main.py — Terminal</span>
+          <span className="text-[#555555] text-xs font-mono tracking-widest uppercase">main.py  — Terminal</span>
         </div>
       </div>
 
@@ -117,7 +117,7 @@ export const DeveloperTerminalAnimation: React.FC = () => {
               <div className="whitespace-pre text-[#888888] leading-relaxed">
                 {typedText}
                 {showPaste && (
-                  <motion.span 
+                  <motion.span
                     initial={{ opacity: 0, filter: 'blur(4px)' }}
                     animate={{ opacity: 1, filter: 'blur(0px)' }}
                     transition={{ duration: 0.1 }}
@@ -167,7 +167,7 @@ export const DeveloperTerminalAnimation: React.FC = () => {
                   <span className="text-white">STREAMING</span>
                 </span>
               </div>
-              
+
               {/* Telemetry Lines */}
               {telemetryData.map((item, index) => (
                 <motion.div
@@ -186,7 +186,7 @@ export const DeveloperTerminalAnimation: React.FC = () => {
                   </span>
                 </motion.div>
               ))}
-              
+
               {/* Final blinking cursor for telemetry */}
               {telemetryLines === 3 && (
                 <motion.div
@@ -200,7 +200,7 @@ export const DeveloperTerminalAnimation: React.FC = () => {
           )}
         </AnimatePresence>
       </div>
-      
+
       {/* Subtle glassmorphic glow around the component */}
       <div className="absolute inset-0 border border-white/5 rounded-lg pointer-events-none z-10" />
     </div>
