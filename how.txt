@@ -1,0 +1,131 @@
+              How Email Tracking Works
+            </span>
+          </h2>
+          <p className="text-neutral-500 dark:text-neutral-400 text-sm">
+            An incredibly simple yet powerful 3-step execution protocol. Zero technical overhead.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Step 1 */}
+          <motion.div 
+            initial="rest"
+            whileHover="hover"
+            animate="rest"
+            variants={cardVariants}
+            className="p-8 bg-white/10 dark:bg-white/[0.02] backdrop-blur-xl border border-neutral-200/50 dark:border-white/10 rounded-[24px] relative hover:border-neutral-400/50 dark:hover:border-white/20 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden group"
+          >
+            {/* Ambient background glow on hover */}
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+            
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-neutral-100 to-white dark:from-neutral-900 dark:to-neutral-800 flex items-center justify-center mb-6 relative overflow-hidden shadow-inner border border-neutral-200/50 dark:border-white/5" style={{ perspective: "1200px", transformStyle: "preserve-3d" }}>
+              <motion.div
+                animate={{
+                  y: [0, -4, 0],
+                  rotateX: [15, -15, 15],
+                  rotateY: [-15, 15, -15],
+                  scale: [1, 1.05, 1]
+                }}
+                transition={{
+                  duration: 6,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="text-neutral-900 dark:text-white relative z-10"
+              >
+                <motion.div 
+                  animate={{ filter: ['drop-shadow(0 0 4px rgba(167, 139, 250, 0.4))', 'drop-shadow(0 0 12px rgba(167, 139, 250, 0.8))', 'drop-shadow(0 0 4px rgba(167, 139, 250, 0.4))'] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <Send className="w-6 h-6 text-indigo-500 dark:text-indigo-400" strokeWidth={1.5} />
+                </motion.div>
+              </motion.div>
+            </div>
+            <h3 className="font-display font-medium text-lg text-neutral-900 dark:text-white mb-3">1. Effortless Injection</h3>
+            <p className="text-neutral-500 dark:text-neutral-400 text-sm leading-relaxed relative z-10">
+              You simply write and send your email as usual. Tickk seamlessly weaves an invisible, weightless cryptographic tracking pixel into your payload without altering your workflow.
+            </p>
+          </motion.div>
+
+          {/* Step 2 */}
+          <motion.div 
+            initial="rest"
+            whileHover="hover"
+            animate="rest"
+            variants={cardVariants}
+            className="p-8 bg-white/10 dark:bg-white/[0.02] backdrop-blur-xl border border-neutral-200/50 dark:border-white/10 rounded-[24px] relative hover:border-neutral-400/50 dark:hover:border-white/20 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden group"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-neutral-100 to-white dark:from-neutral-900 dark:to-neutral-800 flex items-center justify-center mb-6 relative overflow-hidden shadow-inner border border-neutral-200/50 dark:border-white/5" style={{ perspective: "1200px", transformStyle: "preserve-3d" }}>
+              <motion.div
+                animate={{
+                  rotateZ: [0, 180, 360],
+                  scale: [0.9, 1.1, 0.9]
+                }}
+                transition={{
+                  duration: 8,
+                  repeat: Infinity,
+                  ease: "linear"
+                }}
+                className="absolute inset-0 border border-emerald-500/20 dark:border-emerald-400/20 rounded-2xl m-2"
+              />
+              <motion.div
+                animate={{
+                  scale: [1, 1.15, 1],
+                  rotateY: [0, 180, 360],
+                }}
+                transition={{
+                  duration: 5,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="text-neutral-900 dark:text-white relative z-10"
+              >
+                <motion.div 
+                  animate={{ filter: ['drop-shadow(0 0 2px rgba(52, 211, 153, 0.4))', 'drop-shadow(0 0 10px rgba(52, 211, 153, 0.8))', 'drop-shadow(0 0 2px rgba(52, 211, 153, 0.4))'] }}
+                  transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <Eye className="w-6 h-6 text-emerald-500 dark:text-emerald-400" strokeWidth={1.5} />
+                </motion.div>
+              </motion.div>
+            </div>
+            <h3 className="font-display font-medium text-lg text-neutral-900 dark:text-white mb-3">2. The Silent Trigger</h3>
+            <p className="text-neutral-500 dark:text-neutral-400 text-sm leading-relaxed relative z-10">
+              The exact moment your recipient opens the email or clicks a secured link, our stealth pixel activates. They experience nothing out of the ordinary, while you gain full visibility.
+            </p>
+          </motion.div>
+
+          {/* Step 3 */}
+          <motion.div 
+            initial="rest"
+            whileHover="hover"
+            animate="rest"
+            variants={cardVariants}
+            className="p-8 bg-white/10 dark:bg-white/[0.02] backdrop-blur-xl border border-neutral-200/50 dark:border-white/10 rounded-[24px] relative hover:border-neutral-400/50 dark:hover:border-white/20 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden group"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-rose-500/5 to-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-neutral-100 to-white dark:from-neutral-900 dark:to-neutral-800 flex items-center justify-center mb-6 relative overflow-hidden shadow-inner border border-neutral-200/50 dark:border-white/5" style={{ perspective: "1200px", transformStyle: "preserve-3d" }}>
+              <motion.div
+                animate={{
+                  scale: [1, 2.5],
+                  opacity: [0.6, 0]
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeOut"
+                }}
+                className="absolute inset-0 bg-rose-500/20 dark:bg-rose-400/20 rounded-full"
+              />
+              <motion.div
+                animate={{
+                  y: [0, -3, 0],
+                  rotateZ: [-5, 5, -5],
+                  rotateX: [10, -10, 10],
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut"

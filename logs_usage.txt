@@ -1,0 +1,230 @@
+  const [quickEmail, setQuickEmail] = useState("");
+
+  const handleGenerateSim = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!subject || !recipient) return;
+    setSimState('running');
+    setSimStep(1);
+    
+    const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    setSimLogs([
+      { 
+        id: "1", 
+        text: `🛠️ Compiler: Injected silent 1x1 tracking pixel into subject line: "${subject}"`, 
+        time: now, 
+        type: 'system',
+        subject,
+        recipient,
+        location: "Local Node",
+        device: "Compiler",
+        browser: "Tickk Node",
+        status: 'neutral',
+        statusLabel: "Compiler Armed"
+      }
+    ]);
+  };
+
+  useEffect(() => {
+    if (simState !== 'running') return;
+
+    const sequence = [
+      {
+        delay: 1500,
+        text: `✉️ Telemetry Dispatch: Email successfully dispatched to recipient address: ${recipient}`,
+        type: 'system' as const,
+        subject,
+        recipient,
+        location: "SMTP Gateway",
+        device: "Tickk MTA",
+        browser: "SMTP",
+        status: 'neutral' as const,
+        statusLabel: "Dispatched",
+        step: 2
+      },
+      {
+        delay: 3500,
+        text: `📡 Silent Watch: Delivery confirmed. Injected 1x1 tracking pixel armed and waiting for read receipt...`,
+        type: 'system' as const,
+        subject,
+        recipient,
+        location: "Inbound MX",
+        device: "Secure Proxy",
+        browser: "Pixel Listener",
+        status: 'neutral' as const,
+        statusLabel: "Watch Armed",
+        step: 3
+      },
+      {
+        delay: 6000,
+        text: `👁️ TELEMETRY HIT! Email open detected! Opened in London, UK using Outlook on Windows. (IP Resolved: 188.42.12.99)`,
+        type: 'open' as const,
+        subject,
+        recipient,
+        location: "London, UK",
+        device: "Desktop",
+        browser: "Outlook",
+        status: 'positive' as const,
+        statusLabel: "Verified Open",
+        step: 4
+      },
+      {
+        delay: 8500,
+        text: `⚠️ VPN DETECTED! Accessing from multi-homed datacenter. (IP Resolved: 194.154.20.11)`,
+        type: 'open' as const,
+        subject,
+        recipient,
+        location: "Dublin, IE",
+        device: "Server Node",
+        browser: "Chrome Proxy",
+        status: 'suspicious' as const,
+        statusLabel: "VPN Detected",
+        step: 4
+      },
+      {
+        delay: 11000,
+        text: `🔗 REDIRECT HOOK! URL Click Registered! Tracked link redirect dispatched to destination. Device: Chrome on Windows. (IP: 188.42.12.99)`,
+        type: 'click' as const,
+        subject,
+        recipient,
+        location: "London, UK",
+        device: "Mobile",
+        browser: "Chrome",
+        status: 'positive' as const,
+        statusLabel: "Valid Click",
+        step: 5
+      },
+      {
+        delay: 13000,
+        text: `🚫 INTERCEPT! Recipient mail-shield proxy scanned tracking headers. Pixel delivery filtered.`,
+        type: 'open' as const,
+        subject,
+        recipient,
+        location: "Corporate Inbound",
+        device: "Mail-Shield",
+        browser: "Shield Gateway",
+        status: 'negative' as const,
+        statusLabel: "Blocked",
+        step: 6
+      }
+    ];
+
+    const timers: NodeJS.Timeout[] = [];
+
+    sequence.forEach((item) => {
+      const t = setTimeout(() => {
+        const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        setSimLogs(prev => [
+          { 
+            id: String(Date.now() + Math.random()), 
+            text: item.text, 
+            time: timestamp, 
+            type: item.type,
+            subject: item.subject,
+            recipient: item.recipient,
+            location: item.location,
+            device: item.device,
+            browser: item.browser,
+            status: item.status,
+            statusLabel: item.statusLabel
+          },
+          ...prev
+        ]);
+        setSimStep(item.step);
+        if (item.step === 6) {
+          setSimState('completed');
+        }
+      }, item.delay);
+      timers.push(t);
+    });
+
+    return () => {
+      timers.forEach(clearTimeout);
+    };
+  }, [simState, recipient, subject]);
+
+  const handleSimulateOpenManual = () => {
+    if (simStep < 3) return;
+    const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const rand = Math.random();
+    let text = "";
+    let status: 'positive' | 'suspicious' | 'negative' = "positive";
+    let statusLabel = "";
+    let location = "";
+    let device = "Desktop";
+    let browser = "Chrome";
+
+    if (rand < 0.4) {
+      text = `👁️ TELEMETRY HIT! Email open detected! Opened in London, UK using Outlook on Windows. (IP Resolved: 188.42.12.99)`;
+      status = 'positive';
+      statusLabel = "Verified Open";
+      location = "London, UK";
+      device = "Desktop";
+      browser = "Outlook";
+    } else if (rand < 0.7) {
+      text = `⚠️ VPN DETECTED! Accessing from multi-homed datacenter. (IP Resolved: 194.154.20.11)`;
+      status = 'suspicious';
+      statusLabel = "VPN Detected";
+      location = "Dublin, IE";
+      device = "Server Node";
+      browser = "Chrome Proxy";
+    } else {
+      text = `🚫 INTERCEPT! Recipient mail-shield proxy scanned tracking headers. Pixel delivery filtered.`;
+      status = 'negative';
+      statusLabel = "Blocked";
+      location = "Corporate Inbound";
+      device = "Mail-Shield";
+      browser = "Shield Gateway";
+    }
+
+    setSimLogs(prev => [
+      {
+        id: String(Date.now() + Math.random()),
+        text,
+        time: timestamp,
+        type: 'open',
+        subject,
+        recipient,
+        location,
+        device,
+        browser,
+        status,
+        statusLabel
+      },
+      ...prev
+    ]);
+    setSimStep(4);
+  };
+
+  const handleSimulateClickManual = () => {
+    if (simStep < 3) return;
+    const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const text = `🔗 REDIRECT HOOK! URL Click Registered! Tracked link redirect dispatched to destination. (IP Resolved: 188.42.12.99)`;
+    
+    setSimLogs(prev => [
+      {
+        id: String(Date.now() + Math.random()),
+        text,
+        time: timestamp,
+        type: 'click',
+        subject,
+        recipient,
+        location: "London, UK",
+        device: "Mobile",
+        browser: "Chrome",
+        status: 'positive',
+        statusLabel: "Valid Click"
+      },
+      ...prev
+    ]);
+    setSimStep(5);
+  };
+
+  const handleResetSim = () => {
+    setSimState('idle');
+    setSimStep(0);
+    setSubject("Confidential Partnership Proposal");
+    setRecipient("board@apple.com");
+    setSimLogs([]);
+  };
+
+  return (

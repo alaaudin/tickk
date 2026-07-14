@@ -1,0 +1,581 @@
+{
+  "users": [
+    {
+      "id": "user_enterprise_1",
+      "email": "saqibmemon9884@gmail.com",
+      "name": "Saqib Memon",
+      "credits": 501,
+      "createdAt": "2026-06-14T18:31:52.110Z"
+    }
+  ],
+  "trackers": [
+    {
+      "id": "tr_100000",
+      "userId": "user_enterprise_1",
+      "subject": "Q3 Product Strategy Proposal v2",
+      "recipient": "executive@linear.app",
+      "createdAt": "2026-07-04T18:31:52.111Z",
+      "openCount": 4,
+      "clickCount": 0,
+      "status": "opened",
+      "lastOpened": "2026-07-07T02:31:52.111Z",
+      "testSent": true,
+      "isManual": false,
+      "logs": [
+        {
+          "id": "log_74iohgb",
+          "timestamp": "2026-07-04T19:31:52.111Z",
+          "ip": "104.244.42.1",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "country": "United States",
+          "city": "New York",
+          "device": "Desktop",
+          "browser": "Safari",
+          "isSimulated": true,
+          "type": "open"
+        },
+        {
+          "id": "log_term2ok",
+          "timestamp": "2026-07-05T23:31:52.111Z",
+          "ip": "82.165.197.1",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "country": "United Kingdom",
+          "city": "London",
+          "device": "Mobile",
+          "browser": "Chrome",
+          "isSimulated": true,
+          "type": "open"
+        },
+        {
+          "id": "log_s4gccih",
+          "timestamp": "2026-07-06T07:31:52.111Z",
+          "ip": "210.140.10.1",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "country": "Japan",
+          "city": "Tokyo",
+          "device": "Desktop",
+          "browser": "Chrome",
+          "isSimulated": true,
+          "type": "open"
+        },
+        {
+          "id": "log_vsyef3h",
+          "timestamp": "2026-07-07T02:31:52.111Z",
+          "ip": "46.165.2.1",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "country": "Germany",
+          "city": "Berlin",
+          "device": "Mobile",
+          "browser": "Safari",
+          "isSimulated": true,
+          "type": "open"
+        }
+      ]
+    },
+    {
+      "id": "tr_100001",
+      "userId": "user_enterprise_1",
+      "subject": "Onboarding Deck & Executive Board Agenda",
+      "recipient": "partner@apple.com",
+      "createdAt": "2026-07-06T18:31:52.111Z",
+      "openCount": 5,
+      "clickCount": 2,
+      "status": "opened",
+      "lastOpened": "2026-07-07T22:31:52.111Z",
+      "linkUrl": "https://tickk.io/docs/setup",
+      "testSent": true,
+      "isManual": true,
+      "logs": [
+        {
+          "id": "log_clk_9vwzl6z",
+          "timestamp": "2026-07-06T22:31:52.111Z",
+          "ip": "82.165.197.1",
+          "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+          "country": "United Kingdom",
+          "city": "London",
+          "device": "Mobile",
+          "browser": "Safari",
+          "isSimulated": true,
+          "type": "click",
+          "urlClicked": "https://tickk.io/docs/setup"
+        },
+        {
+          "id": "log_k7xtchm",
+          "timestamp": "2026-07-07T02:31:52.111Z",
+          "ip": "82.165.197.1",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "country": "United Kingdom",
+          "city": "London",
+          "device": "Desktop",
+          "browser": "Safari",
+          "isSimulated": true,
+          "type": "open"
+        },
+        {
+          "id": "log_c15p9lg",
+          "timestamp": "2026-07-07T16:31:52.111Z",
+          "ip": "210.140.10.1",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "country": "Japan",
+          "city": "Tokyo",
+          "device": "Mobile",
+          "browser": "Chrome",
+          "isSimulated": true,
+          "type": "open"
+        },
+        {
+          "id": "log_clk_mlkh0w1",
+          "timestamp": "2026-07-07T22:31:52.111Z",
+          "ip": "210.140.10.1",
+          "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+          "country": "Japan",
+          "city": "Tokyo",
+          "device": "Mobile",
+          "browser": "Safari",
+          "isSimulated": true,
+          "type": "click",
+          "urlClicked": "https://tickk.io/docs/setup"
+        },
+        {
+          "id": "log_mhepm14",
+          "timestamp": "2026-07-08T15:31:52.111Z",
+          "ip": "46.165.2.1",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "country": "Germany",
+          "city": "Berlin",
+          "device": "Desktop",
+          "browser": "Chrome",
+          "isSimulated": true,
+          "type": "open"
+        },
+        {
+          "id": "log_cvt2a43",
+          "timestamp": "2026-07-09T05:31:52.111Z",
+          "ip": "1.120.0.1",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "country": "Australia",
+          "city": "Sydney",
+          "device": "Mobile",
+          "browser": "Safari",
+          "isSimulated": true,
+          "type": "open"
+        },
+        {
+          "id": "log_x8w9vin",
+          "timestamp": "2026-07-09T19:31:52.111Z",
+          "ip": "198.235.24.1",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "country": "Canada",
+          "city": "Toronto",
+          "device": "Desktop",
+          "browser": "Chrome",
+          "isSimulated": true,
+          "type": "open"
+        }
+      ]
+    },
+    {
+      "id": "tr_100002",
+      "userId": "user_enterprise_1",
+      "subject": "Signed Contract - Enterprise Partnership Agreement",
+      "recipient": "board@vercel.com",
+      "createdAt": "2026-07-08T18:31:52.111Z",
+      "openCount": 4,
+      "clickCount": 3,
+      "status": "opened",
+      "lastOpened": "2026-07-10T22:31:52.111Z",
+      "linkUrl": "https://example.com/contract",
+      "testSent": true,
+      "isManual": false,
+      "logs": [
+        {
+          "id": "log_clk_i7jrspc",
+          "timestamp": "2026-07-08T22:31:52.111Z",
+          "ip": "210.140.10.1",
+          "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+          "country": "Japan",
+          "city": "Tokyo",
+          "device": "Mobile",
+          "browser": "Safari",
+          "isSimulated": true,
+          "type": "click",
+          "urlClicked": "https://example.com/contract"
+        },
+        {
+          "id": "log_a9mm5jp",
+          "timestamp": "2026-07-09T06:31:52.111Z",
+          "ip": "210.140.10.1",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "country": "Japan",
+          "city": "Tokyo",
+          "device": "Desktop",
+          "browser": "Safari",
+          "isSimulated": true,
+          "type": "open"
+        },
+        {
+          "id": "log_clk_7a2645f",
+          "timestamp": "2026-07-09T22:31:52.111Z",
+          "ip": "46.165.2.1",
+          "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+          "country": "Germany",
+          "city": "Berlin",
+          "device": "Mobile",
+          "browser": "Safari",
+          "isSimulated": true,
+          "type": "click",
+          "urlClicked": "https://example.com/contract"
+        },
+        {
+          "id": "log_uj89oal",
+          "timestamp": "2026-07-10T00:31:52.111Z",
+          "ip": "46.165.2.1",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "country": "Germany",
+          "city": "Berlin",
+          "device": "Mobile",
+          "browser": "Chrome",
+          "isSimulated": true,
+          "type": "open"
+        },
+        {
+          "id": "log_pcet4w5",
+          "timestamp": "2026-07-10T11:31:52.111Z",
+          "ip": "1.120.0.1",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "country": "Australia",
+          "city": "Sydney",
+          "device": "Desktop",
+          "browser": "Chrome",
+          "isSimulated": true,
+          "type": "open"
+        },
+        {
+          "id": "log_clk_6zxlcza",
+          "timestamp": "2026-07-10T22:31:52.111Z",
+          "ip": "1.120.0.1",
+          "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+          "country": "Australia",
+          "city": "Sydney",
+          "device": "Mobile",
+          "browser": "Safari",
+          "isSimulated": true,
+          "type": "click",
+          "urlClicked": "https://example.com/contract"
+        },
+        {
+          "id": "log_yrayv2y",
+          "timestamp": "2026-07-11T09:31:52.111Z",
+          "ip": "198.235.24.1",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "country": "Canada",
+          "city": "Toronto",
+          "device": "Mobile",
+          "browser": "Safari",
+          "isSimulated": true,
+          "type": "open"
+        }
+      ]
+    },
+    {
+      "id": "tr_100003",
+      "userId": "user_enterprise_1",
+      "subject": "Tickk Integration API Keys & Documentation Link",
+      "recipient": "developer@github.com",
+      "createdAt": "2026-07-10T18:31:52.111Z",
+      "openCount": 0,
+      "clickCount": 0,
+      "status": "unopened",
+      "lastOpened": null,
+      "testSent": true,
+      "isManual": false,
+      "logs": []
+    },
+    {
+      "id": "tr_100004",
+      "userId": "user_enterprise_1",
+      "subject": "Your Invoice for July 2026",
+      "recipient": "billing@stripe.com",
+      "createdAt": "2026-07-12T18:31:52.111Z",
+      "openCount": 3,
+      "clickCount": 3,
+      "status": "opened",
+      "lastOpened": "2026-07-14T22:31:52.111Z",
+      "linkUrl": "https://tickk.io/invoice/123",
+      "testSent": true,
+      "isManual": true,
+      "logs": [
+        {
+          "id": "log_clk_nu7wuk5",
+          "timestamp": "2026-07-12T22:31:52.111Z",
+          "ip": "1.120.0.1",
+          "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+          "country": "Australia",
+          "city": "Sydney",
+          "device": "Mobile",
+          "browser": "Safari",
+          "isSimulated": true,
+          "type": "click",
+          "urlClicked": "https://tickk.io/invoice/123"
+        },
+        {
+          "id": "log_bqtjkjm",
+          "timestamp": "2026-07-13T00:31:52.111Z",
+          "ip": "1.120.0.1",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "country": "Australia",
+          "city": "Sydney",
+          "device": "Desktop",
+          "browser": "Safari",
+          "isSimulated": true,
+          "type": "open"
+        },
+        {
+          "id": "log_rvwhwna",
+          "timestamp": "2026-07-13T22:31:52.111Z",
+          "ip": "198.235.24.1",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "country": "Canada",
+          "city": "Toronto",
+          "device": "Mobile",
+          "browser": "Chrome",
+          "isSimulated": true,
+          "type": "open"
+        },
+        {
+          "id": "log_clk_lfshtvc",
+          "timestamp": "2026-07-13T22:31:52.111Z",
+          "ip": "198.235.24.1",
+          "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+          "country": "Canada",
+          "city": "Toronto",
+          "device": "Mobile",
+          "browser": "Safari",
+          "isSimulated": true,
+          "type": "click",
+          "urlClicked": "https://tickk.io/invoice/123"
+        },
+        {
+          "id": "log_cafguy6",
+          "timestamp": "2026-07-14T09:31:52.111Z",
+          "ip": "104.244.42.1",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "country": "United States",
+          "city": "New York",
+          "device": "Desktop",
+          "browser": "Chrome",
+          "isSimulated": true,
+          "type": "open"
+        },
+        {
+          "id": "log_clk_ctb5skd",
+          "timestamp": "2026-07-14T22:31:52.111Z",
+          "ip": "104.244.42.1",
+          "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+          "country": "United States",
+          "city": "New York",
+          "device": "Mobile",
+          "browser": "Safari",
+          "isSimulated": true,
+          "type": "click",
+          "urlClicked": "https://tickk.io/invoice/123"
+        }
+      ]
+    },
+    {
+      "id": "tr_100005",
+      "userId": "user_enterprise_1",
+      "subject": "Welcome to the Premium Club",
+      "recipient": "vip@customer.com",
+      "createdAt": "2026-07-14T18:31:52.111Z",
+      "openCount": 4,
+      "clickCount": 2,
+      "status": "opened",
+      "lastOpened": "2026-07-15T22:31:52.111Z",
+      "linkUrl": "https://tickk.io/premium/welcome",
+      "testSent": true,
+      "isManual": false,
+      "logs": [
+        {
+          "id": "log_0gjdxgv",
+          "timestamp": "2026-07-14T22:31:52.111Z",
+          "ip": "198.235.24.1",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "country": "Canada",
+          "city": "Toronto",
+          "device": "Desktop",
+          "browser": "Safari",
+          "isSimulated": true,
+          "type": "open"
+        },
+        {
+          "id": "log_clk_vbitiuo",
+          "timestamp": "2026-07-14T22:31:52.111Z",
+          "ip": "198.235.24.1",
+          "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+          "country": "Canada",
+          "city": "Toronto",
+          "device": "Mobile",
+          "browser": "Safari",
+          "isSimulated": true,
+          "type": "click",
+          "urlClicked": "https://tickk.io/premium/welcome"
+        },
+        {
+          "id": "log_s4be8gi",
+          "timestamp": "2026-07-15T16:31:52.111Z",
+          "ip": "104.244.42.1",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "country": "United States",
+          "city": "New York",
+          "device": "Mobile",
+          "browser": "Chrome",
+          "isSimulated": true,
+          "type": "open"
+        },
+        {
+          "id": "log_clk_kgzhbqv",
+          "timestamp": "2026-07-15T22:31:52.111Z",
+          "ip": "104.244.42.1",
+          "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+          "country": "United States",
+          "city": "New York",
+          "device": "Mobile",
+          "browser": "Safari",
+          "isSimulated": true,
+          "type": "click",
+          "urlClicked": "https://tickk.io/premium/welcome"
+        },
+        {
+          "id": "log_090b4ie",
+          "timestamp": "2026-07-16T07:31:52.111Z",
+          "ip": "82.165.197.1",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "country": "United Kingdom",
+          "city": "London",
+          "device": "Desktop",
+          "browser": "Chrome",
+          "isSimulated": true,
+          "type": "open"
+        },
+        {
+          "id": "log_1n184hn",
+          "timestamp": "2026-07-17T02:31:52.111Z",
+          "ip": "210.140.10.1",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "country": "Japan",
+          "city": "Tokyo",
+          "device": "Mobile",
+          "browser": "Safari",
+          "isSimulated": true,
+          "type": "open"
+        }
+      ]
+    },
+    {
+      "id": "tr_100006",
+      "userId": "user_enterprise_1",
+      "subject": "Product Launch Early Access Link",
+      "recipient": "beta@testers.com",
+      "createdAt": "2026-07-16T18:31:52.111Z",
+      "openCount": 4,
+      "clickCount": 1,
+      "status": "opened",
+      "lastOpened": "2026-07-16T22:31:52.111Z",
+      "linkUrl": "https://tickk.io/beta/signup",
+      "testSent": true,
+      "isManual": false,
+      "logs": [
+        {
+          "id": "log_clk_sfzz09y",
+          "timestamp": "2026-07-16T22:31:52.111Z",
+          "ip": "104.244.42.1",
+          "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+          "country": "United States",
+          "city": "New York",
+          "device": "Mobile",
+          "browser": "Safari",
+          "isSimulated": true,
+          "type": "click",
+          "urlClicked": "https://tickk.io/beta/signup"
+        },
+        {
+          "id": "log_ahtv30i",
+          "timestamp": "2026-07-17T03:31:52.111Z",
+          "ip": "104.244.42.1",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "country": "United States",
+          "city": "New York",
+          "device": "Desktop",
+          "browser": "Safari",
+          "isSimulated": true,
+          "type": "open"
+        },
+        {
+          "id": "log_w4krh7z",
+          "timestamp": "2026-07-17T22:31:52.111Z",
+          "ip": "82.165.197.1",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "country": "United Kingdom",
+          "city": "London",
+          "device": "Mobile",
+          "browser": "Chrome",
+          "isSimulated": true,
+          "type": "open"
+        },
+        {
+          "id": "log_2qmx5mt",
+          "timestamp": "2026-07-18T08:31:52.111Z",
+          "ip": "210.140.10.1",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "country": "Japan",
+          "city": "Tokyo",
+          "device": "Desktop",
+          "browser": "Chrome",
+          "isSimulated": true,
+          "type": "open"
+        },
+        {
+          "id": "log_wa97bzm",
+          "timestamp": "2026-07-19T10:31:52.111Z",
+          "ip": "46.165.2.1",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "country": "Germany",
+          "city": "Berlin",
+          "device": "Mobile",
+          "browser": "Safari",
+          "isSimulated": true,
+          "type": "open"
+        }
+      ]
+    }
+  ],
+  "apiKeys": {
+    "tk_live_f692a831e0b57f0d04c55d045": {
+      "userId": "user_enterprise_1",
+      "createdAt": "2026-07-14T18:31:52.111Z"
+    }
+  },
+  "tickets": [
+    {
+      "id": "tkt_01j23k45l6",
+      "userId": "user_enterprise_1",
+      "subject": "Dark mode contrast issue on tracking graphs",
+      "category": "bug",
+      "status": "reviewed",
+      "createdAt": "2026-07-12T18:31:52.111Z",
+      "updatedAt": "2026-07-13T18:31:52.111Z",
+      "message": "Hey team, just testing out the beta from Twitter. The app looks super sleek, but the tooltips on the activity line chart are a bit hard to read in dark mode (black text on dark grey)."
+    },
+    {
+      "id": "tkt_02z89y78x1",
+      "userId": "user_enterprise_1",
+      "subject": "Add support for UTM parameter tracking?",
+      "category": "feature",
+      "status": "rewarded",
+      "createdAt": "2026-07-09T18:31:52.111Z",
+      "updatedAt": "2026-07-10T18:31:52.111Z",
+      "message": "Awesome product so far. Are you guys planning to support automatic UTM tagging parsing when generating the pixel URLs? Would save a lot of time for campaign management."
+    }
+  ]
+}

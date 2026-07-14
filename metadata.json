@@ -1,0 +1,8 @@
+{
+  "name": "Remix: Remix: Remix: Remix: Tickk Mail Tracker",
+  "description": "A premium, unified enterprise mail tracking and intelligence platform with real-time tracking pixels, geolocation telemetry, and interactive analytics dashboards.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
