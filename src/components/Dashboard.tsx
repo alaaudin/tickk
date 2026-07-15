@@ -112,6 +112,10 @@ import {
 import { Tracker, TrackerStats, OpenLog, Ticket, } from "../types";
 import { QuickStartGuide } from "./QuickStartGuide";
 import { NotificationSettingsPanel } from "./NotificationSettingsPanel";
+import { MailSettingsPanel } from "./MailSettingsPanel";
+import { AccountSettingsPanel } from "./AccountSettingsPanel";
+import { SubscriptionSettingsPanel } from "./SubscriptionSettingsPanel";
+import { TeamMembersSettingsPanel } from "./TeamMembersSettingsPanel";
 import { TelemetryLiveAlerts, triggerTelemetryAlert } from "./TelemetryLiveAlerts";
 
 // D3 Projection global state variables
@@ -7410,6 +7414,18 @@ END OF REPORT`,
                               )}
                               {ti === "notifications" && (
                                 <NotificationSettingsPanel toast={s} />
+                              )}
+                              {ti === "gmail" && (
+                                <MailSettingsPanel toast={s} />
+                              )}
+                              {ti === "account" && (
+                                <AccountSettingsPanel toast={s} />
+                              )}
+                              {ti === "subscription" && (
+                                <SubscriptionSettingsPanel toast={s} />
+                              )}
+                              {ti === "team" && (
+                                <TeamMembersSettingsPanel toast={s} />
                               )}
                               {ti === "privacy" && (
                                 <PrivacySettingsPanel toast={s} />
