@@ -38,13 +38,13 @@ export function QuickStartGuide({ onNavigate, onGenerateKey, onFireTest }: Quick
   };
 
   return (
-    <div className="relative mb-8 w-full max-w-4xl mx-auto rounded-3xl p-[1px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
-      <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-neutral-500/10 to-emerald-500/30 opacity-50 pointer-events-none" />
+    <div className="relative mb-8 w-full max-w-4xl mx-auto rounded-3xl p-[1px] overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-neutral-500/10 to-white/10 opacity-50 pointer-events-none" />
       
       <div className="relative bg-white/10 dark:bg-[#111111]/60 backdrop-blur-3xl rounded-[22px] border border-neutral-200/50 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)] p-8 lg:p-10 flex flex-col md:flex-row gap-8 lg:gap-12">
         <div className="flex-1 space-y-6">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-mono tracking-widest uppercase font-semibold mb-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-white text-[10px] font-mono tracking-widest uppercase font-semibold mb-2">
               <Activity className="w-3 h-3" />
               Initialization Protocol
             </div>
@@ -59,7 +59,7 @@ export function QuickStartGuide({ onNavigate, onGenerateKey, onFireTest }: Quick
               <div className="flex items-center gap-4">
                 <button 
                   onClick={() => toggleStep(1)}
-                  className={`w-6 h-6 rounded flex items-center justify-center transition-colors duration-300 border shadow-inner ${completedSteps.includes(1) ? 'bg-emerald-500 border-emerald-400 text-black shadow-emerald-500/50' : 'bg-black/50 border-white/10 text-transparent hover:border-white/30'}`}
+                  className={`w-6 h-6 rounded flex items-center justify-center transition-colors duration-300 border shadow-inner ${completedSteps.includes(1) ? 'bg-white border-white text-black' : 'bg-black/50 border-white/10 text-transparent hover:border-white/30'}`}
                 >
                   <Check className="w-4 h-4" strokeWidth={3} />
                 </button>
@@ -80,7 +80,7 @@ export function QuickStartGuide({ onNavigate, onGenerateKey, onFireTest }: Quick
               <div className="flex items-center gap-4">
                 <button 
                   onClick={() => toggleStep(2)}
-                  className={`w-6 h-6 rounded flex items-center justify-center transition-colors duration-300 border shadow-inner ${completedSteps.includes(2) ? 'bg-emerald-500 border-emerald-400 text-black shadow-emerald-500/50' : 'bg-black/50 border-white/10 text-transparent hover:border-white/30'}`}
+                  className={`w-6 h-6 rounded flex items-center justify-center transition-colors duration-300 border shadow-inner ${completedSteps.includes(2) ? 'bg-white border-white text-black' : 'bg-black/50 border-white/10 text-transparent hover:border-white/30'}`}
                 >
                   <Check className="w-4 h-4" strokeWidth={3} />
                 </button>
@@ -101,7 +101,7 @@ export function QuickStartGuide({ onNavigate, onGenerateKey, onFireTest }: Quick
               <div className="flex items-center gap-4 mb-4">
                 <button 
                   onClick={() => toggleStep(3)}
-                  className={`w-6 h-6 rounded flex items-center justify-center transition-colors duration-300 border shadow-inner ${completedSteps.includes(3) ? 'bg-emerald-500 border-emerald-400 text-black shadow-emerald-500/50' : 'bg-black/50 border-white/10 text-transparent hover:border-white/30'}`}
+                  className={`w-6 h-6 rounded flex items-center justify-center transition-colors duration-300 border shadow-inner ${completedSteps.includes(3) ? 'bg-white border-white text-black' : 'bg-black/50 border-white/10 text-transparent hover:border-white/30'}`}
                 >
                   <Check className="w-4 h-4" strokeWidth={3} />
                 </button>
@@ -118,16 +118,16 @@ export function QuickStartGuide({ onNavigate, onGenerateKey, onFireTest }: Quick
                     placeholder="Enter email to simulate..."
                     value={testEmail}
                     onChange={e => setTestEmail(e.target.value)}
-                    className="w-full bg-black/50 border border-white/10 rounded-lg pl-9 pr-3 py-2 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 transition-all font-mono"
+                    className="w-full bg-black/50 border border-white/10 rounded-lg pl-9 pr-3 py-2 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-white/50 focus:ring-1 focus:ring-white/50 transition-all font-mono"
                   />
                 </div>
                 <button 
                   onClick={handleFireTest}
                   disabled={!testEmail || isFiring}
-                  className="flex items-center justify-center gap-2 px-4 py-2 w-full sm:w-auto text-[11px] font-mono uppercase tracking-wider font-semibold text-emerald-950 bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 rounded-lg transition-all shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:shadow-[0_0_20px_rgba(16,185,129,0.4)] whitespace-nowrap"
+                  className="flex items-center justify-center gap-2 px-4 py-2 w-full sm:w-auto text-[11px] font-mono uppercase tracking-wider font-semibold text-black bg-white hover:bg-zinc-200 disabled:opacity-50 rounded-lg transition-all whitespace-nowrap"
                 >
                   {isFiring ? (
-                    <span className="w-3.5 h-3.5 border-2 border-emerald-950 border-t-transparent rounded-full animate-spin" />
+                    <span className="w-3.5 h-3.5 border-2 border-black border-t-transparent rounded-full animate-spin" />
                   ) : (
                     <Zap className="w-3.5 h-3.5" />
                   )}
@@ -140,20 +140,20 @@ export function QuickStartGuide({ onNavigate, onGenerateKey, onFireTest }: Quick
         
         <div className="hidden lg:flex flex-col items-center justify-center shrink-0 w-64 border-l border-white/5 pl-12">
           <div className="relative w-48 h-48 rounded-full border border-white/10 flex items-center justify-center bg-gradient-to-br from-white/5 to-transparent shadow-[inset_0_0_40px_rgba(0,0,0,0.5)]">
-            <div className={`absolute inset-0 rounded-full border border-emerald-500/30 transition-opacity duration-700 ${completedSteps.length === 3 ? 'opacity-100 animate-[spin_4s_linear_infinite]' : 'opacity-0'}`} style={{ clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' }} />
-            <div className={`absolute inset-4 rounded-full border border-emerald-500/20 transition-opacity duration-700 ${completedSteps.length === 3 ? 'opacity-100 animate-[spin_3s_linear_infinite_reverse]' : 'opacity-0'}`} />
+            <div className={`absolute inset-0 rounded-full border border-white/30 transition-opacity duration-700 ${completedSteps.length === 3 ? 'opacity-100 animate-[spin_4s_linear_infinite]' : 'opacity-0'}`} style={{ clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' }} />
+            <div className={`absolute inset-4 rounded-full border border-white/20 transition-opacity duration-700 ${completedSteps.length === 3 ? 'opacity-100 animate-[spin_3s_linear_infinite_reverse]' : 'opacity-0'}`} />
             <div className="relative z-10 text-center space-y-2">
               <span className="text-4xl font-display font-light text-white tracking-tighter">
                 {completedSteps.length} <span className="text-zinc-600">/ 3</span>
               </span>
               <p className="text-[10px] font-mono uppercase tracking-widest text-zinc-500">
-                {completedSteps.length === 3 ? <span className="text-emerald-400">System Online</span> : 'Modules Pending'}
+                {completedSteps.length === 3 ? <span className="text-white">System Online</span> : 'Modules Pending'}
               </p>
             </div>
             <div className="absolute inset-0 overflow-hidden rounded-full opacity-30 pointer-events-none">
-                <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-emerald-500 rounded-full animate-ping" style={{ animationDelay: '0s' }} />
-                <div className="absolute top-3/4 left-1/3 w-1 h-1 bg-emerald-500 rounded-full animate-ping" style={{ animationDelay: '1s' }} />
-                <div className="absolute top-1/2 right-1/4 w-1 h-1 bg-emerald-500 rounded-full animate-ping" style={{ animationDelay: '0.5s' }} />
+                <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-white rounded-full animate-ping" style={{ animationDelay: '0s' }} />
+                <div className="absolute top-3/4 left-1/3 w-1 h-1 bg-white rounded-full animate-ping" style={{ animationDelay: '1s' }} />
+                <div className="absolute top-1/2 right-1/4 w-1 h-1 bg-white rounded-full animate-ping" style={{ animationDelay: '0.5s' }} />
             </div>
           </div>
         </div>
