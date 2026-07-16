@@ -91,6 +91,20 @@ export default function AuthPortal({ initialMode, onAuthSuccess, onNavigateHome,
       if (data.user && data.session) {
         onAuthSuccess(data.user as any, data.session.access_token);
       }
+    } else if (mode === 'forgot') {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin,
+      });
+      
+      setIsLoading(false);
+      
+      if (error) {
+        toast(error.message, "error");
+        return;
+      }
+      
+      toast("Password reset link sent to your email", "success");
+      setMode('login');
     }
   };
   
@@ -322,9 +336,58 @@ export default function AuthPortal({ initialMode, onAuthSuccess, onNavigateHome,
                   )}
                 </AnimatePresence>
               </div>
+            ) : mode === 'forgot' ? (
+              <div className="bg-white/40 dark:bg-[#121215]/60 backdrop-blur-2xl border border-neutral-200/50 dark:border-zinc-800/60 rounded-3xl p-8 sm:p-10 shadow-[0_8px_32px_rgba(0,0,0,0.04)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)] w-full">
+                <div className="mb-8 text-center">
+                  <h2 className="text-3xl font-light font-display tracking-tight text-neutral-900 dark:text-white mb-2">
+                    Reset password
+                  </h2>
+                  <p className="text-sm text-neutral-500 dark:text-zinc-400 font-sans">
+                    Enter your email to receive a reset link.
+                  </p>
+                </div>
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div className="space-y-1.5">
+                    <label className="text-[13px] font-medium text-neutral-700 dark:text-zinc-300 ml-1">Work Email</label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <Mail className="h-4 w-4 text-neutral-400" />
+                      </div>
+                      <input
+                        type="email"
+                        required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="w-full bg-white dark:bg-[#0c0c0e] border border-neutral-200 dark:border-zinc-800 text-neutral-900 dark:text-white rounded-xl pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-neutral-900 dark:focus:border-white focus:ring-1 focus:ring-neutral-900/20 dark:focus:ring-white/20 transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]"
+                        placeholder="name@company.com"
+                      />
+                    </div>
+                  </div>
+                  
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="w-full bg-neutral-900 hover:bg-neutral-800 dark:bg-white dark:hover:bg-neutral-200 text-white dark:text-neutral-900 py-3 rounded-xl text-[13px] font-medium transition-all flex items-center justify-center gap-2 group shadow-[0_1px_2px_rgba(0,0,0,0.1)] active:scale-[0.99] disabled:opacity-70 disabled:pointer-events-none"
+                  >
+                    {isLoading ? (
+                      <div className="h-4 w-4 rounded-full border-2 border-white/20 dark:border-neutral-900/20 border-t-white dark:border-t-neutral-900 animate-spin" />
+                    ) : (
+                      <>
+                        <span>Send reset link</span>
+                        <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+                      </>
+                    )}
+                  </button>
+                  <div className="text-center pt-2">
+                    <button type="button" onClick={() => setMode('login')} className="text-[13px] text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors">
+                      Back to login
+                    </button>
+                  </div>
+                </form>
+              </div>
             ) : (
               // Login / Signup View
-              <div className="bg-white/40 dark:bg-[#121215]/60 backdrop-blur-2xl border border-neutral-200/50 dark:border-zinc-800/60 rounded-3xl p-8 sm:p-10 shadow-[0_8px_32px_rgba(0,0,0,0.04)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
+              <div className="bg-white/40 dark:bg-[#121215]/60 backdrop-blur-2xl border border-neutral-200/50 dark:border-zinc-800/60 rounded-3xl p-8 sm:p-10 shadow-[0_8px_32px_rgba(0,0,0,0.04)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)] w-full">
                 
                 <div className="mb-8 text-center">
                   <h2 className="text-3xl font-light font-display tracking-tight text-neutral-900 dark:text-white mb-2">

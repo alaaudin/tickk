@@ -15,7 +15,7 @@ import {
   AppleLogo
 } from "./OfficialLogos";
 
-export default function ManualEmailDispatch() {
+export default function ManualEmailDispatch({ profile }: { profile?: any }) {
   const [recipient, setRecipient] = useState("");
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
@@ -308,11 +308,12 @@ export default function ManualEmailDispatch() {
 
                     <button
                       onClick={handleDispatch}
-                      disabled={!isPayloadReady || status === 'dispatching'}
+                      disabled={!isPayloadReady || status === 'dispatching' || profile?.plan === 'free'}
                       className="flex items-center gap-2 bg-neutral-900 hover:bg-black disabled:bg-neutral-800 dark:bg-white dark:hover:bg-neutral-200 dark:disabled:bg-neutral-400 text-white dark:text-black px-6 py-2.5 rounded-lg text-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed group shadow-lg"
+                      title={profile?.plan === 'free' ? "Upgrade to Pro to dispatch emails" : ""}
                     >
                       <span>
-                        {status === 'dispatching' 
+                        {profile?.plan === 'free' ? 'Upgrade to Pro' : status === 'dispatching' 
                           ? 'Encrypting Payload...' 
                           : (isScheduling && scheduleDate ? 'Schedule Dispatch' : 'Send Dispatch')}
                       </span>

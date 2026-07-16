@@ -18,6 +18,7 @@ import {
 } from "./OfficialLogos";
 
 import React, { useState, useEffect } from "react";
+import { useProfile } from "../hooks/useProfile";
 import { CustomSelect } from "./CustomSelect";
 
 import { motion, AnimatePresence } from "motion/react";
@@ -401,6 +402,7 @@ export default function Dashboard({
   theme: r,
   toggleTheme: o,
 }) {
+  const { profile, loading: profileLoading } = useProfile(supabaseUserId);
   const { toast: s } = UB(),
     [c, u] = O.useState("overview"),
     [d, p] = O.useState("last_30_days"),
@@ -3025,7 +3027,7 @@ END OF REPORT`,
                               {
                                 <Lt.div
                                   variants={Kt}
-                                  className={`lg:col-span-7 ${Ba}`}
+                                  className={`lg:col-span-7 ${profile?.credits ?? ba}`}
                                 >
                                   {
                                     <div className="flex justify-between items-center mb-6">
@@ -3100,7 +3102,7 @@ END OF REPORT`,
                               {
                                 <Lt.div
                                   variants={Kt}
-                                  className={`lg:col-span-5 ${Ba} flex flex-col justify-between h-full min-h-[295px]`}
+                                  className={`lg:col-span-5 ${profile?.credits ?? ba} flex flex-col justify-between h-full min-h-[295px]`}
                                 >
                                   {
                                     <div>
@@ -3145,7 +3147,7 @@ END OF REPORT`,
                           {
                             <Lt.div
                               variants={Kt}
-                              className={`${Ba} overflow-hidden p-6 relative`}
+                              className={`${profile?.credits ?? ba} overflow-hidden p-6 relative`}
                             >
                               {
                                 <Ice
@@ -3319,7 +3321,7 @@ END OF REPORT`,
                           {
                             <Lt.div
                               variants={Kt}
-                              className={`${Ba} divide-y divide-neutral-200/60 dark:divide-zinc-900/60 p-0 overflow-hidden`}
+                              className={`${profile?.credits ?? ba} divide-y divide-neutral-200/60 dark:divide-zinc-900/60 p-0 overflow-hidden`}
                             >
                               {
                                 <div className="p-6 border-b border-neutral-200 dark:border-zinc-900 flex items-center justify-between bg-neutral-50/50 dark:bg-zinc-950/20">
@@ -3411,7 +3413,7 @@ END OF REPORT`,
                         </div>
                       )}
                       {c === "manual_dispatch" && (
-                        <ManualEmailDispatch />
+                        <ManualEmailDispatch profile={profile} />
                       )}
                       {c === "tracking" && (
                         <div className="space-y-8 animate-fadeIn">
@@ -8039,7 +8041,7 @@ END OF REPORT`,
                                       }
                                       {
                                         <div
-                                          className={`flex flex-col justify-between p-6 ${Ba} rounded-2xl`}
+                                          className={`flex flex-col justify-between p-6 ${profile?.credits ?? ba} rounded-2xl`}
                                         >
                                           {
                                             <div className="space-y-2">
@@ -8087,7 +8089,7 @@ END OF REPORT`,
                                         opacity: 1,
                                         y: 0,
                                       }}
-                                      className={`${Ba} p-6 space-y-4`}
+                                      className={`${profile?.credits ?? ba} p-6 space-y-4`}
                                     >
                                       {
                                         <h4 className="text-xs font-semibold uppercase tracking-wider text-neutral-800 dark:text-zinc-300">
@@ -8352,7 +8354,7 @@ END OF REPORT`,
                                               }
                                               {
                                                 <span className="text-sm font-semibold text-emerald-600 dark:text-neutral-900 dark:text-white">
-                                                  {ba}
+                                                  {profile?.credits ?? ba}
                                                   {" limit"}
                                                 </span>
                                               }
@@ -8388,7 +8390,7 @@ END OF REPORT`,
                                 >
                                   {dc ? (
                                     <div
-                                      className={`p-6 ${Ba} h-full flex flex-col justify-between`}
+                                      className={`p-6 ${profile?.credits ?? ba} h-full flex flex-col justify-between`}
                                     >
                                       {
                                         <div className="space-y-1">
@@ -8500,7 +8502,7 @@ END OF REPORT`,
                                     </div>
                                   ) : (
                                     <div
-                                      className={`p-6 ${Ba} h-full flex flex-col justify-center items-center text-center space-y-4`}
+                                      className={`p-6 ${profile?.credits ?? ba} h-full flex flex-col justify-center items-center text-center space-y-4`}
                                     >
                                       {
                                         <div className="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center">
@@ -8875,12 +8877,12 @@ END OF REPORT`,
                                         <div>
                                           {
                                             <span className="text-[10px] uppercase tracking-widest text-zinc-800 dark:text-zinc-200 font-bold font-mono">
-                                              {"BETA SUPPORTER TIER"}
+                                              {profile?.plan === 'free' ? "STARTER TIER" : "BETA SUPPORTER TIER"}
                                             </span>
                                           }
                                           {
                                             <h3 className="text-xl font-bold font-display text-neutral-900 dark:text-white mt-0.5 font-sans">
-                                              {"Beta Pro Access"}
+                                              {profile?.plan === 'free' ? "Free Plan" : "Beta Pro Access"}
                                             </h3>
                                           }
                                         </div>
@@ -8905,7 +8907,7 @@ END OF REPORT`,
                                           {
                                             " grants you unthrottled access to premium features: instant webhook callbacks, custom white-label DNS routing, and "
                                           }
-                                          {ba}
+                                          {profile?.credits ?? ba}
                                           {
                                             " tracked dispatches monthly. Your outbound communication is cryptographically protected and optimized for flawless corporate engagement."
                                           }
@@ -8924,7 +8926,7 @@ END OF REPORT`,
                                           }
                                           {
                                             <span className="text-base font-bold font-display text-neutral-900 dark:text-white">
-                                              {ba}
+                                              {profile?.credits ?? ba}
                                               {" / mo"}
                                             </span>
                                           }
@@ -9148,7 +9150,7 @@ END OF REPORT`,
                                                   {
                                                     <En_Icon className="w-3.5 h-3.5 text-emerald-500 shrink-0 stroke-[3px]" />
                                                   }
-                                                  {ba}
+                                                  {profile?.credits ?? ba}
                                                   {" tracked dispatches / mo"}
                                                 </div>
                                               }
@@ -9564,7 +9566,7 @@ END OF REPORT`,
                                   }
                                   {
                                     <span className="text-xl font-bold font-display text-neutral-900 dark:text-white">
-                                      {ba}
+                                      {profile?.credits ?? ba}
                                     </span>
                                   }
                                 </div>
