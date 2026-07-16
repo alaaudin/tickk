@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Mail, Lock, Eye, EyeOff, ArrowRight, ArrowLeft, Building2, Check, ShieldCheck, Copy } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, ArrowRight, ArrowLeft, Building2, Check, ShieldCheck, Copy, CheckCircle2 } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { useToast } from "./Toast";
 import { supabase } from "../supabaseClient";
@@ -21,6 +21,16 @@ export default function AuthPortal({ initialMode, onAuthSuccess, onNavigateHome,
   const [showPassword, setShowPassword] = useState(false);
   const [copied, setCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [linkSent, setLinkSent] = useState(false);
+  
+  useEffect(() => {
+    if (mode === 'verify') {
+      setLinkSent(true);
+      const timer = setTimeout(() => setLinkSent(false), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [mode]);
+
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   
   // OTP Verification States
@@ -129,7 +139,8 @@ export default function AuthPortal({ initialMode, onAuthSuccess, onNavigateHome,
         const result = await response.json();
         toast(result.error || result.message || "Failed to resend link", "error");
       } else {
-        toast("Login link resent successfully!", "success");
+        setLinkSent(true);
+        setTimeout(() => setLinkSent(false), 4000);
       }
     } catch (err: any) {
       setIsLoading(false);
@@ -227,6 +238,22 @@ export default function AuthPortal({ initialMode, onAuthSuccess, onNavigateHome,
                         <button type="button" onClick={() => setMode('signup')} className="text-xs text-neutral-500 dark:text-zinc-500 hover:text-neutral-900 dark:hover:text-white transition-colors">
                           Use a different email
                         </button>
+
+                        <AnimatePresence>
+                          {linkSent && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0, y: -10 }}
+                              animate={{ opacity: 1, height: 'auto', y: 0 }}
+                              exit={{ opacity: 0, height: 0, y: -10 }}
+                              className="flex items-center justify-center gap-1.5 mt-2 overflow-hidden"
+                            >
+                              <CheckCircle2 className="w-4 h-4 text-emerald-500" strokeWidth={2.5} />
+                              <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400">
+                                Email sent successfully!
+                              </span>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </div>
                     </div>
                   </motion.div>
