@@ -63,7 +63,7 @@ export default function AuthPortal({ initialMode, onAuthSuccess, onNavigateHome,
     } else if (mode === 'login') {
       setTimeout(() => {
         setIsLoading(false);
-        const mockUser = { id: '1', email, name: email.split('@')[0], role: 'admin' };
+        const mockUser = { id: '700dfa91-2d97-431a-b96b-ff9faabdcd27', email, name: email.split('@')[0], role: 'admin' };
         onAuthSuccess(mockUser, 'mock_jwt_token_456');
       }, 800);
     }
@@ -111,7 +111,7 @@ export default function AuthPortal({ initialMode, onAuthSuccess, onNavigateHome,
                 count -= 1;
                 if (count <= 0) {
                   clearInterval(interval);
-                  const mockUser = { id: '1', email, name, role: 'admin' };
+                  const mockUser = { id: '700dfa91-2d97-431a-b96b-ff9faabdcd27', email, name, role: 'admin' };
                   onAuthSuccess(mockUser, 'mock_jwt_token_789');
                 } else {
                   setCountdown(count);

@@ -154,9 +154,38 @@ interface DashboardProps {
   token: string;
   onLogout: () => void;
   userEmail: string;
+  userId?: string;
   theme: 'light' | 'dark';
   toggleTheme: () => void;
 }
+
+const RENDER_BACKEND_URL = "https://tickk-backend.onrender.com";
+
+const mapBackendTracker = (raw: any): any => ({
+  id: raw.id,
+  userId: raw.user_id,
+  recipient: raw.recipient,
+  subject: raw.subject,
+  linkUrl: raw.link_url || undefined,
+  createdAt: raw.created_at,
+  status: (raw.status || "unopened").toLowerCase() as 'opened' | 'unopened',
+  openCount: raw.open_count || 0,
+  clickCount: raw.click_count || 0,
+  lastOpened: raw.updated_at && raw.open_count > 0 ? raw.updated_at : null,
+  testSent: false,
+  logs: raw.logs ? raw.logs.map((l: any) => ({
+    id: l.id,
+    timestamp: l.timestamp || l.created_at,
+    ip: l.ip || "0.0.0.0",
+    userAgent: l.user_agent || "Unknown",
+    country: l.country || "Unknown",
+    city: l.city || "Unknown",
+    device: l.device || "Unknown",
+    browser: l.browser || "Unknown",
+    isSimulated: false,
+    type: (l.type || "open") as 'open' | 'click',
+  })) : [],
+});
 
 const getProviderLogo = (email: string, className = "w-full h-full") => {
   const emailLower = email.toLowerCase();
@@ -368,6 +397,7 @@ export default function Dashboard({
   token: e,
   onLogout: t,
   userEmail: n,
+  userId: supabaseUserId,
   theme: r,
   toggleTheme: o,
 }) {
@@ -1081,44 +1111,114 @@ END OF REPORT`,
     k.current = F;
   }, [g, Xe]);
   const gr = async () => {
+    const uid = (supabaseUserId && supabaseUserId !== '1') ? supabaseUserId : "700dfa91-2d97-431a-b96b-ff9faabdcd27";
     try {
-      const F = await fetch("/api/auth/me", {
-        headers: {
-          Authorization: `Bearer ${e}`,
-        },
-      });
-      if (F.ok) {
-        const Be = await F.json();
-        Be.user && Be.user.credits !== void 0 && Bi(Be.user.credits);
+      // Fetch from local auth endpoint (optional, may fail in dev)
+      try {
+        const F = await fetch("/api/auth/me", {
+          headers: {
+            Authorization: `Bearer ${e}`,
+          },
+        });
+        if (F.ok) {
+          const Be = await F.json();
+          Be.user && Be.user.credits !== void 0 && Bi(Be.user.credits);
+        }
+      } catch (_authErr) {
+        // Local auth not available, skip
       }
-      const ye = await fetch("/api/trackers", {
-        headers: {
-          Authorization: `Bearer ${e}`,
-        },
-      });
-      if (ye.ok) {
-        const Be = await ye.json();
-        w(Be);
+      // Fetch trackers from Render backend
+      const renderRes = await fetch(`${RENDER_BACKEND_URL}/api/stats/${uid}`);
+      if (renderRes.ok) {
+        const rawData = await renderRes.json();
+        const mapped = (Array.isArray(rawData) ? rawData : []).map(mapBackendTracker);
+        
+        // Prefetch logs for all trackers on mount
+        const logsPromises = mapped.map(async (t) => {
+          try {
+            const res = await fetch(`${RENDER_BACKEND_URL}/api/logs/${t.id}`);
+            if (res.ok) {
+              const data = await res.json();
+              if (data && data.length > 0) {
+                return {
+                  id: t.id,
+                  logs: data.map((l: any) => ({
+                    id: l.id,
+                    timestamp: l.timestamp || l.created_at,
+                    ip: l.ip || l.ip_address || "0.0.0.0",
+                    userAgent: l.user_agent || "Unknown",
+                    country: l.country || "Unknown",
+                    city: l.city || "Unknown",
+                    device: l.device || "Unknown",
+                    browser: l.browser || "Unknown",
+                    isSimulated: false,
+                    type: l.type || "open",
+                  }))
+                };
+              }
+            }
+          } catch (err) {
+            console.error("Failed to prefetch logs", err);
+          }
+          return { id: t.id, logs: [] };
+        });
+        
+        const resolvedLogs = await Promise.all(logsPromises);
+        const finalMapped = mapped.map((t) => {
+          const found = resolvedLogs.find(r => r.id === t.id);
+          return found && found.logs.length > 0 ? { ...t, logs: found.logs } : t;
+        });
+        
+        w(finalMapped);
+      } else {
+        // Fallback: try local /api/trackers
+        const ye = await fetch("/api/trackers", {
+          headers: {
+            Authorization: `Bearer ${e}`,
+          },
+        });
+        if (ye.ok) {
+          const Be = await ye.json();
+          w(Be);
+        }
       }
     } catch (F) {
       console.error("Telemetry connection error:", F);
+      // Last resort fallback to local
+      try {
+        const ye = await fetch("/api/trackers", {
+          headers: { Authorization: `Bearer ${e}` },
+        });
+        if (ye.ok) { const Be = await ye.json(); w(Be); }
+      } catch (_) {}
     } finally {
       P(!1);
     }
   };
   O.useEffect(() => {
     gr();
+    const uid = (supabaseUserId && supabaseUserId !== '1') ? supabaseUserId : "700dfa91-2d97-431a-b96b-ff9faabdcd27";
     const F = setInterval(() => {
-      fetch("/api/trackers", {
-        headers: {
-          Authorization: `Bearer ${e}`,
-        },
-      })
-        .then((ye) => (ye.ok ? ye.json() : null))
-        .then((ye) => {
-          ye && w(ye);
+      fetch(`${RENDER_BACKEND_URL}/api/stats/${uid}`)
+        .then((res) => (res.ok ? res.json() : null))
+        .then((rawData) => {
+          if (rawData) {
+            const mapped = (Array.isArray(rawData) ? rawData : []).map(mapBackendTracker);
+            w(prev => mapped.map(newTracker => {
+              const oldTracker = prev.find(t => t.id === newTracker.id);
+              return { ...newTracker, logs: newTracker.logs.length > 0 ? newTracker.logs : (oldTracker?.logs || []) };
+            }));
+          }
         })
-        .catch(() => {});
+        .catch(() => {
+          // Fallback to local if render is down
+          fetch("/api/trackers", {
+            headers: { Authorization: `Bearer ${e}` },
+          })
+            .then((ye) => (ye.ok ? ye.json() : null))
+            .then((ye) => { ye && w(ye); })
+            .catch(() => {});
+        });
     }, 8e3);
     return () => clearInterval(F);
   }, [e]);
@@ -1352,7 +1452,7 @@ END OF REPORT`,
         console.error("Failed to generate PDF Report", F);
       }
     },
-    sa = [...g, ...Us].filter((F) =>
+    sa = [...g].filter((F) =>
       G === "30d"
         ? new Date(F.createdAt).getTime() >= Date.now() - 720 * 60 * 60 * 1e3
         : G === "7d"
@@ -1386,6 +1486,41 @@ END OF REPORT`,
         ...ye,
         [F]: !ye[F],
       }));
+      if (!rt[F]) {
+        const trackerId = F.split('-open-')[0];
+        fetch(`${RENDER_BACKEND_URL}/api/logs/${trackerId}`)
+          .then((res) => (res.ok ? res.json() : []))
+          .then((data) => {
+            console.log("Raw logs from backend:", data);
+            if (data && data.length > 0) {
+              const mappedLogs = data.map((l: any) => ({
+                id: l.id,
+                timestamp: l.timestamp || l.created_at,
+                ip: l.ip || l.ip_address || "0.0.0.0",
+                userAgent: l.user_agent || "Unknown",
+                country: l.country || "Unknown",
+                city: l.city || "Unknown",
+                device: l.device || "Unknown",
+                browser: l.browser || "Unknown",
+                isSimulated: false,
+                type: l.type || "open",
+              }));
+              console.log("Mapped logs to insert into tracker:", mappedLogs);
+              w((prev) =>
+                prev.map((t) => {
+                  if (t.id === trackerId) {
+                    console.log("Found matching tracker, appending logs");
+                    return { ...t, logs: mappedLogs };
+                  }
+                  return t;
+                })
+              );
+            } else {
+              console.log("No logs returned from backend for this tracker");
+            }
+          })
+          .catch((err) => console.error("Failed to fetch logs", err));
+      }
     },
     ai = (F) => {
       const Be = `<img src="${`${window.location.origin}/api/track/${F}/pixel.png`}" alt="" width="1" height="1" style="display:none" referrerPolicy="no-referrer" />`;

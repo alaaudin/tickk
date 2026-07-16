@@ -133,6 +133,7 @@ export default function App() {
             token={token}
             onLogout={handleLogout}
             userEmail={user.email}
+            userId={user.id}
             theme={theme}
             toggleTheme={toggleTheme}
           />
