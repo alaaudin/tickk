@@ -115,66 +115,27 @@ export default function AuthPortal({ initialMode, onAuthSuccess, onNavigateHome,
       setMode('login');
     }
   };
-  
-  const handleCodeChange = (index: number, value: string) => {
-    if (otpStatus !== 'idle') return;
-    
-    if (value.length > 1) {
-      value = value.slice(-1);
-    }
-    const newCode = [...code];
-    newCode[index] = value;
-    setCode(newCode);
-    
-    if (value !== "" && index < 5) {
-      codeInputs.current[index + 1]?.focus();
-    }
-  };
-  
-  const handleCodeKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (otpStatus !== 'idle') return;
-    if (e.key === 'Backspace' && code[index] === "" && index > 0) {
-      codeInputs.current[index - 1]?.focus();
-    }
-  };
-
-  // Auto-verify effect
-  useEffect(() => {
-    if (mode === 'verify' && otpStatus === 'idle') {
-      const isComplete = code.every(c => c !== "");
-      if (isComplete) {
-        setOtpStatus('verifying');
-        const enteredCode = code.join("");
-        
-        supabase.auth.verifyOtp({ email, token: enteredCode, type: 'signup' }).then(({ data, error }) => {
-          if (error) {
-            toast(error.message, "error");
-            setOtpStatus('idle');
-            setCode(["", "", "", "", "", ""]);
-            codeInputs.current[0]?.focus();
-          } else {
-            setOtpStatus('success');
-            setTimeout(() => {
-              setOtpStatus('redirecting');
-              let count = 3;
-              setCountdown(count);
-              const interval = setInterval(() => {
-                count -= 1;
-                if (count <= 0) {
-                  clearInterval(interval);
-                  if (data.user && data.session) {
-                    onAuthSuccess(data.user as any, data.session.access_token);
-                  }
-                } else {
-                  setCountdown(count);
-                }
-              }, 1000);
-            }, 1100);
-          }
-        });
+  const handleResendLink = async () => {
+    setIsLoading(true);
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || "https://tickk-backend.onrender.com";
+    try {
+      const response = await fetch(`${backendUrl}/api/auth/send-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, name })
+      });
+      setIsLoading(false);
+      if (!response.ok) {
+        const result = await response.json();
+        toast(result.error || result.message || "Failed to resend link", "error");
+      } else {
+        toast("Login link resent successfully!", "success");
       }
+    } catch (err: any) {
+      setIsLoading(false);
+      toast("Network error. Could not connect to backend.", "error");
     }
-  }, [code, mode, otpStatus, email, name, onAuthSuccess, toast]);
+  };
 
   const slideVariants = {
     enter: (direction: number) => ({
@@ -241,107 +202,34 @@ export default function AuthPortal({ initialMode, onAuthSuccess, onNavigateHome,
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1/2 bg-gradient-to-b from-white/40 dark:from-white/5 to-transparent blur-2xl pointer-events-none" />
                 
                 <AnimatePresence mode="wait">
-                  {otpStatus === 'redirecting' ? (
-                    <motion.div
-                      key="redirecting"
-                      initial={{ opacity: 0, y: 10, filter: "blur(10px)" }}
-                      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                      className="flex flex-col items-center justify-center min-h-[300px] relative z-10"
-                    >
-                      <div className="px-8 py-6 bg-white/20 dark:bg-black/20 backdrop-blur-2xl border border-white/40 dark:border-white/10 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.1)] flex flex-col items-center justify-center gap-3">
-                        <div className="flex items-end justify-center gap-1.5">
-                          <span className="text-xl font-light tracking-wide text-neutral-800 dark:text-zinc-200">
-                            Authenticating session
-                          </span>
-                          <div className="flex gap-[2px] mb-[3px] ml-1">
-                             <motion.span animate={{ opacity: [0.2, 1, 0.2] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0 }} className="text-emerald-500 text-3xl leading-[0.5] drop-shadow-[0_0_6px_rgba(16,185,129,0.5)]">.</motion.span>
-                             <motion.span animate={{ opacity: [0.2, 1, 0.2] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.3 }} className="text-emerald-500 text-3xl leading-[0.5] drop-shadow-[0_0_6px_rgba(16,185,129,0.5)]">.</motion.span>
-                             <motion.span animate={{ opacity: [0.2, 1, 0.2] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.6 }} className="text-emerald-500 text-3xl leading-[0.5] drop-shadow-[0_0_6px_rgba(16,185,129,0.5)]">.</motion.span>
-                          </div>
-                        </div>
-                        <motion.span 
-                          initial={{ opacity: 0 }} 
-                          animate={{ opacity: 1 }} 
-                          className="text-xs text-neutral-500 dark:text-neutral-400 font-mono tracking-wider"
+                  <motion.div key="verifying" exit={{ opacity: 0, filter: "blur(10px)" }}>
+                    <div className="text-center mb-10 relative z-10">
+                      <div className="w-16 h-16 bg-white/50 dark:bg-white/5 backdrop-blur-xl rounded-full flex items-center justify-center mx-auto mb-6 shadow-[inset_0_2px_4px_rgba(255,255,255,0.5)] dark:shadow-[inset_0_2px_4px_rgba(255,255,255,0.1)] border border-white/40 dark:border-white/10">
+                        <Mail className="w-8 h-8 text-neutral-900 dark:text-white" strokeWidth={1.5} />
+                      </div>
+                      <h2 className="text-2xl font-light font-display tracking-tight text-neutral-900 dark:text-white mb-4">
+                        Check your email
+                      </h2>
+                      <p className="text-sm text-neutral-500 dark:text-zinc-400 font-sans mb-8 leading-relaxed">
+                        We’ve sent a login link to <strong className="text-neutral-900 dark:text-white font-medium">{email}</strong>.<br/>
+                        Click the button in the email to access your dashboard.
+                      </p>
+                      
+                      <div className="flex flex-col gap-4 w-full">
+                        <button 
+                          type="button" 
+                          onClick={handleResendLink}
+                          disabled={isLoading}
+                          className="w-full bg-neutral-900 hover:bg-black disabled:bg-neutral-800 dark:bg-white dark:hover:bg-neutral-200 dark:disabled:bg-neutral-400 text-white dark:text-black py-3 rounded-xl text-[13px] font-medium transition-all shadow-[0_1px_2px_rgba(0,0,0,0.1)] active:scale-[0.99] disabled:opacity-70 disabled:pointer-events-none"
                         >
-                          Redirecting in {countdown}s...
-                        </motion.span>
+                          {isLoading ? "Sending..." : "Resend link"}
+                        </button>
+                        <button type="button" onClick={() => setMode('signup')} className="text-xs text-neutral-500 dark:text-zinc-500 hover:text-neutral-900 dark:hover:text-white transition-colors">
+                          Use a different email
+                        </button>
                       </div>
-                    </motion.div>
-                  ) : (
-                    <motion.div key="verifying" exit={{ opacity: 0, filter: "blur(10px)" }}>
-                      <div className="text-center mb-10 relative z-10">
-                        <div className="w-16 h-16 bg-white/50 dark:bg-white/5 backdrop-blur-xl rounded-full flex items-center justify-center mx-auto mb-6 shadow-[inset_0_2px_4px_rgba(255,255,255,0.5)] dark:shadow-[inset_0_2px_4px_rgba(255,255,255,0.1)] border border-white/40 dark:border-white/10">
-                          <ShieldCheck className="w-8 h-8 text-neutral-900 dark:text-white" strokeWidth={1.5} />
-                        </div>
-                        <h2 className="text-2xl font-light font-display tracking-tight text-neutral-900 dark:text-white mb-2">
-                          Security Verification
-                        </h2>
-                        <p className="text-sm text-neutral-500 dark:text-zinc-400 font-sans">
-                          We sent a 6-digit access code to <strong className="text-neutral-900 dark:text-white font-medium">{email}</strong>
-                        </p>
-                      </div>
-
-                      <div className="relative flex justify-center items-center z-10 mb-8">
-                        <div className="flex justify-between gap-2 sm:gap-3 w-full relative max-w-[360px] mx-auto">
-                          {code.map((digit, idx) => (
-                            <motion.input
-                              key={idx}
-                              initial={{ opacity: 0, y: 20 }}
-                              animate={otpStatus === 'success' ? {
-                                x: (2.5 - idx) * 45,
-                                scale: 0.2,
-                                opacity: 0
-                              } : { opacity: 1, y: 0, x: 0 }}
-                              transition={otpStatus === 'success' ? {
-                                duration: 0.4, delay: 0.1, ease: "easeInOut"
-                              } : { delay: idx * 0.05 + 0.1, type: "spring", stiffness: 500, damping: 30 }}
-                              ref={(el) => { codeInputs.current[idx] = el; }}
-                              type="text"
-                              inputMode="numeric"
-                              maxLength={1}
-                              value={digit}
-                              onChange={(e) => handleCodeChange(idx, e.target.value)}
-                              onKeyDown={(e) => handleCodeKeyDown(idx, e)}
-                              disabled={otpStatus !== 'idle'}
-                              className={`w-full aspect-square text-center text-xl sm:text-2xl font-display font-light text-neutral-800 dark:text-neutral-200 tracking-widest backdrop-blur-3xl border rounded-2xl focus:outline-none transition-all duration-300 ${
-                                otpStatus === 'success'
-                                  ? 'bg-white/40 dark:bg-white/[0.03] border-white/60 dark:border-white/10 text-transparent shadow-[0_4px_16px_rgba(0,0,0,0.04),inset_0_1px_1px_rgba(255,255,255,0.5)] dark:shadow-[0_4px_16px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.05)]' 
-                                  : 'bg-white/40 dark:bg-white/[0.03] border-white/60 dark:border-white/10 text-neutral-900 dark:text-white focus:border-neutral-400 dark:focus:border-white/30 focus:bg-white/60 dark:focus:bg-white/10 focus:ring-2 focus:ring-black/5 dark:focus:ring-white/5 shadow-[0_4px_16px_rgba(0,0,0,0.04),inset_0_1px_1px_rgba(255,255,255,0.5)] dark:shadow-[0_4px_16px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.05)]'
-                              }`}
-                            />
-                          ))}
-                          {otpStatus === 'success' && (
-                            <motion.div
-                              initial={{ opacity: 0, scale: 0.3 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              transition={{ delay: 0.4, duration: 0.4, type: "spring", stiffness: 300, damping: 20 }}
-                              className="absolute inset-0 flex items-center justify-center pointer-events-none"
-                            >
-                              <Check className="w-8 h-8 text-emerald-500" strokeWidth={2.5} />
-                            </motion.div>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="text-center relative z-10 h-10 flex items-center justify-center">
-                        {otpStatus === 'idle' || otpStatus === 'verifying' ? (
-                          <div className="flex flex-col gap-4 w-full">
-                            {otpStatus === 'verifying' ? (
-                              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center justify-center gap-2 text-sm text-neutral-500 dark:text-neutral-400">
-                                <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                                Verifying securely...
-                              </motion.div>
-                            ) : (
-                              <button type="button" onClick={() => {setCode(["","","","","",""]); setMode('signup')}} className="text-xs text-neutral-500 dark:text-zinc-500 hover:text-neutral-900 dark:hover:text-white transition-colors">
-                                Use a different email
-                              </button>
-                            )}
-                          </div>
-                        ) : null}
-                      </div>
-                    </motion.div>
-                  )}
+                    </div>
+                  </motion.div>
                 </AnimatePresence>
               </div>
             ) : mode === 'forgot' ? (
