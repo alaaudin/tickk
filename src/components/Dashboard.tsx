@@ -22,31 +22,31 @@ import { CustomSelect } from "./CustomSelect";
 
 import { motion, AnimatePresence } from "motion/react";
 import { jsPDF } from "jspdf";
-import { 
+import {
   Bell,
   Monitor,
   Smartphone,
   Users,
   Network,
   Mail,
-  MailOpen, 
-  Eye, 
-  Plus, 
-  Copy, 
-  Check, 
+  MailOpen,
+  Eye,
+  Plus,
+  Copy,
+  Check,
   X,
   Minus,
-  Settings, 
-  LogOut, 
-  RefreshCw, 
-  CheckCircle, 
-  Clock, 
-  ChevronDown, 
-  ChevronUp, 
-  CreditCard, 
-  Lock, 
-  Shield, 
-  Key, 
+  Settings,
+  LogOut,
+  RefreshCw,
+  CheckCircle,
+  Clock,
+  ChevronDown,
+  ChevronUp,
+  CreditCard,
+  Lock,
+  Shield,
+  Key,
   Download,
   Terminal,
   Activity,
@@ -96,13 +96,13 @@ import {
   Puzzle,
   Ellipsis
 } from "lucide-react";
-import { 
-  ResponsiveContainer, 
-  AreaChart, 
-  Area, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
+import {
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
   Tooltip,
   ScatterChart,
   Scatter,
@@ -132,7 +132,7 @@ function AnimatedCounter({ value, duration = 1500 }: { value: number, duration?:
       if (!startTime) startTime = timestamp;
       const progress = timestamp - startTime;
       const percentage = Math.min(progress / duration, 1);
-      
+
       const easeOut = 1 - Math.pow(1 - percentage, 4);
       setCount(Math.floor(value * easeOut));
 
@@ -159,7 +159,7 @@ interface DashboardProps {
   toggleTheme: () => void;
 }
 
-const RENDER_BACKEND_URL = "https://tickk-backend.onrender.com";
+const RENDER_BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://tickk-backend.onrender.com";
 
 const mapBackendTracker = (raw: any): any => ({
   id: raw.id,
@@ -210,14 +210,14 @@ const playSuccessChime = () => {
     const gain = ctx.createGain();
     osc.connect(gain);
     gain.connect(ctx.destination);
-    
+
     osc.type = "sine";
     osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
     osc.frequency.setValueAtTime(880, ctx.currentTime + 0.1); // A5
-    
+
     gain.gain.setValueAtTime(0.1, ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
-    
+
     osc.start(ctx.currentTime);
     osc.stop(ctx.currentTime + 0.3);
   } catch (e) {
@@ -235,13 +235,13 @@ const generateDefaultHtmlBody = (subject: string, recipient: string, linkUrl?: s
 
 const getTrackerHtmlBody = (tracker: Tracker) => {
   if (!tracker) return "";
-  
+
   let html = tracker.htmlBody;
   if (!html) {
     const origin = window.location.origin || "https://tickk.io";
     const pixelUrl = origin + "/api/track/" + tracker.id + "/pixel.png";
     const trackedLink = tracker.linkUrl ? origin + "/api/track/" + tracker.id + "/click?url=" + encodeURIComponent(tracker.linkUrl) : "#";
-    
+
     html = "<!DOCTYPE html><html><head><meta charset='utf-8'><style>body { font-family: sans-serif; padding: 20px; background: #fafafa; color: #333; } .card { background: white; padding: 30px; border-radius: 8px; border: 1px solid #ddd; max-width: 600px; margin: 0 auto; } h1 { font-size: 20px; margin-bottom: 10px; color: #111; } p { font-size: 14px; line-height: 1.5; color: #555; } .btn { display: inline-block; background: #000; color: #fff !important; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 15px; font-weight: 500; }</style></head><body><div class='card'><h1>" + (tracker.subject || "Dispatch Signal") + "</h1><p>This email has been dispatched to " + tracker.recipient + ".</p>" + (tracker.linkUrl ? "<p>Please review the requested documents by clicking below:</p><a href='" + trackedLink + "' class='btn'>View Proposal</a>" : "") + "</div><img src='" + pixelUrl + "' width='1' height='1' style='display:none' referrerPolicy='no-referrer' /></body></html>";
   } else {
     const origin = window.location.origin || "https://tickk.io";
@@ -407,10 +407,10 @@ export default function Dashboard({
     [m, b] = O.useState("last_30_days"),
     v = () => {
       const F =
-          `PREMIUM PERFORMANCE INTELLIGENCE REPORT
+        `PREMIUM PERFORMANCE INTELLIGENCE REPORT
 Date: ` +
-          new Date().toLocaleDateString() +
-          `
+        new Date().toLocaleDateString() +
+        `
 
 EXECUTIVE SUMMARY
 -----------------
@@ -585,8 +585,8 @@ END OF REPORT`,
     },
     er = El.filter((F) => {
       const ye =
-          F.name.toLowerCase().includes(Le.toLowerCase()) ||
-          F.token.toLowerCase().includes(Le.toLowerCase()),
+        F.name.toLowerCase().includes(Le.toLowerCase()) ||
+        F.token.toLowerCase().includes(Le.toLowerCase()),
         Be = Ke === "All permissions" || F.permission === Ke;
       return ye && Be;
     }),
@@ -597,7 +597,7 @@ END OF REPORT`,
     mr = (F) => {
       (F.preventDefault(),
         zo &&
-          (gc(!0),
+        (gc(!0),
           setTimeout(() => {
             const ye = Xn(),
               Be = {
@@ -1094,24 +1094,24 @@ END OF REPORT`,
         Be.logs.forEach((pt) => {
           (F.add(pt.id),
             k.current &&
-              !k.current.has(pt.id) &&
-              pt.type === "open" &&
-              ye.push({
-                ...pt,
-                trackerSubject: Be.subject,
-                trackerRecipient: Be.recipient,
-              }));
+            !k.current.has(pt.id) &&
+            pt.type === "open" &&
+            ye.push({
+              ...pt,
+              trackerSubject: Be.subject,
+              trackerRecipient: Be.recipient,
+            }));
         });
       }),
-      ye.length > 0 && k.current && (S((Be) => [...Be, ...ye]), Xe))
+        ye.length > 0 && k.current && (S((Be) => [...Be, ...ye]), Xe))
     )
       try {
         Im();
-      } catch {}
+      } catch { }
     k.current = F;
   }, [g, Xe]);
   const gr = async () => {
-    const uid = (supabaseUserId && supabaseUserId !== '1') ? supabaseUserId : "700dfa91-2d97-431a-b96b-ff9faabdcd27";
+    const uid = supabaseUserId;
     try {
       // Fetch from local auth endpoint (optional, may fail in dev)
       try {
@@ -1132,7 +1132,7 @@ END OF REPORT`,
       if (renderRes.ok) {
         const rawData = await renderRes.json();
         const mapped = (Array.isArray(rawData) ? rawData : []).map(mapBackendTracker);
-        
+
         // Prefetch logs for all trackers on mount
         const logsPromises = mapped.map(async (t) => {
           try {
@@ -1162,13 +1162,13 @@ END OF REPORT`,
           }
           return { id: t.id, logs: [] };
         });
-        
+
         const resolvedLogs = await Promise.all(logsPromises);
         const finalMapped = mapped.map((t) => {
           const found = resolvedLogs.find(r => r.id === t.id);
           return found && found.logs.length > 0 ? { ...t, logs: found.logs } : t;
         });
-        
+
         w(finalMapped);
       } else {
         // Fallback: try local /api/trackers
@@ -1190,14 +1190,14 @@ END OF REPORT`,
           headers: { Authorization: `Bearer ${e}` },
         });
         if (ye.ok) { const Be = await ye.json(); w(Be); }
-      } catch (_) {}
+      } catch (_) { }
     } finally {
       P(!1);
     }
   };
   O.useEffect(() => {
     gr();
-    const uid = (supabaseUserId && supabaseUserId !== '1') ? supabaseUserId : "700dfa91-2d97-431a-b96b-ff9faabdcd27";
+    const uid = supabaseUserId;
     const F = setInterval(() => {
       fetch(`${RENDER_BACKEND_URL}/api/stats/${uid}`)
         .then((res) => (res.ok ? res.json() : null))
@@ -1217,7 +1217,7 @@ END OF REPORT`,
           })
             .then((ye) => (ye.ok ? ye.json() : null))
             .then((ye) => { ye && w(ye); })
-            .catch(() => {});
+            .catch(() => { });
         });
     }, 8e3);
     return () => clearInterval(F);
@@ -1250,17 +1250,17 @@ END OF REPORT`,
       let F = null;
       return (
         c === "support" &&
-          (F = setInterval(() => {
-            $s(!0);
-          }, 4e3)),
+        (F = setInterval(() => {
+          $s(!0);
+        }, 4e3)),
         () => {
           F && clearInterval(F);
         }
       );
     }, [c, e, ee == null ? void 0 : ee.id]));
   const Fs = async () => {
-      (be(!0), await gr(), Xe && Im(), setTimeout(() => be(!1), 500));
-    },
+    (be(!0), await gr(), Xe && Im(), setTimeout(() => be(!1), 500));
+  },
     uo = async (F) => {
       if ((F.preventDefault(), !(!Te.trim() || !it.trim()))) {
         wt(!0);
@@ -1301,10 +1301,10 @@ END OF REPORT`,
     va = () => {
       try {
         const F = new Ut({
-            orientation: "portrait",
-            unit: "mm",
-            format: "a4",
-          }),
+          orientation: "portrait",
+          unit: "mm",
+          format: "a4",
+        }),
           ye = [15, 23, 42],
           Be = [16, 185, 129],
           pt = [30, 41, 59],
@@ -1382,27 +1382,27 @@ END OF REPORT`,
           sa.forEach((Nt, vr) => {
             (Nn > 265 &&
               (F.addPage(),
-              F.setFillColor(250, 250, 250),
-              F.rect(0, 0, 210, 297, "F"),
-              F.setDrawColor(226, 232, 240),
-              F.setLineWidth(0.3),
-              F.roundedRect(8, 8, 194, 281, 4, 4, "D"),
-              F.setFillColor(15, 23, 42),
-              F.rect(8, 8, 194, 4, "F"),
-              F.setFont("helvetica", "bold"),
-              F.setFontSize(8),
-              F.setTextColor(15, 23, 42),
-              F.text("TICKK OUTBOUND MATRIX LEDGER - CONTINUED", 16, 18),
-              F.line(16, 20, 194, 20),
-              F.setFillColor(15, 23, 42),
-              F.rect(16, 24, 178, 8, "F"),
-              F.setTextColor(255, 255, 255),
-              F.text("RECIPIENT TARGET", 20, 29.5),
-              F.text("SUBJECT CAMPAIGN", 68, 29.5),
-              F.text("STATUS", 126, 29.5),
-              F.text("DISPATCH DATE", 152, 29.5),
-              F.text("OPENS / CLICKS", 176, 29.5),
-              (Nn = 32)),
+                F.setFillColor(250, 250, 250),
+                F.rect(0, 0, 210, 297, "F"),
+                F.setDrawColor(226, 232, 240),
+                F.setLineWidth(0.3),
+                F.roundedRect(8, 8, 194, 281, 4, 4, "D"),
+                F.setFillColor(15, 23, 42),
+                F.rect(8, 8, 194, 4, "F"),
+                F.setFont("helvetica", "bold"),
+                F.setFontSize(8),
+                F.setTextColor(15, 23, 42),
+                F.text("TICKK OUTBOUND MATRIX LEDGER - CONTINUED", 16, 18),
+                F.line(16, 20, 194, 20),
+                F.setFillColor(15, 23, 42),
+                F.rect(16, 24, 178, 8, "F"),
+                F.setTextColor(255, 255, 255),
+                F.text("RECIPIENT TARGET", 20, 29.5),
+                F.text("SUBJECT CAMPAIGN", 68, 29.5),
+                F.text("STATUS", 126, 29.5),
+                F.text("DISPATCH DATE", 152, 29.5),
+                F.text("OPENS / CLICKS", 176, 29.5),
+                (Nn = 32)),
               vr % 2 === 0
                 ? F.setFillColor(255, 255, 255)
                 : F.setFillColor(243, 244, 246),
@@ -1412,9 +1412,9 @@ END OF REPORT`,
               F.line(16, Nn + 11, 194, Nn + 11),
               F.setTextColor(15, 23, 42));
             const Rr =
-                Nt.recipient.length > 25
-                  ? Nt.recipient.substring(0, 22) + "..."
-                  : Nt.recipient,
+              Nt.recipient.length > 25
+                ? Nt.recipient.substring(0, 22) + "..."
+                : Nt.recipient,
               Na =
                 Nt.subject.length > 28
                   ? Nt.subject.substring(0, 25) + "..."
@@ -1471,9 +1471,9 @@ END OF REPORT`,
           : ye.includes("yahoo.com") || ye.includes("aol.com")
             ? (Be = "yahoo")
             : (ye.includes("icloud.com") ||
-                ye.includes("mac.com") ||
-                ye.includes("me.com")) &&
-              (Be = "apple"),
+              ye.includes("mac.com") ||
+              ye.includes("me.com")) &&
+            (Be = "apple"),
         Be === R
       );
     }),
@@ -1564,11 +1564,11 @@ END OF REPORT`,
                 type: "open",
               }))
             : ye.push({
-                label: `Link Clicked!${tr ? " (Latest)" : ""}`,
-                details: `Redirected to target URL from ${bn} on ${Nn} (IP: ${mt.ip})`,
-                time: Bn,
-                type: "click",
-              });
+              label: `Link Clicked!${tr ? " (Latest)" : ""}`,
+              details: `Redirected to target URL from ${bn} on ${Nn} (IP: ${mt.ip})`,
+              time: Bn,
+              type: "click",
+            });
         });
       } else
         (ye.push({
@@ -1969,9 +1969,9 @@ END OF REPORT`,
           : ye.includes("yahoo.com") || ye.includes("aol.com")
             ? (Be = "yahoo")
             : (ye.includes("icloud.com") ||
-                ye.includes("mac.com") ||
-                ye.includes("me.com")) &&
-              (Be = "apple"),
+              ye.includes("mac.com") ||
+              ye.includes("me.com")) &&
+            (Be = "apple"),
         Be === R
       );
     }),
@@ -2026,15 +2026,15 @@ END OF REPORT`,
           });
         else {
           const tr = Math.round(
-              pt *
-                (m === "last_year"
-                  ? 40
-                  : m === "last_90_days"
-                    ? 15
-                    : m === "last_24_hours"
-                      ? 0.8
-                      : 1.5),
-            ),
+            pt *
+            (m === "last_year"
+              ? 40
+              : m === "last_90_days"
+                ? 15
+                : m === "last_24_hours"
+                  ? 0.8
+                  : 1.5),
+          ),
             Bn = Math.round(tr * (0.5 + Math.random() * 0.4)),
             bn = Math.round(Bn * (0.2 + Math.random() * 0.5));
           Be.push({
@@ -2088,7 +2088,7 @@ END OF REPORT`,
       fe(!1);
       try {
         localStorage.setItem("tickk_beta_welcome_seen", "true");
-      } catch {}
+      } catch { }
       Xe && Im();
     };
   return (
@@ -2704,7 +2704,7 @@ END OF REPORT`,
                       {c === "overview" && (
                         <div className="space-y-8 animate-fadeIn">
                           {g.length === 0 && (
-                            <QuickStartGuide 
+                            <QuickStartGuide
                               onNavigate={(tab) => {
                                 if (tab === 'mail') {
                                   u("account");
@@ -2740,7 +2740,7 @@ END OF REPORT`,
                                   }]
                                 };
                                 w((prev) => [newTracker, ...prev]);
-                                
+
                                 setTimeout(() => {
                                   triggerTelemetryAlert({
                                     email,
@@ -3359,7 +3359,7 @@ END OF REPORT`,
                                                     F.id.length - 1,
                                                   ) %
                                                     2 ===
-                                                  0 ? (
+                                                    0 ? (
                                                     <div className="p-1 bg-white dark:bg-zinc-900/60 border border-neutral-200 dark:border-zinc-800/50 w-6 h-6 inline-flex items-center justify-center rounded-md mr-3 shadow-sm">
                                                       {<A6e />}
                                                     </div>
@@ -3692,75 +3692,75 @@ END OF REPORT`,
                                                 );
                                               Be.length === 0
                                                 ? F.push({
-                                                    ...ye,
-                                                    displayOpenCount: 0,
-                                                    rowId: ye.id,
-                                                    specificOpenTime: null,
-                                                  })
+                                                  ...ye,
+                                                  displayOpenCount: 0,
+                                                  rowId: ye.id,
+                                                  specificOpenTime: null,
+                                                })
                                                 : Be.forEach((pt, mt) => {
-                                                    F.push({
-                                                      ...ye,
-                                                      displayOpenCount: mt + 1,
-                                                      rowId: `${ye.id}-open-${mt}`,
-                                                      specificOpenTime:
-                                                        pt.timestamp,
-                                                    });
+                                                  F.push({
+                                                    ...ye,
+                                                    displayOpenCount: mt + 1,
+                                                    rowId: `${ye.id}-open-${mt}`,
+                                                    specificOpenTime:
+                                                      pt.timestamp,
                                                   });
+                                                });
                                             }
                                             return (
                                               F.sort((ye, Be) => {
                                                 const pt = ye.specificOpenTime
                                                   ? new Date(
-                                                      ye.specificOpenTime,
-                                                    ).getTime()
+                                                    ye.specificOpenTime,
+                                                  ).getTime()
                                                   : new Date(
-                                                      ye.createdAt,
-                                                    ).getTime();
+                                                    ye.createdAt,
+                                                  ).getTime();
                                                 return (
                                                   (Be.specificOpenTime
                                                     ? new Date(
-                                                        Be.specificOpenTime,
-                                                      ).getTime()
+                                                      Be.specificOpenTime,
+                                                    ).getTime()
                                                     : new Date(
-                                                        Be.createdAt,
-                                                      ).getTime()) - pt
+                                                      Be.createdAt,
+                                                    ).getTime()) - pt
                                                 );
                                               }),
                                               F.map((ye) => {
                                                 const Be = {
-                                                    label:
-                                                      ye.displayOpenCount > 0 ||
+                                                  label:
+                                                    ye.displayOpenCount > 0 ||
                                                       ye.status === "opened"
-                                                        ? "Confirmed"
-                                                        : "Pending",
-                                                    badgeClass:
-                                                      ye.displayOpenCount > 0 ||
+                                                      ? "Confirmed"
+                                                      : "Pending",
+                                                  badgeClass:
+                                                    ye.displayOpenCount > 0 ||
                                                       ye.status === "opened"
-                                                        ? "text-neutral-900 dark:text-white bg-emerald-500/5 border border-emerald-500/20"
-                                                        : "text-amber-400 bg-amber-500/5 border border-amber-500/20",
-                                                  },
+                                                      ? "text-neutral-900 dark:text-white bg-emerald-500/5 border border-emerald-500/20"
+                                                      : "text-amber-400 bg-amber-500/5 border border-amber-500/20",
+                                                },
                                                   pt = !!rt[ye.rowId];
                                                 Ui(ye);
                                                 const mt =
-                                                    new Date(
-                                                      ye.createdAt,
-                                                    ).toLocaleDateString(
-                                                      "en-US",
-                                                      {
-                                                        month: "short",
-                                                        day: "numeric",
-                                                      },
-                                                    ) +
-                                                    ", " +
-                                                    new Date(
-                                                      ye.createdAt,
-                                                    ).toLocaleTimeString(
-                                                      "en-US",
-                                                      {
-                                                        hour: "2-digit",
-                                                        minute: "2-digit",
-                                                      },
-                                                    ),
+                                                  new Date(
+                                                    ye.createdAt,
+                                                  ).toLocaleDateString(
+                                                    "en-US",
+                                                    {
+                                                      month: "short",
+                                                      day: "numeric",
+                                                    },
+                                                  ) +
+                                                  ", " +
+                                                  new Date(
+                                                    ye.createdAt,
+                                                  ).toLocaleTimeString(
+                                                    "en-US",
+                                                    {
+                                                      hour: "2-digit",
+                                                      minute: "2-digit",
+                                                    },
+                                                  ),
                                                   Wt = ye.specificOpenTime
                                                     ? XR(ye.specificOpenTime)
                                                     : "Not Opened Yet";
@@ -3789,7 +3789,7 @@ END OF REPORT`,
                                                                     }
                                                                     {ye.isManual && (
                                                                       <div className="group/icon relative inline-flex items-center justify-center shrink-0 cursor-default">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-500"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-500"><circle cx="12" cy="12" r="10" /><path d="m9 12 2 2 4-4" /></svg>
                                                                         <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-2 py-1 bg-black text-white text-[10px] rounded opacity-0 group-hover/icon:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50 font-sans">
                                                                           Sent manually using TICKK
                                                                         </div>
@@ -3813,7 +3813,7 @@ END OF REPORT`,
                                                                 className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-normal border ${Be.badgeClass}`}
                                                               >
                                                                 {Be.label ===
-                                                                "Confirmed" ? (
+                                                                  "Confirmed" ? (
                                                                   <En_Icon
                                                                     className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500 mr-1"
                                                                     strokeWidth={
@@ -3835,7 +3835,7 @@ END OF REPORT`,
                                                                 {
                                                                   <div>
                                                                     {ye.displayOpenCount >
-                                                                    0 ? (
+                                                                      0 ? (
                                                                       <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-neutral-50 dark:bg-zinc-950 border border-neutral-200 dark:border-zinc-850 rounded-lg text-[10px] font-mono text-neutral-800 dark:text-zinc-200 shadow-sm select-none whitespace-nowrap">
                                                                         {
                                                                           <span className="font-normal tracking-wide text-neutral-700 dark:text-zinc-300 whitespace-nowrap">
@@ -3843,13 +3843,13 @@ END OF REPORT`,
                                                                               ye.displayOpenCount
                                                                             }
                                                                             {ye.displayOpenCount ===
-                                                                            1
+                                                                              1
                                                                               ? "st"
                                                                               : ye.displayOpenCount ===
-                                                                                  2
+                                                                                2
                                                                                 ? "nd"
                                                                                 : ye.displayOpenCount ===
-                                                                                    3
+                                                                                  3
                                                                                   ? "rd"
                                                                                   : "th"}
                                                                             {
@@ -3863,7 +3863,7 @@ END OF REPORT`,
                                                                               <span className="h-3 w-[1px] bg-neutral-300 dark:bg-zinc-800" />
                                                                             }
                                                                             {ye.clickCount &&
-                                                                            ye.clickCount >
+                                                                              ye.clickCount >
                                                                               0 ? (
                                                                               <span className="inline-flex items-center gap-1 text-neutral-700 dark:text-zinc-300 font-normal whitespace-nowrap">
                                                                                 {
@@ -3953,7 +3953,7 @@ END OF REPORT`,
                                                                     title="Copy Tracking Pixel Snippet"
                                                                   >
                                                                     {ct ===
-                                                                    ye.id ? (
+                                                                      ye.id ? (
                                                                       <En_Icon className="w-3.5 h-3.5 text-emerald-500" />
                                                                     ) : (
                                                                       <Id className="w-3.5 h-3.5" />
@@ -4135,7 +4135,7 @@ END OF REPORT`,
                                                                                 Nt,
                                                                               ) => {
                                                                                 Nt.type ===
-                                                                                "click"
+                                                                                  "click"
                                                                                   ? (bn++,
                                                                                     (Nn[
                                                                                       Nt.id
@@ -4149,9 +4149,9 @@ END OF REPORT`,
                                                                               },
                                                                             ),
                                                                             ye.logs &&
-                                                                            ye
-                                                                              .logs
-                                                                              .length >
+                                                                              ye
+                                                                                .logs
+                                                                                .length >
                                                                               0 ? (
                                                                               <div className="w-full rounded-xl border border-neutral-200/50 dark:border-zinc-900/60 bg-white/20 dark:bg-zinc-950/20 backdrop-blur-2xl">
                                                                                 {
@@ -4220,12 +4220,12 @@ END OF REPORT`,
                                                                                             Nt,
                                                                                           ) => {
                                                                                             const vr =
-                                                                                                Nt.type ===
-                                                                                                "click",
+                                                                                              Nt.type ===
+                                                                                              "click",
                                                                                               Rr =
                                                                                                 Nn[
-                                                                                                  Nt
-                                                                                                    .id
+                                                                                                Nt
+                                                                                                  .id
                                                                                                 ] ||
                                                                                                 (vr
                                                                                                   ? "Click"
@@ -4393,7 +4393,7 @@ END OF REPORT`,
                                                                                                             title="Copy event details"
                                                                                                           >
                                                                                                             {Tt ===
-                                                                                                            Nt.id ? (
+                                                                                                              Nt.id ? (
                                                                                                               <En_Icon
                                                                                                                 className="w-3.5 h-3.5 text-emerald-500"
                                                                                                                 strokeWidth={
@@ -4412,38 +4412,38 @@ END OF REPORT`,
                                                                                                                 Pn = `[Telemetry Live Signal] ${ye.recipient} - ${Rr} at ${new Date(Nt.timestamp).toLocaleTimeString()}`;
                                                                                                               navigator.share
                                                                                                                 ? navigator
-                                                                                                                    .share(
-                                                                                                                      {
-                                                                                                                        title:
-                                                                                                                          "Tickk Telemetry Update",
-                                                                                                                        text: Pn,
-                                                                                                                        url: Na,
-                                                                                                                      },
-                                                                                                                    )
-                                                                                                                    .catch(
-                                                                                                                      () => {
-                                                                                                                        (navigator.clipboard.writeText(
-                                                                                                                          `${Pn} - ${Na}`,
+                                                                                                                  .share(
+                                                                                                                    {
+                                                                                                                      title:
+                                                                                                                        "Tickk Telemetry Update",
+                                                                                                                      text: Pn,
+                                                                                                                      url: Na,
+                                                                                                                    },
+                                                                                                                  )
+                                                                                                                  .catch(
+                                                                                                                    () => {
+                                                                                                                      (navigator.clipboard.writeText(
+                                                                                                                        `${Pn} - ${Na}`,
+                                                                                                                      ),
+                                                                                                                        Qn(
+                                                                                                                          Nt.id +
+                                                                                                                          "_share",
                                                                                                                         ),
-                                                                                                                          Qn(
-                                                                                                                            Nt.id +
-                                                                                                                              "_share",
-                                                                                                                          ),
-                                                                                                                          setTimeout(
-                                                                                                                            () =>
-                                                                                                                              Qn(
-                                                                                                                                null,
-                                                                                                                              ),
-                                                                                                                            2e3,
-                                                                                                                          ));
-                                                                                                                      },
-                                                                                                                    )
+                                                                                                                        setTimeout(
+                                                                                                                          () =>
+                                                                                                                            Qn(
+                                                                                                                              null,
+                                                                                                                            ),
+                                                                                                                          2e3,
+                                                                                                                        ));
+                                                                                                                    },
+                                                                                                                  )
                                                                                                                 : (navigator.clipboard.writeText(
-                                                                                                                    `${Pn} - ${Na}`,
-                                                                                                                  ),
+                                                                                                                  `${Pn} - ${Na}`,
+                                                                                                                ),
                                                                                                                   Qn(
                                                                                                                     Nt.id +
-                                                                                                                      "_share",
+                                                                                                                    "_share",
                                                                                                                   ),
                                                                                                                   s(
                                                                                                                     "Telemetry share link copied to clipboard",
@@ -4461,7 +4461,7 @@ END OF REPORT`,
                                                                                                             title="Share event link"
                                                                                                           >
                                                                                                             {Tt ===
-                                                                                                            Nt.id +
+                                                                                                              Nt.id +
                                                                                                               "_share" ? (
                                                                                                               <En_Icon
                                                                                                                 className="w-3.5 h-3.5 text-emerald-500"
@@ -4959,19 +4959,19 @@ END OF REPORT`,
                                         <tbody className="divide-y divide-neutral-200/50 dark:divide-zinc-850/40">
                                           {(() => {
                                             const F = [...g, ...Us].filter(
-                                                (Be) =>
-                                                  Be.linkUrl &&
-                                                  (Be.subject
+                                              (Be) =>
+                                                Be.linkUrl &&
+                                                (Be.subject
+                                                  .toLowerCase()
+                                                  .includes(
+                                                    wr.toLowerCase(),
+                                                  ) ||
+                                                  Be.recipient
                                                     .toLowerCase()
                                                     .includes(
                                                       wr.toLowerCase(),
-                                                    ) ||
-                                                    Be.recipient
-                                                      .toLowerCase()
-                                                      .includes(
-                                                        wr.toLowerCase(),
-                                                      )),
-                                              ),
+                                                    )),
+                                            ),
                                               ye = [];
                                             for (const Be of F) {
                                               const pt = Be.logs
@@ -4989,40 +4989,40 @@ END OF REPORT`,
                                                 );
                                               pt.length === 0
                                                 ? ye.push({
-                                                    ...Be,
-                                                    displayClickCount: 0,
-                                                    rowId: Be.id,
-                                                    specificClickTime: null,
-                                                    specificLog: null,
-                                                  })
+                                                  ...Be,
+                                                  displayClickCount: 0,
+                                                  rowId: Be.id,
+                                                  specificClickTime: null,
+                                                  specificLog: null,
+                                                })
                                                 : pt.forEach((mt, Wt) => {
-                                                    ye.push({
-                                                      ...Be,
-                                                      displayClickCount: Wt + 1,
-                                                      rowId: `${Be.id}-click-${Wt}`,
-                                                      specificClickTime:
-                                                        mt.timestamp,
-                                                      specificLog: mt,
-                                                    });
+                                                  ye.push({
+                                                    ...Be,
+                                                    displayClickCount: Wt + 1,
+                                                    rowId: `${Be.id}-click-${Wt}`,
+                                                    specificClickTime:
+                                                      mt.timestamp,
+                                                    specificLog: mt,
                                                   });
+                                                });
                                             }
                                             return (
                                               ye.sort((Be, pt) => {
                                                 const mt = Be.specificClickTime
                                                   ? new Date(
-                                                      Be.specificClickTime,
-                                                    ).getTime()
+                                                    Be.specificClickTime,
+                                                  ).getTime()
                                                   : new Date(
-                                                      Be.createdAt,
-                                                    ).getTime();
+                                                    Be.createdAt,
+                                                  ).getTime();
                                                 return (
                                                   (pt.specificClickTime
                                                     ? new Date(
-                                                        pt.specificClickTime,
-                                                      ).getTime()
+                                                      pt.specificClickTime,
+                                                    ).getTime()
                                                     : new Date(
-                                                        pt.createdAt,
-                                                      ).getTime()) - mt
+                                                      pt.createdAt,
+                                                    ).getTime()) - mt
                                                 );
                                               }),
                                               ye.map((Be) => {
@@ -5081,7 +5081,7 @@ END OF REPORT`,
                                                                     }</span>
                                                                     {Be.isManual && (
                                                                       <div className="group/icon relative inline-flex items-center justify-center shrink-0 cursor-default">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-500"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-500"><circle cx="12" cy="12" r="10" /><path d="m9 12 2 2 4-4" /></svg>
                                                                         <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-2 py-1 bg-black text-white text-[10px] rounded opacity-0 group-hover/icon:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50 font-sans">
                                                                           Sent manually using TICKK
                                                                         </div>
@@ -5132,7 +5132,7 @@ END OF REPORT`,
                                                         {
                                                           <td className="px-4 py-4 whitespace-nowrap">
                                                             {Be.displayClickCount >
-                                                            0 ? (
+                                                              0 ? (
                                                               <span className="inline-flex items-center px-2.5 py-1 bg-emerald-500/5 border border-emerald-500/20 text-neutral-900 dark:text-white text-[10px] font-normal rounded-lg shadow-sm">
                                                                 {
                                                                   <En_Icon
@@ -5151,13 +5151,13 @@ END OF REPORT`,
                                                                       Be.displayClickCount
                                                                     }
                                                                     {Be.displayClickCount ===
-                                                                    1
+                                                                      1
                                                                       ? "st"
                                                                       : Be.displayClickCount ===
-                                                                          2
+                                                                        2
                                                                         ? "nd"
                                                                         : Be.displayClickCount ===
-                                                                            3
+                                                                          3
                                                                           ? "rd"
                                                                           : "th"}
                                                                     {" Click!"}
@@ -5215,7 +5215,7 @@ END OF REPORT`,
                                                                     title="Copy Redirection Link"
                                                                   >
                                                                     {pc ===
-                                                                    Be.rowId ? (
+                                                                      Be.rowId ? (
                                                                       <En_Icon className="w-3 h-3.5 text-emerald-600 dark:text-emerald-400" />
                                                                     ) : (
                                                                       <Id className="w-3 h-3.5" />
@@ -5327,7 +5327,7 @@ END OF REPORT`,
                                                                                     title="Copy link"
                                                                                   >
                                                                                     {pc ===
-                                                                                    Be.rowId ? (
+                                                                                      Be.rowId ? (
                                                                                       <En_Icon className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400" />
                                                                                     ) : (
                                                                                       <Id className="w-3.5 h-3.5" />
@@ -5722,251 +5722,251 @@ END OF REPORT`,
                                   {
                                     <>
                                       <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
-                                      {
-                                        /* Card 1: Delivery Rate */
-                                        <div className="relative overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-white/40 dark:bg-zinc-900/30 bg-gradient-to-br from-zinc-500/[0.18] via-transparent to-neutral-400/[0.18] dark:from-zinc-500/[0.12] dark:via-transparent dark:to-neutral-400/[0.12] bg-[length:200%_200%] animate-gradient-slow p-5 space-y-3.5 flex flex-col justify-between transition-all hover:scale-[1.03] duration-300 shadow-sm hover:border-zinc-500/30 dark:hover:border-zinc-500/25">
-                                          <div className="flex justify-between items-start">
-                                            <span className="text-[10px] uppercase text-neutral-500 dark:text-neutral-400 font-mono tracking-widest">
-                                              {"Delivery Rate"}
-                                            </span>
-                                            <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-normal border border-emerald-500/20 bg-emerald-500/5 text-neutral-900 dark:text-white shadow-sm font-mono">
-                                              <En_Icon className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500 mr-1 shrink-0" strokeWidth={3} />
-                                              <span>{"Confirmed"}</span>
-                                            </span>
-                                          </div>
-                                          <span className="text-4xl font-extralight font-display tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-neutral-900 to-neutral-700 dark:from-white dark:to-neutral-300 block">
-                                            {"99.9%"}
-                                          </span>
-                                          <div className="w-full bg-black/10 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
-                                            <div
-                                              className="bg-zinc-900 dark:bg-white h-full rounded-full"
-                                              style={{
-                                                width: "99.9%",
-                                              }}
-                                            />
-                                          </div>
-                                          <button
-                                            onClick={() => setActiveOptimizeTip(activeOptimizeTip === "delivery" ? null : "delivery")}
-                                            className="w-full text-[10px] text-zinc-400 hover:text-neutral-900 dark:hover:text-white flex items-center justify-between transition-colors pt-2 border-t border-black/[0.03] dark:border-white/[0.03] group"
-                                          >
-                                            <span className="flex items-center gap-1">
-                                              <Info className="w-3 h-3 text-zinc-400 group-hover:text-neutral-950 dark:group-hover:text-white transition-colors" />
-                                              <span>{"Analyze & Optimize"}</span>
-                                            </span>
-                                            <span className="opacity-0 group-hover/icon:opacity-100 transition-opacity text-[9px] font-mono font-medium">{"FIX →"}</span>
-                                          </button>
-                                        </div>
-                                      }
-                                      {
-                                        /* Card 2: Emails Opened */
-                                        <div className="relative overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-white/40 dark:bg-zinc-900/30 bg-gradient-to-br from-amber-500/[0.18] via-transparent to-yellow-500/[0.18] dark:from-amber-500/[0.12] dark:via-transparent dark:to-yellow-500/[0.12] bg-[length:200%_200%] animate-gradient-slow p-5 space-y-3.5 flex flex-col justify-between transition-all hover:scale-[1.03] duration-300 shadow-sm hover:border-amber-500/30 dark:hover:border-amber-500/25">
-                                          <div className="flex justify-between items-start">
-                                            <span className="text-[10px] uppercase text-neutral-500 dark:text-neutral-400 font-mono tracking-widest">
-                                              {"Emails Opened"}
-                                            </span>
-                                            <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-normal border border-amber-500/20 bg-amber-500/5 text-neutral-900 dark:text-white shadow-sm font-mono">
-                                              <ShieldAlert className="w-3.5 h-3.5 text-amber-500 mr-1 shrink-0" strokeWidth={2.5} />
-                                              <span>{"Awaiting Opens"}</span>
-                                            </span>
-                                          </div>
-                                          <span className="text-4xl font-extralight font-display tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-neutral-900 to-neutral-700 dark:from-white dark:to-neutral-300 block">
-                                            {"78.4%"}
-                                          </span>
-                                          <div className="w-full bg-black/5 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
-                                            <div
-                                              className="bg-amber-500 dark:bg-amber-400 h-full rounded-full"
-                                              style={{
-                                                width: "78.4%",
-                                              }}
-                                            />
-                                          </div>
-                                          <button
-                                            onClick={() => setActiveOptimizeTip(activeOptimizeTip === "opens" ? null : "opens")}
-                                            className="w-full text-[10px] text-zinc-400 hover:text-neutral-900 dark:hover:text-white flex items-center justify-between transition-colors pt-2 border-t border-black/[0.03] dark:border-white/[0.03] group"
-                                          >
-                                            <span className="flex items-center gap-1">
-                                              <Info className="w-3 h-3 text-zinc-400 group-hover:text-neutral-950 dark:group-hover:text-white transition-colors" />
-                                              <span>{"Analyze & Optimize"}</span>
-                                            </span>
-                                            <span className="opacity-0 group-hover/icon:opacity-100 transition-opacity text-[9px] font-mono font-medium">{"FIX →"}</span>
-                                          </button>
-                                        </div>
-                                      }
-                                      {
-                                        /* Card 3: Links Clicked */
-                                        <div className="relative overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-white/40 dark:bg-zinc-900/30 bg-gradient-to-br from-red-500/[0.18] via-transparent to-rose-500/[0.18] dark:from-red-500/[0.12] dark:via-transparent dark:to-rose-500/[0.12] bg-[length:200%_200%] animate-gradient-slow p-5 space-y-3.5 flex flex-col justify-between transition-all hover:scale-[1.03] duration-300 shadow-sm hover:border-red-500/30 dark:hover:border-red-500/25">
-                                          <div className="flex justify-between items-start">
-                                            <span className="text-[10px] uppercase text-neutral-500 dark:text-neutral-400 font-mono tracking-widest">
-                                              {"Links Clicked"}
-                                            </span>
-                                            <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-normal border border-red-500/20 bg-red-500/5 text-neutral-900 dark:text-white shadow-sm font-mono">
-                                              <AlertTriangle className="w-3.5 h-3.5 text-red-500 mr-1 shrink-0" strokeWidth={2.5} />
-                                              <span>{"Awaiting Clicks"}</span>
-                                            </span>
-                                          </div>
-                                          <span className="text-4xl font-extralight font-display tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-neutral-900 to-neutral-700 dark:from-white dark:to-neutral-300 block">
-                                            {"42.1%"}
-                                          </span>
-                                          <div className="w-full bg-black/5 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
-                                            <div
-                                              className="bg-red-500 dark:bg-red-400 h-full rounded-full"
-                                              style={{
-                                                width: "42.1%",
-                                              }}
-                                            />
-                                          </div>
-                                          <button
-                                            onClick={() => setActiveOptimizeTip(activeOptimizeTip === "clicks" ? null : "clicks")}
-                                            className="w-full text-[10px] text-zinc-400 hover:text-neutral-900 dark:hover:text-white flex items-center justify-between transition-colors pt-2 border-t border-black/[0.03] dark:border-white/[0.03] group"
-                                          >
-                                            <span className="flex items-center gap-1">
-                                              <Info className="w-3 h-3 text-zinc-400 group-hover:text-neutral-950 dark:group-hover:text-white transition-colors" />
-                                              <span>{"Analyze & Optimize"}</span>
-                                            </span>
-                                            <span className="opacity-0 group-hover/icon:opacity-100 transition-opacity text-[9px] font-mono font-medium">{"FIX →"}</span>
-                                          </button>
-                                        </div>
-                                      }
-                                      {
-                                        /* Card 4: Reputation Score */
-                                        <div className="relative overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-white/40 dark:bg-zinc-900/30 bg-gradient-to-br from-emerald-500/[0.18] via-transparent to-teal-500/[0.18] dark:from-emerald-500/[0.12] dark:via-transparent dark:to-teal-500/[0.12] bg-[length:200%_200%] animate-gradient-slow p-5 space-y-3.5 flex flex-col justify-between transition-all hover:scale-[1.03] duration-300 shadow-sm hover:border-emerald-500/30 dark:hover:border-emerald-500/25">
-                                          <div className="flex justify-between items-start">
-                                            <span className="text-[10px] uppercase text-neutral-500 dark:text-neutral-400 font-mono tracking-widest">
-                                              {"Reputation Score"}
-                                            </span>
-                                            <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-normal border border-emerald-500/20 bg-emerald-500/5 text-neutral-900 dark:text-white shadow-sm font-mono">
-                                              <BadgeCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500 mr-1 shrink-0" strokeWidth={2.5} />
-                                              <span>{"Perfect"}</span>
-                                            </span>
-                                          </div>
-                                          <span className="text-4xl font-extralight font-display tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-neutral-900 to-neutral-700 dark:from-white dark:to-neutral-300 block">
-                                            {"98/100"}
-                                          </span>
-                                          <div className="w-full bg-black/5 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
-                                            <div
-                                              className="bg-emerald-500 dark:bg-emerald-400 h-full rounded-full"
-                                              style={{
-                                                width: "98%",
-                                              }}
-                                            />
-                                          </div>
-                                          <button
-                                            onClick={() => setActiveOptimizeTip(activeOptimizeTip === "reputation" ? null : "reputation")}
-                                            className="w-full text-[10px] text-zinc-400 hover:text-neutral-900 dark:hover:text-white flex items-center justify-between transition-colors pt-2 border-t border-black/[0.03] dark:border-white/[0.03] group"
-                                          >
-                                            <span className="flex items-center gap-1">
-                                              <Info className="w-3 h-3 text-zinc-400 group-hover:text-neutral-950 dark:group-hover:text-white transition-colors" />
-                                              <span>{"Analyze & Optimize"}</span>
-                                            </span>
-                                            <span className="opacity-0 group-hover/icon:opacity-100 transition-opacity text-[9px] font-mono font-medium">{"FIX →"}</span>
-                                          </button>
-                                        </div>
-                                      }
-                                    </div>
-                                    
-                                    <Hi mode="wait">
-                                      {activeOptimizeTip && (
-                                        <Lt.div
-                                          initial={{ opacity: 0, height: 0 }}
-                                          animate={{ opacity: 1, height: "auto" }}
-                                          exit={{ opacity: 0, height: 0 }}
-                                          transition={{ duration: 0.3, ease: "easeInOut" }}
-                                          className="mt-6 p-5 bg-white/80 dark:bg-zinc-950/85 backdrop-blur-xl border border-black/[0.05] dark:border-white/[0.05] rounded-2xl shadow-xl relative overflow-hidden"
-                                        >
-                                          <div className="flex justify-between items-start mb-4">
-                                            <h4 className="text-xs font-semibold uppercase tracking-widest text-neutral-900 dark:text-white flex items-center gap-2">
-                                              <Info className="w-4 h-4 text-emerald-500" />
-                                              <span>
-                                                {activeOptimizeTip === "delivery" && "Delivery Rate Optimization Guide"}
-                                                {activeOptimizeTip === "opens" && "Email Open Rate Optimization Guide"}
-                                                {activeOptimizeTip === "clicks" && "Link Click-Through Rate Optimization Guide"}
-                                                {activeOptimizeTip === "reputation" && "IP Reputation & Deliverability Guide"}
+                                        {
+                                          /* Card 1: Delivery Rate */
+                                          <div className="relative overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-white/40 dark:bg-zinc-900/30 bg-gradient-to-br from-zinc-500/[0.18] via-transparent to-neutral-400/[0.18] dark:from-zinc-500/[0.12] dark:via-transparent dark:to-neutral-400/[0.12] bg-[length:200%_200%] animate-gradient-slow p-5 space-y-3.5 flex flex-col justify-between transition-all hover:scale-[1.03] duration-300 shadow-sm hover:border-zinc-500/30 dark:hover:border-zinc-500/25">
+                                            <div className="flex justify-between items-start">
+                                              <span className="text-[10px] uppercase text-neutral-500 dark:text-neutral-400 font-mono tracking-widest">
+                                                {"Delivery Rate"}
                                               </span>
-                                            </h4>
-                                            <button 
-                                              onClick={() => setActiveOptimizeTip(null)}
-                                              className="text-xs text-zinc-400 hover:text-neutral-900 dark:hover:text-white transition-colors font-mono px-2 py-0.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10"
+                                              <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-normal border border-emerald-500/20 bg-emerald-500/5 text-neutral-900 dark:text-white shadow-sm font-mono">
+                                                <En_Icon className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500 mr-1 shrink-0" strokeWidth={3} />
+                                                <span>{"Confirmed"}</span>
+                                              </span>
+                                            </div>
+                                            <span className="text-4xl font-extralight font-display tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-neutral-900 to-neutral-700 dark:from-white dark:to-neutral-300 block">
+                                              {"99.9%"}
+                                            </span>
+                                            <div className="w-full bg-black/10 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
+                                              <div
+                                                className="bg-zinc-900 dark:bg-white h-full rounded-full"
+                                                style={{
+                                                  width: "99.9%",
+                                                }}
+                                              />
+                                            </div>
+                                            <button
+                                              onClick={() => setActiveOptimizeTip(activeOptimizeTip === "delivery" ? null : "delivery")}
+                                              className="w-full text-[10px] text-zinc-400 hover:text-neutral-900 dark:hover:text-white flex items-center justify-between transition-colors pt-2 border-t border-black/[0.03] dark:border-white/[0.03] group"
                                             >
-                                              {"[Close]"}
+                                              <span className="flex items-center gap-1">
+                                                <Info className="w-3 h-3 text-zinc-400 group-hover:text-neutral-950 dark:group-hover:text-white transition-colors" />
+                                                <span>{"Analyze & Optimize"}</span>
+                                              </span>
+                                              <span className="opacity-0 group-hover/icon:opacity-100 transition-opacity text-[9px] font-mono font-medium">{"FIX →"}</span>
                                             </button>
                                           </div>
-                                          
-                                          <div className="text-xs text-neutral-600 dark:text-zinc-400 space-y-3 leading-relaxed">
-                                            {activeOptimizeTip === "delivery" && (
-                                              <>
-                                                <p>{"Your delivery rate is exceptional (99.9%). To maintain this perfect status, ensure your SPF, DKIM, and DMARC settings are fully aligned in your DNS registry."}</p>
-                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3 pt-3 border-t border-black/5 dark:border-white/5 font-mono text-[10px]">
-                                                  <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
-                                                    <span className="text-neutral-900 dark:text-white block font-semibold mb-1">{"SPF Record"}</span>
-                                                    <code className="text-zinc-500 dark:text-zinc-400 block break-all">{"v=spf1 include:mx.yourserver.com ~all"}</code>
-                                                  </div>
-                                                  <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
-                                                    <span className="text-neutral-900 dark:text-white block font-semibold mb-1">{"DKIM Signature"}</span>
-                                                    <code className="text-zinc-500 dark:text-zinc-400 block break-all">{"v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG..."}</code>
-                                                  </div>
-                                                </div>
-                                              </>
-                                            )}
-                                            {activeOptimizeTip === "opens" && (
-                                              <>
-                                                <p>{"An open rate of 78.4% is highly active. To boost this further and resolve pending reads, consider testing dynamic subject lines and avoiding generic spam-trigger words like 'Urgent' or 'Free'."}</p>
-                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3 pt-3 border-t border-black/5 dark:border-white/5 font-mono text-[10px]">
-                                                  <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
-                                                    <span className="text-amber-500 block font-semibold mb-1">{"Recommended Actions"}</span>
-                                                    <ul className="list-disc pl-4 space-y-1 text-zinc-500 dark:text-zinc-400">
-                                                      <li>{"Personalize headers with dynamic recipient templates"}</li>
-                                                      <li>{"Schedule delivery times to align with local workspace mornings"}</li>
-                                                    </ul>
-                                                  </div>
-                                                  <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
-                                                    <span className="text-neutral-900 dark:text-white block font-semibold mb-1">{"Target Timezones"}</span>
-                                                    <code className="text-zinc-500 dark:text-zinc-400 block">{"EST / GMT Workspace hours (9:30 AM optimal)"}</code>
-                                                  </div>
-                                                </div>
-                                              </>
-                                            )}
-                                            {activeOptimizeTip === "clicks" && (
-                                              <>
-                                                <p>{"Your link click-through rate (42.1%) is currently awaiting user action. This can be significantly increased by improving CTA button visibility and making links look extremely clean and secure."}</p>
-                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3 pt-3 border-t border-black/5 dark:border-white/5 font-mono text-[10px]">
-                                                  <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
-                                                    <span className="text-red-500 block font-semibold mb-1">{"CTA Enhancements"}</span>
-                                                    <ul className="list-disc pl-4 space-y-1 text-zinc-500 dark:text-zinc-400">
-                                                      <li>{"Position main CTA buttons in the upper 50% of the email copy"}</li>
-                                                      <li>{"Ensure all redirected URLs utilize HTTPS with certified SSL"}</li>
-                                                    </ul>
-                                                  </div>
-                                                  <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
-                                                    <span className="text-neutral-900 dark:text-white block font-semibold mb-1">{"SSL Integrity"}</span>
-                                                    <code className="text-zinc-500 dark:text-zinc-400 block">{"TLS 1.3 Certified / SHA-256 Signature verified"}</code>
-                                                  </div>
-                                                </div>
-                                              </>
-                                            )}
-                                            {activeOptimizeTip === "reputation" && (
-                                              <>
-                                                <p>{"Your IP Reputation is near-perfect (98/100). To protect this status, continuously scrub your subscriber lists for bounced emails and implement double-opt-in subscription methods."}</p>
-                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3 pt-3 border-t border-black/5 dark:border-white/5 font-mono text-[10px]">
-                                                  <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
-                                                    <span className="text-indigo-500 block font-semibold mb-1">{"Deliverability Guidelines"}</span>
-                                                    <ul className="list-disc pl-4 space-y-1 text-zinc-500 dark:text-zinc-400">
-                                                      <li>{"Strictly filter out secondary disposable/temporary emails"}</li>
-                                                      <li>{"Monitor RBL blacklist aggregators every 24 hours"}</li>
-                                                    </ul>
-                                                  </div>
-                                                  <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
-                                                    <span className="text-neutral-900 dark:text-white block font-semibold mb-1">{"RBL Monitored Status"}</span>
-                                                    <code className="text-emerald-500 block font-semibold">{"0/120 blacklists listed (Clean)"}</code>
-                                                  </div>
-                                                </div>
-                                              </>
-                                            )}
+                                        }
+                                        {
+                                          /* Card 2: Emails Opened */
+                                          <div className="relative overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-white/40 dark:bg-zinc-900/30 bg-gradient-to-br from-amber-500/[0.18] via-transparent to-yellow-500/[0.18] dark:from-amber-500/[0.12] dark:via-transparent dark:to-yellow-500/[0.12] bg-[length:200%_200%] animate-gradient-slow p-5 space-y-3.5 flex flex-col justify-between transition-all hover:scale-[1.03] duration-300 shadow-sm hover:border-amber-500/30 dark:hover:border-amber-500/25">
+                                            <div className="flex justify-between items-start">
+                                              <span className="text-[10px] uppercase text-neutral-500 dark:text-neutral-400 font-mono tracking-widest">
+                                                {"Emails Opened"}
+                                              </span>
+                                              <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-normal border border-amber-500/20 bg-amber-500/5 text-neutral-900 dark:text-white shadow-sm font-mono">
+                                                <ShieldAlert className="w-3.5 h-3.5 text-amber-500 mr-1 shrink-0" strokeWidth={2.5} />
+                                                <span>{"Awaiting Opens"}</span>
+                                              </span>
+                                            </div>
+                                            <span className="text-4xl font-extralight font-display tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-neutral-900 to-neutral-700 dark:from-white dark:to-neutral-300 block">
+                                              {"78.4%"}
+                                            </span>
+                                            <div className="w-full bg-black/5 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
+                                              <div
+                                                className="bg-amber-500 dark:bg-amber-400 h-full rounded-full"
+                                                style={{
+                                                  width: "78.4%",
+                                                }}
+                                              />
+                                            </div>
+                                            <button
+                                              onClick={() => setActiveOptimizeTip(activeOptimizeTip === "opens" ? null : "opens")}
+                                              className="w-full text-[10px] text-zinc-400 hover:text-neutral-900 dark:hover:text-white flex items-center justify-between transition-colors pt-2 border-t border-black/[0.03] dark:border-white/[0.03] group"
+                                            >
+                                              <span className="flex items-center gap-1">
+                                                <Info className="w-3 h-3 text-zinc-400 group-hover:text-neutral-950 dark:group-hover:text-white transition-colors" />
+                                                <span>{"Analyze & Optimize"}</span>
+                                              </span>
+                                              <span className="opacity-0 group-hover/icon:opacity-100 transition-opacity text-[9px] font-mono font-medium">{"FIX →"}</span>
+                                            </button>
                                           </div>
-                                        </Lt.div>
-                                      )}
-                                    </Hi>
-                                  </>
-                                 }
+                                        }
+                                        {
+                                          /* Card 3: Links Clicked */
+                                          <div className="relative overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-white/40 dark:bg-zinc-900/30 bg-gradient-to-br from-red-500/[0.18] via-transparent to-rose-500/[0.18] dark:from-red-500/[0.12] dark:via-transparent dark:to-rose-500/[0.12] bg-[length:200%_200%] animate-gradient-slow p-5 space-y-3.5 flex flex-col justify-between transition-all hover:scale-[1.03] duration-300 shadow-sm hover:border-red-500/30 dark:hover:border-red-500/25">
+                                            <div className="flex justify-between items-start">
+                                              <span className="text-[10px] uppercase text-neutral-500 dark:text-neutral-400 font-mono tracking-widest">
+                                                {"Links Clicked"}
+                                              </span>
+                                              <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-normal border border-red-500/20 bg-red-500/5 text-neutral-900 dark:text-white shadow-sm font-mono">
+                                                <AlertTriangle className="w-3.5 h-3.5 text-red-500 mr-1 shrink-0" strokeWidth={2.5} />
+                                                <span>{"Awaiting Clicks"}</span>
+                                              </span>
+                                            </div>
+                                            <span className="text-4xl font-extralight font-display tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-neutral-900 to-neutral-700 dark:from-white dark:to-neutral-300 block">
+                                              {"42.1%"}
+                                            </span>
+                                            <div className="w-full bg-black/5 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
+                                              <div
+                                                className="bg-red-500 dark:bg-red-400 h-full rounded-full"
+                                                style={{
+                                                  width: "42.1%",
+                                                }}
+                                              />
+                                            </div>
+                                            <button
+                                              onClick={() => setActiveOptimizeTip(activeOptimizeTip === "clicks" ? null : "clicks")}
+                                              className="w-full text-[10px] text-zinc-400 hover:text-neutral-900 dark:hover:text-white flex items-center justify-between transition-colors pt-2 border-t border-black/[0.03] dark:border-white/[0.03] group"
+                                            >
+                                              <span className="flex items-center gap-1">
+                                                <Info className="w-3 h-3 text-zinc-400 group-hover:text-neutral-950 dark:group-hover:text-white transition-colors" />
+                                                <span>{"Analyze & Optimize"}</span>
+                                              </span>
+                                              <span className="opacity-0 group-hover/icon:opacity-100 transition-opacity text-[9px] font-mono font-medium">{"FIX →"}</span>
+                                            </button>
+                                          </div>
+                                        }
+                                        {
+                                          /* Card 4: Reputation Score */
+                                          <div className="relative overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-white/40 dark:bg-zinc-900/30 bg-gradient-to-br from-emerald-500/[0.18] via-transparent to-teal-500/[0.18] dark:from-emerald-500/[0.12] dark:via-transparent dark:to-teal-500/[0.12] bg-[length:200%_200%] animate-gradient-slow p-5 space-y-3.5 flex flex-col justify-between transition-all hover:scale-[1.03] duration-300 shadow-sm hover:border-emerald-500/30 dark:hover:border-emerald-500/25">
+                                            <div className="flex justify-between items-start">
+                                              <span className="text-[10px] uppercase text-neutral-500 dark:text-neutral-400 font-mono tracking-widest">
+                                                {"Reputation Score"}
+                                              </span>
+                                              <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-normal border border-emerald-500/20 bg-emerald-500/5 text-neutral-900 dark:text-white shadow-sm font-mono">
+                                                <BadgeCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500 mr-1 shrink-0" strokeWidth={2.5} />
+                                                <span>{"Perfect"}</span>
+                                              </span>
+                                            </div>
+                                            <span className="text-4xl font-extralight font-display tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-neutral-900 to-neutral-700 dark:from-white dark:to-neutral-300 block">
+                                              {"98/100"}
+                                            </span>
+                                            <div className="w-full bg-black/5 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
+                                              <div
+                                                className="bg-emerald-500 dark:bg-emerald-400 h-full rounded-full"
+                                                style={{
+                                                  width: "98%",
+                                                }}
+                                              />
+                                            </div>
+                                            <button
+                                              onClick={() => setActiveOptimizeTip(activeOptimizeTip === "reputation" ? null : "reputation")}
+                                              className="w-full text-[10px] text-zinc-400 hover:text-neutral-900 dark:hover:text-white flex items-center justify-between transition-colors pt-2 border-t border-black/[0.03] dark:border-white/[0.03] group"
+                                            >
+                                              <span className="flex items-center gap-1">
+                                                <Info className="w-3 h-3 text-zinc-400 group-hover:text-neutral-950 dark:group-hover:text-white transition-colors" />
+                                                <span>{"Analyze & Optimize"}</span>
+                                              </span>
+                                              <span className="opacity-0 group-hover/icon:opacity-100 transition-opacity text-[9px] font-mono font-medium">{"FIX →"}</span>
+                                            </button>
+                                          </div>
+                                        }
+                                      </div>
+
+                                      <Hi mode="wait">
+                                        {activeOptimizeTip && (
+                                          <Lt.div
+                                            initial={{ opacity: 0, height: 0 }}
+                                            animate={{ opacity: 1, height: "auto" }}
+                                            exit={{ opacity: 0, height: 0 }}
+                                            transition={{ duration: 0.3, ease: "easeInOut" }}
+                                            className="mt-6 p-5 bg-white/80 dark:bg-zinc-950/85 backdrop-blur-xl border border-black/[0.05] dark:border-white/[0.05] rounded-2xl shadow-xl relative overflow-hidden"
+                                          >
+                                            <div className="flex justify-between items-start mb-4">
+                                              <h4 className="text-xs font-semibold uppercase tracking-widest text-neutral-900 dark:text-white flex items-center gap-2">
+                                                <Info className="w-4 h-4 text-emerald-500" />
+                                                <span>
+                                                  {activeOptimizeTip === "delivery" && "Delivery Rate Optimization Guide"}
+                                                  {activeOptimizeTip === "opens" && "Email Open Rate Optimization Guide"}
+                                                  {activeOptimizeTip === "clicks" && "Link Click-Through Rate Optimization Guide"}
+                                                  {activeOptimizeTip === "reputation" && "IP Reputation & Deliverability Guide"}
+                                                </span>
+                                              </h4>
+                                              <button
+                                                onClick={() => setActiveOptimizeTip(null)}
+                                                className="text-xs text-zinc-400 hover:text-neutral-900 dark:hover:text-white transition-colors font-mono px-2 py-0.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10"
+                                              >
+                                                {"[Close]"}
+                                              </button>
+                                            </div>
+
+                                            <div className="text-xs text-neutral-600 dark:text-zinc-400 space-y-3 leading-relaxed">
+                                              {activeOptimizeTip === "delivery" && (
+                                                <>
+                                                  <p>{"Your delivery rate is exceptional (99.9%). To maintain this perfect status, ensure your SPF, DKIM, and DMARC settings are fully aligned in your DNS registry."}</p>
+                                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3 pt-3 border-t border-black/5 dark:border-white/5 font-mono text-[10px]">
+                                                    <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
+                                                      <span className="text-neutral-900 dark:text-white block font-semibold mb-1">{"SPF Record"}</span>
+                                                      <code className="text-zinc-500 dark:text-zinc-400 block break-all">{"v=spf1 include:mx.yourserver.com ~all"}</code>
+                                                    </div>
+                                                    <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
+                                                      <span className="text-neutral-900 dark:text-white block font-semibold mb-1">{"DKIM Signature"}</span>
+                                                      <code className="text-zinc-500 dark:text-zinc-400 block break-all">{"v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG..."}</code>
+                                                    </div>
+                                                  </div>
+                                                </>
+                                              )}
+                                              {activeOptimizeTip === "opens" && (
+                                                <>
+                                                  <p>{"An open rate of 78.4% is highly active. To boost this further and resolve pending reads, consider testing dynamic subject lines and avoiding generic spam-trigger words like 'Urgent' or 'Free'."}</p>
+                                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3 pt-3 border-t border-black/5 dark:border-white/5 font-mono text-[10px]">
+                                                    <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
+                                                      <span className="text-amber-500 block font-semibold mb-1">{"Recommended Actions"}</span>
+                                                      <ul className="list-disc pl-4 space-y-1 text-zinc-500 dark:text-zinc-400">
+                                                        <li>{"Personalize headers with dynamic recipient templates"}</li>
+                                                        <li>{"Schedule delivery times to align with local workspace mornings"}</li>
+                                                      </ul>
+                                                    </div>
+                                                    <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
+                                                      <span className="text-neutral-900 dark:text-white block font-semibold mb-1">{"Target Timezones"}</span>
+                                                      <code className="text-zinc-500 dark:text-zinc-400 block">{"EST / GMT Workspace hours (9:30 AM optimal)"}</code>
+                                                    </div>
+                                                  </div>
+                                                </>
+                                              )}
+                                              {activeOptimizeTip === "clicks" && (
+                                                <>
+                                                  <p>{"Your link click-through rate (42.1%) is currently awaiting user action. This can be significantly increased by improving CTA button visibility and making links look extremely clean and secure."}</p>
+                                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3 pt-3 border-t border-black/5 dark:border-white/5 font-mono text-[10px]">
+                                                    <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
+                                                      <span className="text-red-500 block font-semibold mb-1">{"CTA Enhancements"}</span>
+                                                      <ul className="list-disc pl-4 space-y-1 text-zinc-500 dark:text-zinc-400">
+                                                        <li>{"Position main CTA buttons in the upper 50% of the email copy"}</li>
+                                                        <li>{"Ensure all redirected URLs utilize HTTPS with certified SSL"}</li>
+                                                      </ul>
+                                                    </div>
+                                                    <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
+                                                      <span className="text-neutral-900 dark:text-white block font-semibold mb-1">{"SSL Integrity"}</span>
+                                                      <code className="text-zinc-500 dark:text-zinc-400 block">{"TLS 1.3 Certified / SHA-256 Signature verified"}</code>
+                                                    </div>
+                                                  </div>
+                                                </>
+                                              )}
+                                              {activeOptimizeTip === "reputation" && (
+                                                <>
+                                                  <p>{"Your IP Reputation is near-perfect (98/100). To protect this status, continuously scrub your subscriber lists for bounced emails and implement double-opt-in subscription methods."}</p>
+                                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3 pt-3 border-t border-black/5 dark:border-white/5 font-mono text-[10px]">
+                                                    <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
+                                                      <span className="text-indigo-500 block font-semibold mb-1">{"Deliverability Guidelines"}</span>
+                                                      <ul className="list-disc pl-4 space-y-1 text-zinc-500 dark:text-zinc-400">
+                                                        <li>{"Strictly filter out secondary disposable/temporary emails"}</li>
+                                                        <li>{"Monitor RBL blacklist aggregators every 24 hours"}</li>
+                                                      </ul>
+                                                    </div>
+                                                    <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
+                                                      <span className="text-neutral-900 dark:text-white block font-semibold mb-1">{"RBL Monitored Status"}</span>
+                                                      <code className="text-emerald-500 block font-semibold">{"0/120 blacklists listed (Clean)"}</code>
+                                                    </div>
+                                                  </div>
+                                                </>
+                                              )}
+                                            </div>
+                                          </Lt.div>
+                                        )}
+                                      </Hi>
+                                    </>
+                                  }
                                 </div>
                               }
                             </Lt.div>
@@ -6239,7 +6239,7 @@ END OF REPORT`,
                                   {(() => {
                                     const hours = ['12a', '2a', '4a', '6a', '8a', '10a', '12p', '2p', '4p', '6p', '8p', '10p'];
                                     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-                                    const heatmapData = days.flatMap((day, x) => 
+                                    const heatmapData = days.flatMap((day, x) =>
                                       hours.map((hour, y) => {
                                         let baseVal = 10;
                                         if (day !== 'Sat' && day !== 'Sun') {
@@ -6257,27 +6257,27 @@ END OF REPORT`,
                                       <ResponsiveContainer width="100%" height="100%">
                                         <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
                                           <CartesianGrid strokeDasharray="3 3" stroke={r === "dark" ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"} />
-                                          <XAxis 
-                                            type="category" 
-                                            dataKey="hour" 
-                                            name="Hour" 
-                                            allowDuplicatedCategory={false} 
-                                            stroke="#6b7280" 
-                                            fontSize={10} 
-                                            tickLine={false} 
+                                          <XAxis
+                                            type="category"
+                                            dataKey="hour"
+                                            name="Hour"
+                                            allowDuplicatedCategory={false}
+                                            stroke="#6b7280"
+                                            fontSize={10}
+                                            tickLine={false}
                                           />
-                                          <YAxis 
-                                            type="category" 
-                                            dataKey="day" 
-                                            name="Day" 
-                                            allowDuplicatedCategory={false} 
-                                            stroke="#6b7280" 
-                                            fontSize={10} 
-                                            tickLine={false} 
+                                          <YAxis
+                                            type="category"
+                                            dataKey="day"
+                                            name="Day"
+                                            allowDuplicatedCategory={false}
+                                            stroke="#6b7280"
+                                            fontSize={10}
+                                            tickLine={false}
                                             reversed
                                           />
                                           <ZAxis type="number" dataKey="value" range={[100, 100]} />
-                                          <Tooltip 
+                                          <Tooltip
                                             cursor={{ strokeDasharray: '3 3' }}
                                             contentStyle={{
                                               backgroundColor: r === "dark" ? "rgba(20, 20, 22, 0.8)" : "rgba(255, 255, 255, 0.8)",
@@ -6294,11 +6294,11 @@ END OF REPORT`,
                                             const val = payload.value;
                                             const opacity = 0.1 + (val / 100) * 0.9;
                                             return (
-                                              <rect 
-                                                x={cx - 15} 
-                                                y={cy - 10} 
-                                                width={30} 
-                                                height={20} 
+                                              <rect
+                                                x={cx - 15}
+                                                y={cy - 10}
+                                                width={30}
+                                                height={20}
                                                 rx={4}
                                                 fill={r === "dark" ? "#ffffff" : "#000000"}
                                                 fillOpacity={opacity}
@@ -6400,19 +6400,19 @@ END OF REPORT`,
                                     },
                                   ].map((F, ye) => {
                                     const Be = (Wt, tr) => {
-                                        let Bn =
-                                          (Wt * 7 + tr * 13 + d.length * 3) %
-                                          100;
-                                        return d === "last_24_hours" && Wt !== 0
-                                          ? 0
-                                          : Bn > 85
-                                            ? 3
-                                            : Bn > 65
-                                              ? 2
-                                              : Bn > 40
-                                                ? 1
-                                                : 0;
-                                      },
+                                      let Bn =
+                                        (Wt * 7 + tr * 13 + d.length * 3) %
+                                        100;
+                                      return d === "last_24_hours" && Wt !== 0
+                                        ? 0
+                                        : Bn > 85
+                                          ? 3
+                                          : Bn > 65
+                                            ? 2
+                                            : Bn > 40
+                                              ? 1
+                                              : 0;
+                                    },
                                       pt = Array.from(
                                         {
                                           length: 24,
@@ -6436,14 +6436,14 @@ END OF REPORT`,
                                             "bg-black/[0.03] dark:bg-white/[0.03] border-black/[0.04] dark:border-white/[0.04]";
                                           return (
                                             Wt === 1 &&
-                                              (bn =
-                                                "bg-black/[0.12] dark:bg-white/[0.1] border-black/[0.08] dark:border-white/[0.08]"),
+                                            (bn =
+                                              "bg-black/[0.12] dark:bg-white/[0.1] border-black/[0.08] dark:border-white/[0.08]"),
                                             Wt === 2 &&
-                                              (bn =
-                                                "bg-black/[0.25] dark:bg-white/[0.25] border-black/[0.15] dark:border-white/[0.15] shadow-[0_2px_10px_rgba(0,0,0,0.05)]"),
+                                            (bn =
+                                              "bg-black/[0.25] dark:bg-white/[0.25] border-black/[0.15] dark:border-white/[0.15] shadow-[0_2px_10px_rgba(0,0,0,0.05)]"),
                                             Wt === 3 &&
-                                              (bn =
-                                                "bg-black/[0.45] dark:bg-white/[0.45] border-black/[0.25] dark:border-white/[0.25] shadow-[0_4px_15px_rgba(0,0,0,0.08)] dark:shadow-[0_4px_15px_rgba(255,255,255,0.06)]"),
+                                            (bn =
+                                              "bg-black/[0.45] dark:bg-white/[0.45] border-black/[0.25] dark:border-white/[0.25] shadow-[0_4px_15px_rgba(0,0,0,0.08)] dark:shadow-[0_4px_15px_rgba(255,255,255,0.06)]"),
                                             (
                                               <div key={tr}
                                                 className={`group relative w-8 h-6 rounded border transition-all duration-200 hover:scale-[1.25] hover:z-30 cursor-crosshair hover:shadow-lg hover:border-black/30 dark:hover:border-white/40 ${bn}`}
@@ -6457,13 +6457,13 @@ END OF REPORT`,
                                                             {Wt === 0
                                                               ? "No"
                                                               : Wt *
-                                                                (d ===
+                                                              (d ===
                                                                 "last_year"
-                                                                  ? 142
-                                                                  : d ===
-                                                                      "last_30_days"
-                                                                    ? 12
-                                                                    : 3)}
+                                                                ? 142
+                                                                : d ===
+                                                                  "last_30_days"
+                                                                  ? 12
+                                                                  : 3)}
                                                             {" messages"}
                                                           </span>
                                                         }
@@ -6998,7 +6998,7 @@ END OF REPORT`,
                                               }
                                               {
                                                 <button
-                                                  onClick={() => {}}
+                                                  onClick={() => { }}
                                                   className="p-2 bg-white dark:bg-zinc-800 border border-neutral-200 dark:border-zinc-700 rounded-lg hover:bg-neutral-50 dark:hover:bg-zinc-700 transition-colors"
                                                 >
                                                   {
@@ -7981,9 +7981,9 @@ END OF REPORT`,
                                                 <div className="text-lg font-mono tracking-[0.22em] text-zinc-100 font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
                                                   {(() => {
                                                     const F = Rs.replace(
-                                                        /\D/g,
-                                                        "",
-                                                      ),
+                                                      /\D/g,
+                                                      "",
+                                                    ),
                                                       ye =
                                                         F.substring(0, 4) ||
                                                         "••••",
@@ -8270,9 +8270,9 @@ END OF REPORT`,
                                                   strokeDashoffset={
                                                     251.2 -
                                                     251.2 *
-                                                      (Oo
-                                                        ? 14240 / fs
-                                                        : 14240 / 5e4)
+                                                    (Oo
+                                                      ? 14240 / fs
+                                                      : 14240 / 5e4)
                                                   }
                                                   strokeLinecap="round"
                                                   className="transition-all duration-1000 ease-out"
@@ -8711,8 +8711,8 @@ END OF REPORT`,
                                           ]
                                             .filter((F) => {
                                               const ye = F.ref
-                                                  .toLowerCase()
-                                                  .includes(hc.toLowerCase()),
+                                                .toLowerCase()
+                                                .includes(hc.toLowerCase()),
                                                 Be =
                                                   oa === "All" ||
                                                   F.status === oa;
@@ -8723,12 +8723,12 @@ END OF REPORT`,
                                               return (
                                                 F.status === "Paid"
                                                   ? (Be =
-                                                      "text-emerald-600 dark:text-neutral-900 dark:text-white bg-emerald-500/5 border border-emerald-500/20")
+                                                    "text-emerald-600 dark:text-neutral-900 dark:text-white bg-emerald-500/5 border border-emerald-500/20")
                                                   : F.status === "Processing"
                                                     ? (Be =
-                                                        "text-amber-600 dark:text-amber-400 bg-amber-500/5 border border-amber-500/20")
+                                                      "text-amber-600 dark:text-amber-400 bg-amber-500/5 border border-amber-500/20")
                                                     : (Be =
-                                                        "text-rose-600 dark:text-rose-400 bg-rose-500/5 border border-rose-500/20"),
+                                                      "text-rose-600 dark:text-rose-400 bg-rose-500/5 border border-rose-500/20"),
                                                 (
                                                   <tr key={F.ref || ye} className="hover:bg-neutral-100/40 dark:hover:bg-zinc-900/10 transition-colors">
                                                     {
@@ -9426,10 +9426,10 @@ END OF REPORT`,
                                                   {
                                                     <p className="text-xs text-zinc-600 dark:text-zinc-300 font-semibold mt-1">
                                                       {io ===
-                                                      "Telemetry Starter"
+                                                        "Telemetry Starter"
                                                         ? "$0"
                                                         : io ===
-                                                            "Quantum Sentinel"
+                                                          "Quantum Sentinel"
                                                           ? xi === "monthly"
                                                             ? "$399/mo"
                                                             : "$319/mo"
@@ -9460,8 +9460,8 @@ END OF REPORT`,
                                                           $(!0),
                                                           Lo(io),
                                                           io ===
-                                                            "Quantum Sentinel" &&
-                                                            (hf(1e6), yi(!0)));
+                                                          "Quantum Sentinel" &&
+                                                          (hf(1e6), yi(!0)));
                                                       }}
                                                       className="flex-1 py-2 bg-neutral-900 hover:bg-neutral-800 dark:bg-zinc-100 dark:hover:bg-white dark:text-neutral-900 text-white text-white text-xs font-semibold rounded-lg shadow-sm cursor-pointer"
                                                     >
@@ -9992,7 +9992,7 @@ END OF REPORT`,
                                                                   {F === "bug"
                                                                     ? "Bug Report"
                                                                     : F ===
-                                                                        "feature"
+                                                                      "feature"
                                                                       ? "Feature Request"
                                                                       : "General Feedback"}
                                                                 </button>
@@ -11398,7 +11398,7 @@ END OF REPORT`,
                                   })));
                                 try {
                                   Xe && Im();
-                                } catch {}
+                                } catch { }
                               }, 2e3));
                           }}
                           className="px-6 pb-6 space-y-6"

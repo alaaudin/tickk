@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Mail, Lock, Eye, EyeOff, ArrowRight, ArrowLeft, Building2, Check, ShieldCheck, Copy } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { useToast } from "./Toast";
+import { supabase } from "../supabaseClient";
 
 interface AuthPortalProps {
   initialMode: 'login' | 'signup';
@@ -43,7 +44,7 @@ export default function AuthPortal({ initialMode, onAuthSuccess, onNavigateHome,
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
@@ -53,19 +54,43 @@ export default function AuthPortal({ initialMode, onAuthSuccess, onNavigateHome,
         toast("Please meet all password requirements", "error");
         return;
       }
-      setTimeout(() => {
-        setIsLoading(false);
-        setMode('verify');
-        setOtpStatus('idle');
-        setCode(["", "", "", "", "", ""]);
-        toast("Verification code sent to your email", "success");
-      }, 800);
+      
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { name }
+        }
+      });
+      
+      setIsLoading(false);
+      
+      if (error) {
+        toast(error.message, "error");
+        return;
+      }
+
+      setMode('verify');
+      setOtpStatus('idle');
+      setCode(["", "", "", "", "", ""]);
+      toast("Verification code sent to your email", "success");
+      
     } else if (mode === 'login') {
-      setTimeout(() => {
-        setIsLoading(false);
-        const mockUser = { id: '700dfa91-2d97-431a-b96b-ff9faabdcd27', email, name: email.split('@')[0], role: 'admin' };
-        onAuthSuccess(mockUser, 'mock_jwt_token_456');
-      }, 800);
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+      
+      setIsLoading(false);
+      
+      if (error) {
+        toast(error.message, "error");
+        return;
+      }
+      
+      if (data.user && data.session) {
+        onAuthSuccess(data.user as any, data.session.access_token);
+      }
     }
   };
   
@@ -97,12 +122,16 @@ export default function AuthPortal({ initialMode, onAuthSuccess, onNavigateHome,
       const isComplete = code.every(c => c !== "");
       if (isComplete) {
         setOtpStatus('verifying');
-        // Simulate network request
-        setTimeout(() => {
-          const enteredCode = code.join("");
-          if (enteredCode === "123456") {
+        const enteredCode = code.join("");
+        
+        supabase.auth.verifyOtp({ email, token: enteredCode, type: 'signup' }).then(({ data, error }) => {
+          if (error) {
+            toast(error.message, "error");
+            setOtpStatus('idle');
+            setCode(["", "", "", "", "", ""]);
+            codeInputs.current[0]?.focus();
+          } else {
             setOtpStatus('success');
-            // Wait for success animation (boxes turning green, merging, and tick appearing)
             setTimeout(() => {
               setOtpStatus('redirecting');
               let count = 3;
@@ -111,20 +140,16 @@ export default function AuthPortal({ initialMode, onAuthSuccess, onNavigateHome,
                 count -= 1;
                 if (count <= 0) {
                   clearInterval(interval);
-                  const mockUser = { id: '700dfa91-2d97-431a-b96b-ff9faabdcd27', email, name, role: 'admin' };
-                  onAuthSuccess(mockUser, 'mock_jwt_token_789');
+                  if (data.user && data.session) {
+                    onAuthSuccess(data.user as any, data.session.access_token);
+                  }
                 } else {
                   setCountdown(count);
                 }
               }, 1000);
             }, 1100);
-          } else {
-            toast("Invalid verification code. Use 123456.", "error");
-            setOtpStatus('idle');
-            setCode(["", "", "", "", "", ""]);
-            codeInputs.current[0]?.focus();
           }
-        }, 800);
+        });
       }
     }
   }, [code, mode, otpStatus, email, name, onAuthSuccess, toast]);

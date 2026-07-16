@@ -6,6 +6,7 @@ import { ToastProvider } from "./components/Toast";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import TermsOfService from "./components/TermsOfService";
 import { User } from "./types";
+import { supabase } from "./supabaseClient";
 
 type ViewType = 'landing' | 'auth' | 'dashboard' | 'privacy' | 'terms';
 
@@ -22,26 +23,38 @@ export default function App() {
     }
   });
 
-  // Load existing session from storage
+  // Load existing session from Supabase
   useEffect(() => {
-    try {
-      const storedUser = localStorage.getItem("tickk_user");
-      const storedToken = localStorage.getItem("tickk_token");
-
-      if (storedUser && storedToken) {
-        try {
-          setUser(JSON.parse(storedUser));
-          setToken(storedToken);
-          setView('dashboard');
-        } catch (e) {
-          console.error("Failed to restore session", e);
-          localStorage.removeItem("tickk_user");
-          localStorage.removeItem("tickk_token");
-        }
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        setUser({ 
+          id: session.user.id, 
+          email: session.user.email || '', 
+          name: session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'User', 
+          role: 'user' 
+        });
+        setToken(session.access_token);
+        setView('dashboard');
       }
-    } catch (e) {
-      console.error("Failed to access localStorage during session load", e);
-    }
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) {
+        setUser({ 
+          id: session.user.id, 
+          email: session.user.email || '', 
+          name: session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'User', 
+          role: 'user' 
+        });
+        setToken(session.access_token);
+      } else {
+        setUser(null);
+        setToken(null);
+        setView(prev => prev === 'dashboard' ? 'landing' : prev);
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   // Sync theme to DOM
@@ -66,26 +79,12 @@ export default function App() {
   };
 
   const handleAuthSuccess = (authUser: User, authToken: string) => {
-    setUser(authUser);
-    setToken(authToken);
-    try {
-      localStorage.setItem("tickk_user", JSON.stringify(authUser));
-      localStorage.setItem("tickk_token", authToken);
-    } catch (e) {
-      console.error("Failed to access localStorage", e);
-    }
+    // Session is now handled by onAuthStateChange, but we can still manually trigger view change
     setView('dashboard');
   };
 
-  const handleLogout = () => {
-    setUser(null);
-    setToken(null);
-    try {
-      localStorage.removeItem("tickk_user");
-      localStorage.removeItem("tickk_token");
-    } catch (e) {
-      console.error("Failed to access localStorage", e);
-    }
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
     setView('landing');
   };
 
