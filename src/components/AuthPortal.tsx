@@ -55,18 +55,26 @@ export default function AuthPortal({ initialMode, onAuthSuccess, onNavigateHome,
         return;
       }
       
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: { name }
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || "https://tickk-backend.onrender.com";
+      try {
+        const response = await fetch(`${backendUrl}/api/auth/send-otp`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password, name })
+        });
+        
+        setIsLoading(false);
+        
+        if (!response.ok) {
+          const result = await response.json();
+          toast(result.error || result.message || "Failed to send OTP", "error");
+          return;
         }
-      });
-      
-      setIsLoading(false);
-      
-      if (error) {
-        toast(error.message, "error");
+      } catch (err: any) {
+        setIsLoading(false);
+        toast("Network error. Could not connect to backend.", "error");
         return;
       }
 
