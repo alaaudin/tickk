@@ -3,13 +3,14 @@ import LandingPage from "./components/LandingPage";
 import AuthPortal from "./components/AuthPortal";
 import Dashboard from "./components/Dashboard";
 import UpdatePassword from "./components/UpdatePassword";
+import PricingMatrix from "./components/PricingMatrix";
 import { ToastProvider } from "./components/Toast";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import TermsOfService from "./components/TermsOfService";
 import { User } from "./types";
 import { supabase } from "./supabaseClient";
 
-type ViewType = 'landing' | 'auth' | 'dashboard' | 'privacy' | 'terms' | 'update-password';
+type ViewType = 'landing' | 'auth' | 'dashboard' | 'privacy' | 'terms' | 'update-password' | 'pricing';
 
 export default function App() {
   const [view, setView] = useState<ViewType>('landing');
@@ -117,6 +118,7 @@ export default function App() {
             }}
             onQuickStart={handleQuickStart}
             onNavigateToLegal={(legalView) => setView(legalView)}
+            onNavigateToPricing={() => setView('pricing')}
             theme={theme}
             toggleTheme={toggleTheme}
           />
@@ -162,6 +164,16 @@ export default function App() {
             onSuccess={() => setView('dashboard')}
             theme={theme}
             toggleTheme={toggleTheme}
+          />
+        )}
+
+        {view === 'pricing' && (
+          <PricingMatrix
+            onNavigateToAuth={(mode) => {
+              setAuthMode(mode);
+              setView('auth');
+            }}
+            onBack={() => setView('landing')}
           />
         )}
       </div>

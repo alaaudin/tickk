@@ -137,13 +137,7 @@ export default function GlobalReachMap({ logs }: GlobalReachMapProps) {
   // Parse logs to geographic markers with minor IP-based scattering for overlapping nodes
   const markers = useMemo(() => {
     if (!logs || logs.length === 0) {
-      // Return highly polished active listener nodes as fallback so the map looks spectacular from start
-      return [
-        { id: "node-1", coord: [67.0011, 24.8607] as [number, number], region: "Karachi, Pakistan", action: "Tickk Dispatch Node", ip: "110.34.20.1", device: "Internal Route", timestamp: new Date().toISOString() },
-        { id: "node-2", coord: [-74.0060, 40.7128] as [number, number], region: "New York, USA", action: "Tickk Ingress Node", ip: "192.84.12.5", device: "Internal Route", timestamp: new Date().toISOString() },
-        { id: "node-3", coord: [-0.1278, 51.5074] as [number, number], region: "London, UK", action: "Tickk Dispatch Node", ip: "188.10.22.4", device: "Internal Route", timestamp: new Date().toISOString() },
-        { id: "node-4", coord: [139.6917, 35.6762] as [number, number], region: "Tokyo, Japan", action: "Tickk Processing Node", ip: "210.4.155.8", device: "Internal Route", timestamp: new Date().toISOString() },
-      ];
+      return [];
     }
     
     return logs.map((log) => {

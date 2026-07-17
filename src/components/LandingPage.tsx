@@ -147,11 +147,12 @@ interface LandingPageProps {
   onNavigateToAuth: (mode: 'login' | 'signup') => void;
   onQuickStart: (email: string) => void;
   onNavigateToLegal?: (view: 'privacy' | 'terms') => void;
+  onNavigateToPricing?: () => void;
   theme: 'light' | 'dark';
   toggleTheme: () => void;
 }
 
-export default function LandingPage({ onNavigateToAuth, onQuickStart, onNavigateToLegal, theme, toggleTheme }: LandingPageProps) {
+export default function LandingPage({ onNavigateToAuth, onQuickStart, onNavigateToLegal, onNavigateToPricing, theme, toggleTheme }: LandingPageProps) {
   // Simulator State
   const [subject, setSubject] = useState("Confidential Partnership Proposal");
   const [recipient, setRecipient] = useState("board@apple.com");
@@ -329,7 +330,7 @@ export default function LandingPage({ onNavigateToAuth, onQuickStart, onNavigate
           <nav className="hidden md:flex items-center gap-6 text-sm text-neutral-600 dark:text-neutral-400 font-medium">
             <a href="#features" className="hover:text-neutral-900 dark:hover:text-white transition-colors">Features</a>
             <a href="#simulator" className="hover:text-neutral-900 dark:hover:text-white transition-colors">Sandbox</a>
-            <a href="#pricing" className="hover:text-neutral-900 dark:hover:text-white transition-colors">Pricing</a>
+            <button onClick={() => onNavigateToPricing?.()} className="hover:text-neutral-900 dark:hover:text-white transition-colors">Pricing</button>
           </nav>
         </div>
         <div className="flex items-center gap-4">
@@ -1325,155 +1326,7 @@ export default function LandingPage({ onNavigateToAuth, onQuickStart, onNavigate
         </div>
       </section>
 
-      {/* Pricing Tiers Section */}
-      <section id="pricing" className="py-24 bg-transparent border-y border-neutral-200/40 dark:border-neutral-800/60 px-6 lg:px-16 transition-colors duration-300">
-        <div className="max-w-7xl mx-auto w-full">
-          <div className="text-center max-w-2xl mx-auto mb-20">
-            <span className="text-[10px] font-mono font-bold tracking-widest text-neutral-400 dark:text-neutral-500 uppercase inline-flex items-center justify-center gap-2">PRICING TIERS</span>
-            <h2 className="font-sans font-light tracking-tighter text-neutral-900 dark:text-white subpixel-antialiased text-3xl sm:text-4xl mt-3 mb-4">
-              <span className="bg-gradient-to-r from-neutral-950 via-zinc-700 to-zinc-500 dark:from-white dark:via-zinc-200 dark:to-zinc-500 bg-clip-text text-transparent">
-                Simple pricing for elite organizations
-              </span>
-            </h2>
-            <p className="text-neutral-500 dark:text-neutral-400 text-sm">
-              Start free today and upgrade as your corporate volume expands. Clear, predictable billing.
-            </p>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto items-stretch">
-            {/* Hobby Tier */}
-            <div className="bg-white/70 dark:bg-[#121215]/70 backdrop-blur-md border border-neutral-200/60 dark:border-neutral-800/80 rounded-xl p-8 flex flex-col justify-between hover:border-neutral-300 dark:hover:border-neutral-700 transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
-              <div>
-                                <div className="relative inline-flex items-center justify-center p-[1px] overflow-hidden rounded-md font-mono text-[10px] font-bold uppercase tracking-widest text-zinc-800 dark:text-zinc-200">
-                  <div className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#e5e5e5_0%,#a1a1aa_50%,#e5e5e5_100%)] dark:bg-[conic-gradient(from_90deg_at_50%_50%,#18181b_0%,#71717a_50%,#18181b_100%)] opacity-80" />
-                  <span className="relative z-10 flex items-center px-2.5 py-1 rounded-md bg-white/60 dark:bg-zinc-950/60 backdrop-blur-xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.5)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]">
-                    <span className="absolute inset-0 rounded-md animate-[shimmer-bg_2.5s_ease-in-out_infinite] bg-[linear-gradient(110deg,transparent,35%,rgba(161,161,170,0.4),50%,transparent,75%,rgba(161,161,170,0.4),100%)] dark:bg-[linear-gradient(110deg,transparent,35%,rgba(113,113,122,0.3),50%,transparent,75%,rgba(113,113,122,0.3),100%)] mix-blend-overlay pointer-events-none" style={{ backgroundSize: '300% 100%' }} />
-                    <span className="relative z-10">STARTER</span>
-                  </span>
-                </div>
-                <div className="flex items-baseline mt-4 mb-6">
-                  <span className="text-2xl font-sans font-light tracking-tighter text-neutral-400 dark:text-neutral-500 mr-0.5">$</span>
-                  <span className="text-5xl font-sans font-light tracking-tighter text-neutral-900 dark:text-white subpixel-antialiased">0</span>
-                  <span className="text-neutral-500 dark:text-neutral-400 text-xs font-sans ml-2">/ forever</span>
-                </div>
-                <p className="text-neutral-600 dark:text-neutral-400 text-xs leading-relaxed mb-6">Perfect for individual freelancers looking to test basic pixel tracking.</p>
-                
-                <ul className="space-y-4 text-xs text-neutral-600 dark:text-neutral-400 mb-8 border-t border-neutral-100 dark:border-neutral-800 pt-6">
-                  <li className="flex items-start gap-3">
-                    <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5 stroke-[3px]" />
-                    <span>Up to 15 active tracked emails</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5 stroke-[3px]" />
-                    <span>Standard transparent tracking pixel</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5 stroke-[3px]" />
-                    <span>24-hour activity log duration</span>
-                  </li>
-                </ul>
-              </div>
-              <button 
-                onClick={() => onNavigateToAuth('signup')}
-                className="w-full py-2.5 bg-neutral-100 dark:bg-neutral-800/60 hover:bg-neutral-200 dark:hover:bg-neutral-800 text-neutral-800 dark:text-white text-xs font-semibold rounded-lg transition-colors cursor-pointer border border-neutral-200 dark:border-neutral-700/50"
-            >
-              Get Started Free
-            </button>
-          </div>
-
-          {/* Growth Tier (Most Popular) */}
-          <div className="bg-white/80 dark:bg-[#16161b]/85 backdrop-blur-md border-2 border-neutral-900 dark:border-neutral-400 rounded-xl p-8 flex flex-col justify-between relative shadow-[0_10px_35px_rgba(0,0,0,0.06)] dark:shadow-[0_10px_35px_rgba(255,255,255,0.03)] hover:scale-[1.01] transition-all duration-300">
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-0.5 bg-neutral-900 dark:bg-neutral-200 text-white dark:text-black text-[9px] font-mono font-bold tracking-widest uppercase rounded-full border border-neutral-900 dark:border-neutral-300 shadow-sm">
-              Most Popular
-            </div>
-            <div>
-                              <div className="relative inline-flex items-center justify-center p-[1px] overflow-hidden rounded-md font-mono text-[10px] font-bold uppercase tracking-widest text-emerald-800 dark:text-emerald-200">
-                  <div className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#d1fae5_0%,#10b981_50%,#d1fae5_100%)] dark:bg-[conic-gradient(from_90deg_at_50%_50%,#064e3b_0%,#059669_50%,#064e3b_100%)] opacity-80" />
-                  <span className="relative z-10 flex items-center px-2.5 py-1 rounded-md bg-white/60 dark:bg-zinc-950/60 backdrop-blur-xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.5)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]">
-                    <span className="absolute inset-0 rounded-md animate-[shimmer-bg_2.5s_ease-in-out_infinite] bg-[linear-gradient(110deg,transparent,35%,rgba(16,185,129,0.3),50%,transparent,75%,rgba(16,185,129,0.3),100%)] dark:bg-[linear-gradient(110deg,transparent,35%,rgba(5,150,105,0.3),50%,transparent,75%,rgba(5,150,105,0.3),100%)] mix-blend-overlay pointer-events-none" style={{ backgroundSize: '300% 100%' }} />
-                    <span className="relative z-10">GROWTH</span>
-                  </span>
-                </div>
-                <div className="flex items-baseline mt-4 mb-6">
-                  <span className="text-2xl font-sans font-light tracking-tighter text-neutral-500 dark:text-neutral-400 mr-0.5">$</span>
-                  <span className="text-5xl font-sans font-light tracking-tighter text-neutral-900 dark:text-white subpixel-antialiased">29</span>
-                  <span className="text-neutral-500 dark:text-neutral-400 text-xs font-sans ml-2">/ month</span>
-                </div>
-                <p className="text-neutral-600 dark:text-neutral-400 text-xs leading-relaxed mb-6">For expanding teams requiring real-time updates and permanent stats storage.</p>
-                
-                <ul className="space-y-4 text-xs text-neutral-600 dark:text-neutral-400 mb-8 border-t border-neutral-200 dark:border-neutral-800 pt-6">
-                  <li className="flex items-start gap-3">
-                    <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5 stroke-[3px]" />
-                    <span className="font-semibold text-neutral-900 dark:text-zinc-200">Unlimited active mail trackers</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5 stroke-[3px]" />
-                    <span>Full Geolocation and Device analytics</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5 stroke-[3px]" />
-                    <span>Trackable click redirects (URL integration)</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5 stroke-[3px]" />
-                    <span>Instant API access and Webhook triggers</span>
-                  </li>
-                </ul>
-              </div>
-              <button 
-                onClick={() => onNavigateToAuth('signup')}
-                className="w-full py-2.5 bg-neutral-900 dark:bg-neutral-850 hover:bg-black dark:hover:bg-neutral-750 text-white hover:opacity-95 text-xs font-semibold rounded-lg transition-colors cursor-pointer border border-neutral-950 dark:border-neutral-750 shadow-sm"
-              >
-                Join Growth Tier
-              </button>
-            </div>
-
-            {/* Enterprise Tier */}
-            <div className="bg-white/70 dark:bg-[#121215]/70 backdrop-blur-md border border-neutral-200/60 dark:border-neutral-800/80 rounded-xl p-8 flex flex-col justify-between hover:border-neutral-500/30 transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.02)] group">
-              <div>
-                                <div className="relative inline-flex items-center justify-center p-[1px] overflow-hidden rounded-md font-mono text-[10px] font-bold uppercase tracking-widest text-amber-800 dark:text-amber-200">
-                  <div className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#fef3c7_0%,#f59e0b_50%,#fef3c7_100%)] dark:bg-[conic-gradient(from_90deg_at_50%_50%,#451a03_0%,#d97706_50%,#451a03_100%)] opacity-80" />
-                  <span className="relative z-10 flex items-center px-2.5 py-1 rounded-md bg-white/60 dark:bg-zinc-950/60 backdrop-blur-xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.5)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]">
-                    <span className="absolute inset-0 rounded-md animate-[shimmer-bg_2.5s_ease-in-out_infinite] bg-[linear-gradient(110deg,transparent,35%,rgba(245,158,11,0.3),50%,transparent,75%,rgba(245,158,11,0.3),100%)] dark:bg-[linear-gradient(110deg,transparent,35%,rgba(217,119,6,0.3),50%,transparent,75%,rgba(217,119,6,0.3),100%)] mix-blend-overlay pointer-events-none" style={{ backgroundSize: '300% 100%' }} />
-                    <span className="relative z-10">ENTERPRISE</span>
-                  </span>
-                </div>
-                <div className="flex items-baseline mt-4 mb-6">
-                  <span className="text-2xl font-sans font-light tracking-tighter text-neutral-400 dark:text-neutral-500 mr-0.5">$</span>
-                  <span className="text-5xl font-sans font-light tracking-tighter text-neutral-900 dark:text-white subpixel-antialiased">149</span>
-                  <span className="text-neutral-500 dark:text-neutral-400 text-xs font-sans ml-2">/ month</span>
-                </div>
-                <p className="text-neutral-600 dark:text-neutral-400 text-xs leading-relaxed mb-6">For major security teams, law firms, and multi-tenant enterprise platforms.</p>
-                
-                <ul className="space-y-4 text-xs text-neutral-600 dark:text-neutral-400 mb-8 border-t border-neutral-100 dark:border-neutral-800 pt-6">
-                  <li className="flex items-start gap-3">
-                    <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5 stroke-[3px]" />
-                    <span>Custom domain pixel masking</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5 stroke-[3px]" />
-                    <span>Priority SSO and SAML authentication</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5 stroke-[3px]" />
-                    <span>Whitelabel client portals & dedicated servers</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5 stroke-[3px]" />
-                    <span>Dedicated SLAs & custom webhooks setup</span>
-                  </li>
-                </ul>
-              </div>
-              <button 
-                onClick={() => onNavigateToAuth('signup')}
-                className="w-full py-2.5 bg-neutral-100 dark:bg-neutral-800/60 hover:bg-neutral-900 hover:text-white dark:hover:bg-neutral-100 dark:hover:text-black text-neutral-800 dark:text-white text-xs font-semibold rounded-lg transition-all cursor-pointer border border-neutral-200 dark:border-neutral-700/50 shadow-sm"
-              >
-                Contact Sales Office
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* EXTREME PREMIUM FOOTER */}
       <footer className="relative mt-20 pt-20 pb-10 overflow-hidden border-t border-neutral-200/50 dark:border-zinc-800/80">

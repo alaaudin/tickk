@@ -1261,14 +1261,23 @@ END OF REPORT`,
         }
       );
     }, [c, e, ee == null ? void 0 : ee.id]));
-  const Fs = async () => {
-    (be(!0), await gr(), Xe && Im(), setTimeout(() => be(!1), 500));
+  const claimFeedbackReward = async (id) => {
+    try {
+      await fetch("/api/profile/claim-feedback-popup", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${e}` }
+      });
+      X(prev => prev.map(f => f.id === id ? { ...f, reward_claimed: true } : f));
+    } catch (err) {}
   },
+    Fs = async () => {
+      (be(!0), await gr(), Xe && Im(), setTimeout(() => be(!1), 500));
+    },
     uo = async (F) => {
       if ((F.preventDefault(), !(!Te.trim() || !it.trim()))) {
         wt(!0);
         try {
-          const ye = await fetch("/api/tickets", {
+          const ye = await fetch("/api/feedback", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -1282,7 +1291,7 @@ END OF REPORT`,
           });
           if (ye.ok) {
             const Be = await ye.json();
-            (X((pt) => [Be.ticket, ...pt]),
+            (X((pt) => [Be.feedback || Be.ticket, ...pt]),
               ge(!1),
               ve(""),
               oe(""),
@@ -7571,7 +7580,7 @@ END OF REPORT`,
                                 <AccountSettingsPanel toast={s} />
                               )}
                               {ti === "subscription" && (
-                                <SubscriptionSettingsPanel toast={s} />
+                                <SubscriptionSettingsPanel toast={s} profile={profile} />
                               )}
                               {ti === "team" && (
                                 <TeamMembersSettingsPanel toast={s} />
@@ -9690,13 +9699,16 @@ END OF REPORT`,
                                         <div className="shrink-0">
                                           {
                                             <span
-                                              className={`px-2.5 py-1 rounded-md text-[10px] font-semibold uppercase tracking-wider flex items-center gap-1.5 ${F.status === "submitted" ? "bg-amber-500/10 text-amber-600 dark:text-amber-500 border border-amber-500/20" : F.status === "reviewed" ? "bg-blue-500/10 text-blue-600 dark:text-blue-500 border border-blue-500/20" : "bg-green-500/10 text-green-600 dark:text-green-500 border border-green-500/20"}`}
+                                              className={`px-2.5 py-1 rounded-md text-[10px] font-semibold uppercase tracking-wider flex items-center gap-1.5 ${F.status === "submitted" ? "bg-amber-500/10 text-amber-600 dark:text-amber-500 border border-amber-500/20" : F.status === "reviewed" ? "bg-blue-500/10 text-blue-600 dark:text-blue-500 border border-blue-500/20" : F.status === "approved" ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-500 border border-emerald-500/20 animate-pulse" : "bg-green-500/10 text-green-600 dark:text-green-500 border border-green-500/20"}`}
                                             >
                                               {F.status === "submitted" && (
                                                 <C5 className="w-3 h-3" />
                                               )}
                                               {F.status === "reviewed" && (
                                                 <Fd className="w-3 h-3" />
+                                              )}
+                                              {F.status === "approved" && (
+                                                <L5 className="w-3 h-3" />
                                               )}
                                               {F.status === "rewarded" && (
                                                 <GD className="w-3 h-3" />
@@ -11561,6 +11573,36 @@ END OF REPORT`,
           )}
         </Hi>
       }
+      {/* Feedback Reward Modal */}
+      <Hi>
+        {V.find(f => f.status === 'approved' && f.reward_claimed === false) && (
+          <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+            <Lt.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="bg-white dark:bg-zinc-950 border border-neutral-200 dark:border-zinc-800 rounded-2xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative overflow-hidden"
+            >
+              <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-emerald-400 to-teal-500" />
+              <div className="flex flex-col items-center text-center">
+                <div className="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center mb-6">
+                  <GD className="w-8 h-8 text-emerald-500" />
+                </div>
+                <h3 className="text-2xl font-bold text-neutral-900 dark:text-white mb-3">Feedback Rewarded!</h3>
+                <p className="text-neutral-600 dark:text-zinc-400 mb-8 leading-relaxed">
+                  Aapka feedback humare liye bohot madadgaar raha! Aapke account mein 99 free tracking credits inject kar diye gaye hain. Keep optimization active!
+                </p>
+                <button
+                  onClick={() => claimFeedbackReward(V.find(f => f.status === 'approved' && f.reward_claimed === false).id)}
+                  className="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-xl transition-all shadow-lg shadow-emerald-500/25 cursor-pointer"
+                >
+                  Got it
+                </button>
+              </div>
+            </Lt.div>
+          </div>
+        )}
+      </Hi>
     </div>
   );
 }
