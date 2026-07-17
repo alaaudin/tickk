@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 
-import { Check, Mail, Key, Zap, ArrowRight, Activity } from 'lucide-react';
+import { Check, Mail, Key, Zap, ArrowRight, Activity, X } from 'lucide-react';
 
 interface QuickStartGuideProps {
   onNavigate: (tab: string) => void;
   onGenerateKey: () => void;
   onFireTest: (email: string) => void;
+  onClose?: () => void;
 }
 
-export function QuickStartGuide({ onNavigate, onGenerateKey, onFireTest }: QuickStartGuideProps) {
+export function QuickStartGuide({ onNavigate, onGenerateKey, onFireTest, onClose }: QuickStartGuideProps) {
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [testEmail, setTestEmail] = useState('');
   const [isFiring, setIsFiring] = useState(false);
@@ -42,6 +43,15 @@ export function QuickStartGuide({ onNavigate, onGenerateKey, onFireTest }: Quick
       <div className="absolute inset-0 bg-gradient-to-br from-black/5 dark:from-white/20 via-neutral-500/10 to-black/5 dark:to-white/10 opacity-50 pointer-events-none" />
       
       <div className="relative bg-white/10 dark:bg-[#111111]/60 backdrop-blur-3xl rounded-[22px] border border-neutral-200/50 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)] p-8 lg:p-10 flex flex-col md:flex-row gap-8 lg:gap-12">
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 z-10 w-7 h-7 flex items-center justify-center rounded-lg bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 border border-black/5 dark:border-white/10 text-zinc-500 hover:text-neutral-900 dark:hover:text-white transition-all duration-200"
+            title="Dismiss setup guide"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        )}
         <div className="flex-1 space-y-6">
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/5 dark:bg-white/10 border border-black/10 dark:border-white/20 text-neutral-900 dark:text-white text-[10px] font-mono tracking-widest uppercase font-semibold mb-2">

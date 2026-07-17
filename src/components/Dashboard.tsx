@@ -448,6 +448,7 @@ END OF REPORT`,
         s("Report Downloaded Successfully", "success"));
     },
     [g, w] = O.useState([]),
+    [showBanner, setShowBanner] = O.useState(!0),
     [E, S] = O.useState([]);
   O.useEffect(() => {
     if (E.length > 0) {
@@ -2705,7 +2706,7 @@ END OF REPORT`,
                     >
                       {c === "overview" && (
                         <div className="space-y-8 animate-fadeIn">
-                          {g.length === 0 && (
+                          {g.length === 0 && showBanner && (
                             <QuickStartGuide
                               onNavigate={(tab) => {
                                 if (tab === 'mail') {
@@ -2751,7 +2752,18 @@ END OF REPORT`,
                                   });
                                 }, 800);
                               }}
+                              onClose={() => setShowBanner(false)}
                             />
+                          )}
+                          {g.length === 0 && !showBanner && (
+                            <button
+                              onClick={() => setShowBanner(true)}
+                              className="group inline-flex items-center gap-2 px-4 py-2 mb-2 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 border border-black/5 dark:border-white/10 hover:border-black/15 dark:hover:border-white/20 text-zinc-500 hover:text-neutral-900 dark:hover:text-white transition-all duration-300 text-xs font-mono tracking-wider uppercase font-semibold"
+                              title="Show setup guide"
+                            >
+                              <Info className="w-3.5 h-3.5" />
+                              Show Setup Guide
+                            </button>
                           )}
                           {
                             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
