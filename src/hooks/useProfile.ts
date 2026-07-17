@@ -26,7 +26,7 @@ export function useProfile(userId: string | undefined) {
     try {
       const { data, error: sbError } = await supabase
         .from('profiles')
-        .select('*')
+        .select('id, plan_tier, credits, updated_at')
         .eq('id', userId)
         .single();
 
@@ -39,7 +39,14 @@ export function useProfile(userId: string | undefined) {
         throw sbError;
       }
       
-      setProfile(data as UserProfile);
+      const mappedProfile: UserProfile = {
+        id: data.id,
+        plan: data.plan_tier || 'free',
+        credits: data.credits || 0,
+        updated_at: data.updated_at
+      };
+      
+      setProfile(mappedProfile);
     } catch (err: any) {
       console.error('Error fetching profile:', err);
       setError(err.message || 'Failed to load profile');
