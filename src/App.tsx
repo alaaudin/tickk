@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import LandingPage from "./components/LandingPage";
 import AuthPortal from "./components/AuthPortal";
 import Dashboard from "./components/Dashboard";
+import UpdatePassword from "./components/UpdatePassword";
 import { ToastProvider } from "./components/Toast";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import TermsOfService from "./components/TermsOfService";
 import { User } from "./types";
 import { supabase } from "./supabaseClient";
 
-type ViewType = 'landing' | 'auth' | 'dashboard' | 'privacy' | 'terms';
+type ViewType = 'landing' | 'auth' | 'dashboard' | 'privacy' | 'terms' | 'update-password';
 
 export default function App() {
   const [view, setView] = useState<ViewType>('landing');
@@ -38,7 +39,11 @@ export default function App() {
       }
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'PASSWORD_RECOVERY') {
+        setView('update-password');
+        return;
+      }
       if (session) {
         setUser({ 
           id: session.user.id, 
@@ -149,6 +154,14 @@ export default function App() {
           <TermsOfService 
             onBack={() => setView('landing')}
             theme={theme}
+          />
+        )}
+
+        {view === 'update-password' && (
+          <UpdatePassword
+            onSuccess={() => setView('dashboard')}
+            theme={theme}
+            toggleTheme={toggleTheme}
           />
         )}
       </div>

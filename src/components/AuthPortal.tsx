@@ -14,7 +14,7 @@ interface AuthPortalProps {
 }
 
 export default function AuthPortal({ initialMode, onAuthSuccess, onNavigateHome, theme, toggleTheme }: AuthPortalProps) {
-  const [mode, setMode] = useState<'login' | 'signup' | 'forgot' | 'verify'>(initialMode);
+  const [mode, setMode] = useState<'login' | 'signup' | 'forgot' | 'verify' | 'reset-sent'>(initialMode);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -110,19 +110,27 @@ export default function AuthPortal({ initialMode, onAuthSuccess, onNavigateHome,
         onAuthSuccess(data.user as any, data.session.access_token);
       }
     } else if (mode === 'forgot') {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: window.location.origin,
-      });
-      
-      setIsLoading(false);
-      
-      if (error) {
-        toast(error.message, "error");
-        return;
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || "https://tickk-backend.onrender.com";
+      try {
+        const response = await fetch(`${backendUrl}/api/auth/reset-password`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        
+        setIsLoading(false);
+        
+        if (!response.ok) {
+          const result = await response.json();
+          toast(result.error || "Failed to send reset link", "error");
+          return;
+        }
+        
+        setMode('reset-sent');
+      } catch (err: any) {
+        setIsLoading(false);
+        toast("Network error. Could not connect to backend.", "error");
       }
-      
-      toast("Password reset link sent to your email", "success");
-      setMode('login');
     }
   };
   const handleResendLink = async () => {
@@ -171,6 +179,7 @@ export default function AuthPortal({ initialMode, onAuthSuccess, onNavigateHome,
   const getDirection = () => {
     if (mode === 'login') return -1;
     if (mode === 'verify') return 1;
+    if (mode === 'reset-sent') return 1;
     return 1;
   };
 
@@ -258,6 +267,37 @@ export default function AuthPortal({ initialMode, onAuthSuccess, onNavigateHome,
                     </div>
                   </motion.div>
                 </AnimatePresence>
+              </div>
+            ) : mode === 'reset-sent' ? (
+              // PASSWORD RESET CONFIRMATION — mirrors verify screen
+              <div className="bg-white/40 dark:bg-[#121215]/40 backdrop-blur-3xl border border-white/40 dark:border-white/10 rounded-[32px] p-8 sm:p-10 shadow-[0_32px_64px_rgba(0,0,0,0.05),inset_0_0_0_1px_rgba(255,255,255,0.2)] dark:shadow-[0_32px_64px_rgba(0,0,0,0.4),inset_0_0_0_1px_rgba(255,255,255,0.05)] relative overflow-hidden">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1/2 bg-gradient-to-b from-white/40 dark:from-white/5 to-transparent blur-2xl pointer-events-none" />
+                
+                <div className="text-center mb-10 relative z-10">
+                  <div className="w-16 h-16 bg-white/50 dark:bg-white/5 backdrop-blur-xl rounded-full flex items-center justify-center mx-auto mb-6 shadow-[inset_0_2px_4px_rgba(255,255,255,0.5)] dark:shadow-[inset_0_2px_4px_rgba(255,255,255,0.1)] border border-white/40 dark:border-white/10">
+                    <Mail className="w-8 h-8 text-neutral-900 dark:text-white" strokeWidth={1.5} />
+                  </div>
+                  <h2 className="text-2xl font-light font-display tracking-tight text-neutral-900 dark:text-white mb-4">
+                    Check your email
+                  </h2>
+                  <p className="text-sm text-neutral-500 dark:text-zinc-400 font-sans mb-8 leading-relaxed">
+                    We have sent a password reset link to <strong className="text-neutral-900 dark:text-white font-medium">{email}</strong>.<br/>
+                    Click it to reset your password.
+                  </p>
+                  
+                  <div className="flex flex-col gap-4 w-full">
+                    <button 
+                      type="button" 
+                      onClick={() => setMode('login')}
+                      className="w-full bg-neutral-900 hover:bg-black disabled:bg-neutral-800 dark:bg-white dark:hover:bg-neutral-200 dark:disabled:bg-neutral-400 text-white dark:text-black py-3 rounded-xl text-[13px] font-medium transition-all shadow-[0_1px_2px_rgba(0,0,0,0.1)] active:scale-[0.99]"
+                    >
+                      Back to login
+                    </button>
+                    <button type="button" onClick={() => setMode('forgot')} className="text-xs text-neutral-500 dark:text-zinc-500 hover:text-neutral-900 dark:hover:text-white transition-colors">
+                      Use a different email
+                    </button>
+                  </div>
+                </div>
               </div>
             ) : mode === 'forgot' ? (
               <div className="bg-white/40 dark:bg-[#121215]/60 backdrop-blur-2xl border border-neutral-200/50 dark:border-zinc-800/60 rounded-3xl p-8 sm:p-10 shadow-[0_8px_32px_rgba(0,0,0,0.04)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)] w-full">
