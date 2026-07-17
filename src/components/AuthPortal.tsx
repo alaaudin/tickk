@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Mail, Lock, Eye, EyeOff, ArrowRight, ArrowLeft, Building2, Check, ShieldCheck, Copy, CheckCircle2 } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, ArrowRight, ArrowLeft, Building2, Check, ShieldCheck, Copy, CheckCircle2, User } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { useToast } from "./Toast";
 import { supabase } from "../supabaseClient";
@@ -14,7 +14,7 @@ interface AuthPortalProps {
 }
 
 export default function AuthPortal({ initialMode, onAuthSuccess, onNavigateHome, theme, toggleTheme }: AuthPortalProps) {
-  const [mode, setMode] = useState<'login' | 'signup' | 'forgot' | 'verify' | 'reset-sent'>(initialMode);
+  const [mode, setMode] = useState<'login' | 'signup' | 'forgot' | 'verify' | 'reset-sent' | 'user-exists'>(initialMode);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -79,7 +79,14 @@ export default function AuthPortal({ initialMode, onAuthSuccess, onNavigateHome,
         
         if (!response.ok) {
           const result = await response.json();
-          toast(result.error || result.message || "Failed to send OTP", "error");
+          const errorMsg = result.error || result.message || "Failed to send OTP";
+          
+          if (errorMsg.toLowerCase().includes("already registered") || errorMsg.toLowerCase().includes("already exists")) {
+            setMode('user-exists');
+            return;
+          }
+          
+          toast(errorMsg, "error");
           return;
         }
       } catch (err: any) {
@@ -180,6 +187,7 @@ export default function AuthPortal({ initialMode, onAuthSuccess, onNavigateHome,
     if (mode === 'login') return -1;
     if (mode === 'verify') return 1;
     if (mode === 'reset-sent') return 1;
+    if (mode === 'user-exists') return 1;
     return 1;
   };
 
@@ -267,6 +275,37 @@ export default function AuthPortal({ initialMode, onAuthSuccess, onNavigateHome,
                     </div>
                   </motion.div>
                 </AnimatePresence>
+              </div>
+            ) : mode === 'user-exists' ? (
+              // DUPLICATE ACCOUNT CONFIRMATION
+              <div className="bg-white/40 dark:bg-[#121215]/40 backdrop-blur-3xl border border-white/40 dark:border-white/10 rounded-[32px] p-8 sm:p-10 shadow-[0_32px_64px_rgba(0,0,0,0.05),inset_0_0_0_1px_rgba(255,255,255,0.2)] dark:shadow-[0_32px_64px_rgba(0,0,0,0.4),inset_0_0_0_1px_rgba(255,255,255,0.05)] relative overflow-hidden">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1/2 bg-gradient-to-b from-white/40 dark:from-white/5 to-transparent blur-2xl pointer-events-none" />
+                
+                <div className="text-center mb-10 relative z-10">
+                  <div className="w-16 h-16 bg-white/50 dark:bg-white/5 backdrop-blur-xl rounded-full flex items-center justify-center mx-auto mb-6 shadow-[inset_0_2px_4px_rgba(255,255,255,0.5)] dark:shadow-[inset_0_2px_4px_rgba(255,255,255,0.1)] border border-white/40 dark:border-white/10">
+                    <User className="w-8 h-8 text-neutral-900 dark:text-white" strokeWidth={1.5} />
+                  </div>
+                  <h2 className="text-2xl font-light font-display tracking-tight text-neutral-900 dark:text-white mb-4">
+                    Account Exists
+                  </h2>
+                  <p className="text-sm text-neutral-500 dark:text-zinc-400 font-sans mb-8 leading-relaxed">
+                    You already have an account with us.<br/>
+                    Please log in instead.
+                  </p>
+                  
+                  <div className="flex flex-col gap-4 w-full">
+                    <button 
+                      type="button" 
+                      onClick={() => setMode('login')}
+                      className="w-full bg-neutral-900 hover:bg-black disabled:bg-neutral-800 dark:bg-white dark:hover:bg-neutral-200 dark:disabled:bg-neutral-400 text-white dark:text-black py-3 rounded-xl text-[13px] font-medium transition-all shadow-[0_1px_2px_rgba(0,0,0,0.1)] active:scale-[0.99]"
+                    >
+                      Go to Login
+                    </button>
+                    <button type="button" onClick={() => setMode('forgot')} className="text-xs text-neutral-500 dark:text-zinc-500 hover:text-neutral-900 dark:hover:text-white transition-colors">
+                      Forgot your password?
+                    </button>
+                  </div>
+                </div>
               </div>
             ) : mode === 'reset-sent' ? (
               // PASSWORD RESET CONFIRMATION — mirrors verify screen
