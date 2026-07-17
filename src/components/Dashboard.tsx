@@ -160,7 +160,7 @@ interface DashboardProps {
   toggleTheme: () => void;
 }
 
-const RENDER_BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://tickk-backend.onrender.com";
+const API_BASE = import.meta.env.VITE_API_URL || "https://tickk-backend.onrender.com";
 
 const mapBackendTracker = (raw: any): any => ({
   id: raw.id,
@@ -1118,7 +1118,7 @@ END OF REPORT`,
     try {
       // Fetch from local auth endpoint (optional, may fail in dev)
       try {
-        const F = await fetch("/api/auth/me", {
+        const F = await fetch(`${API_BASE}/api/auth/me`, {
           headers: {
             Authorization: `Bearer ${e}`,
           },
@@ -1131,7 +1131,7 @@ END OF REPORT`,
         // Local auth not available, skip
       }
       // Fetch trackers from Render backend
-      const renderRes = await fetch(`${RENDER_BACKEND_URL}/api/stats/${uid}`);
+      const renderRes = await fetch(`${API_BASE}/api/stats/${uid}`);
       if (renderRes.ok) {
         const rawData = await renderRes.json();
         const mapped = (Array.isArray(rawData) ? rawData : []).map(mapBackendTracker);
@@ -1139,7 +1139,7 @@ END OF REPORT`,
         // Prefetch logs for all trackers on mount
         const logsPromises = mapped.map(async (t) => {
           try {
-            const res = await fetch(`${RENDER_BACKEND_URL}/api/logs/${t.id}`);
+            const res = await fetch(`${API_BASE}/api/logs/${t.id}`);
             if (res.ok) {
               const data = await res.json();
               if (data && data.length > 0) {
@@ -1175,7 +1175,7 @@ END OF REPORT`,
         w(finalMapped);
       } else {
         // Fallback: try local /api/trackers
-        const ye = await fetch("/api/trackers", {
+        const ye = await fetch(`${API_BASE}/api/trackers`, {
           headers: {
             Authorization: `Bearer ${e}`,
           },
@@ -1189,7 +1189,7 @@ END OF REPORT`,
       console.error("Telemetry connection error:", F);
       // Last resort fallback to local
       try {
-        const ye = await fetch("/api/trackers", {
+        const ye = await fetch(`${API_BASE}/api/trackers`, {
           headers: { Authorization: `Bearer ${e}` },
         });
         if (ye.ok) { const Be = await ye.json(); w(Be); }
@@ -1202,7 +1202,7 @@ END OF REPORT`,
     gr();
     const uid = supabaseUserId;
     const F = setInterval(() => {
-      fetch(`${RENDER_BACKEND_URL}/api/stats/${uid}`)
+      fetch(`${API_BASE}/api/stats/${uid}`)
         .then((res) => (res.ok ? res.json() : null))
         .then((rawData) => {
           if (rawData) {
@@ -1215,7 +1215,7 @@ END OF REPORT`,
         })
         .catch(() => {
           // Fallback to local if render is down
-          fetch("/api/trackers", {
+          fetch(`${API_BASE}/api/trackers`, {
             headers: { Authorization: `Bearer ${e}` },
           })
             .then((ye) => (ye.ok ? ye.json() : null))
@@ -1228,7 +1228,7 @@ END OF REPORT`,
   const $s = async (F = !1) => {
     F || nt(!0);
     try {
-      const ye = await fetch("/api/tickets", {
+      const ye = await fetch(`${API_BASE}/api/tickets`, {
         headers: {
           Authorization: `Bearer ${e}`,
         },
@@ -1263,7 +1263,7 @@ END OF REPORT`,
     }, [c, e, ee == null ? void 0 : ee.id]));
   const claimFeedbackReward = async (id) => {
     try {
-      await fetch("/api/profile/claim-feedback-popup", {
+      await fetch(`${API_BASE}/api/profile/claim-feedback-popup`, {
         method: "POST",
         headers: { Authorization: `Bearer ${e}` }
       });
@@ -1277,7 +1277,7 @@ END OF REPORT`,
       if ((F.preventDefault(), !(!Te.trim() || !it.trim()))) {
         wt(!0);
         try {
-          const ye = await fetch("/api/feedback", {
+          const ye = await fetch(`${API_BASE}/api/feedback`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -1500,7 +1500,7 @@ END OF REPORT`,
       }));
       if (!rt[F]) {
         const trackerId = F.split('-open-')[0];
-        fetch(`${RENDER_BACKEND_URL}/api/logs/${trackerId}`)
+        fetch(`${API_BASE}/api/logs/${trackerId}`)
           .then((res) => (res.ok ? res.json() : []))
           .then((data) => {
             console.log("Raw logs from backend:", data);

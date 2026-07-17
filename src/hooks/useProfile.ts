@@ -31,6 +31,11 @@ export function useProfile(userId: string | undefined) {
         .single();
 
       if (sbError) {
+        if (sbError.code === 'PGRST116' || sbError.code === '406') {
+          // Graceful fallback for missing profile (e.g. unauthenticated or new user)
+          setProfile({ id: userId, plan: 'free', credits: 0 });
+          return;
+        }
         throw sbError;
       }
       

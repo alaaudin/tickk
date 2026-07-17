@@ -32,7 +32,8 @@ export default function ManualEmailDispatch({ profile }: { profile?: any }) {
   const generateQuickReply = async (item: any) => {
     try {
       setGeneratingReply(item.id);
-      const response = await fetch('/api/suggest-reply', {
+      const backendUrl = import.meta.env.VITE_API_URL || "https://tickk-backend.onrender.com";
+      const response = await fetch(`${backendUrl}/api/suggest-reply`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
