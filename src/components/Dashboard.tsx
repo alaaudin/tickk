@@ -563,16 +563,7 @@ END OF REPORT`,
     [ms, yf] = O.useState({}),
     [Dl, bc] = O.useState(!1),
     [Qc, hs] = O.useState(null),
-    [El, kl] = O.useState([
-      {
-        id: "key_1",
-        name: "DEMO",
-        token: "re_G6UoaCdn...",
-        permission: "Full access",
-        lastUsed: "No activity",
-        createdAt: "just now",
-      },
-    ]),
+    [El, kl] = O.useState([]),
     [sd, Bs] = O.useState(!1),
     [bs, gc] = O.useState(!1),
     [zo, Ro] = O.useState(""),
@@ -772,6 +763,27 @@ END OF REPORT`,
         }
       } catch (_authErr) {
         // Local auth not available, skip
+      }
+
+      try {
+        const keysRes = await fetch(`${API_BASE}/api/keys`, {
+          headers: { Authorization: `Bearer ${e}` }
+        });
+        if (keysRes.ok) {
+          const keysData = await keysRes.json();
+          if (keysData.success && Array.isArray(keysData.keys)) {
+            kl(keysData.keys.map((k: any) => ({
+              id: k.id,
+              name: k.name || "API Key",
+              token: k.token,
+              permission: "Full access",
+              lastUsed: k.last_used ? new Date(k.last_used).toLocaleDateString() : "No activity",
+              createdAt: new Date(k.created_at).toLocaleDateString()
+            })));
+          }
+        }
+      } catch (keysErr) {
+        console.error("Failed to fetch keys", keysErr);
       }
       const renderRes = await fetch(`${API_BASE}/api/stats/${uid}`, {
         headers: { Authorization: `Bearer ${e}` }
@@ -7191,8 +7203,21 @@ END OF REPORT`,
                                   }
                                   {
                                     <tbody className="divide-y divide-neutral-100 dark:divide-zinc-800">
-                                      {er.map((F) => (
-                                        <tr key={F.id || F.name} className="hover:bg-neutral-50/50 dark:hover:bg-zinc-900/20 transition-colors group relative z-0 hover:z-50">
+                                      {El.length === 0 ? (
+                                        <tr>
+                                          <td colSpan={5} className="px-6 py-12 text-center text-neutral-500 dark:text-zinc-500 font-medium">
+                                            No API keys generated yet. Click "Create API key" to get started.
+                                          </td>
+                                        </tr>
+                                      ) : er.length === 0 ? (
+                                        <tr>
+                                          <td colSpan={5} className="px-6 py-12 text-center text-neutral-500 dark:text-zinc-500 font-medium">
+                                            No keys found matching your search.
+                                          </td>
+                                        </tr>
+                                      ) : (
+                                        er.map((F) => (
+                                          <tr key={F.id || F.name} className="hover:bg-neutral-50/50 dark:hover:bg-zinc-900/20 transition-colors group relative z-0 hover:z-50">
                                           {
                                             <td className="px-6 py-4 flex items-center gap-3">
                                               {
@@ -7286,7 +7311,8 @@ END OF REPORT`,
                                             </td>
                                           }
                                         </tr>
-                                      ))}
+                                      ))
+                                      )}
                                     </tbody>
                                   }
                                 </table>
