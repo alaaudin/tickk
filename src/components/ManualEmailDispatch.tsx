@@ -104,12 +104,7 @@ export default function ManualEmailDispatch({ profile }: { profile?: any }) {
   };
 
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
-  const [trackingData, setTrackingData] = useState([
-    { id: 1, email: "sarah.jenkins@gmail.com", subject: "Q3 Board Deck - Final", sent: "2h ago", opens: 3, clicks: 1, provider: "gmail", device: "desktop", isManual: true, status: "sent", logs: [{ id: "l1", type: "open", timestamp: "2026-07-14T11:00:00Z", ip: "192.168.1.1", geo: "New York, US", device: "Chrome / macOS" }, { id: "l2", type: "click", timestamp: "2026-07-14T11:05:00Z", ip: "192.168.1.1", geo: "New York, US", device: "Chrome / macOS" }, { id: "l3", type: "open", timestamp: "2026-07-14T11:30:00Z", ip: "10.0.0.1", geo: "London, UK", device: "Safari / iOS" }] },
-    { id: 2, email: "michael.chen@outlook.com", subject: "Vendor Agreement Revised", sent: "5h ago", opens: 1, clicks: 0, provider: "outlook", device: "mobile", isManual: true, status: "sent", logs: [{ id: "l4", type: "open", timestamp: "2026-07-14T09:00:00Z", ip: "172.16.0.5", geo: "Tokyo, JP", device: "Edge / Windows" }] },
-    { id: 3, email: "alex.williams@yahoo.com", subject: "Following up on yesterday", sent: "1d ago", opens: 0, clicks: 0, provider: "yahoo", device: "unknown", isManual: true, status: "sent", logs: [] },
-    { id: 4, email: "j.doe@icloud.com", subject: "Your private invitation", sent: "2d ago", opens: 5, clicks: 2, provider: "apple", device: "mobile", isManual: true, status: "sent", logs: [{ id: "l5", type: "open", timestamp: "2026-07-13T10:00:00Z", ip: "8.8.8.8", geo: "San Francisco, US", device: "Mail / iOS" }] }
-  ]);
+  const [trackingData, setTrackingData] = useState<any[]>([]);
 
   const renderProviderIcon = (provider: string) => {
     switch(provider) {
@@ -349,7 +344,7 @@ export default function ManualEmailDispatch({ profile }: { profile?: any }) {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-neutral-200 dark:divide-zinc-900/40">
-                    {trackingData.map((item) => (
+                    {trackingData.length > 0 ? trackingData.map((item) => (
                       <React.Fragment key={item.id}>
                         <tr className="hover:bg-neutral-50/50 dark:hover:bg-zinc-850/30 transition-colors border-b border-neutral-200/50 dark:border-zinc-800/40 group">
                           <td className="px-4 py-4 whitespace-nowrap">
@@ -657,18 +652,32 @@ export default function ManualEmailDispatch({ profile }: { profile?: any }) {
                           </tr>
                         )}
                       </React.Fragment>
-                    ))}
+                    )) : (
+                      <tr>
+                        <td colSpan={6} className="px-6 py-16">
+                          <div className="flex flex-col items-center justify-center text-center">
+                            <div className="w-16 h-16 rounded-full bg-neutral-100 dark:bg-zinc-900 border border-neutral-200 dark:border-zinc-800 flex items-center justify-center mb-4">
+                              <Send className="w-6 h-6 text-neutral-400 dark:text-zinc-500" />
+                            </div>
+                            <h3 className="text-sm font-semibold text-neutral-900 dark:text-white mb-1">No dispatches recorded yet</h3>
+                            <p className="text-xs text-neutral-500 dark:text-zinc-400 max-w-sm mx-auto">
+                              Telemetry pipeline standing by. Your dispatch logs and tracking events will appear here once you initiate an outbound sequence.
+                            </p>
+                            <button 
+                              onClick={() => setViewMode("compose")}
+                              className="mt-6 px-4 py-2 bg-neutral-900 dark:bg-white text-white dark:text-black rounded-lg text-xs font-medium transition-colors hover:bg-neutral-800 dark:hover:bg-neutral-200"
+                            >
+                              Compose Dispatch
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>
             </div>
 
-            
-            {trackingData.length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-sm text-neutral-500 dark:text-zinc-500 font-mono">No manual dispatches tracked yet.</p>
-              </div>
-            )}
           </motion.div>
         )}
       </AnimatePresence>

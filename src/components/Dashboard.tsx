@@ -1551,7 +1551,33 @@ END OF REPORT`,
       );
     }),
     Al = () => {
-      return [];
+      const allLogs = g.flatMap((t: any) => t.logs || []);
+      const daysArr = [...Array(7)].map((_, i) => {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        return {
+          name: d.toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+          date: d.toDateString(),
+          dispatches: 0,
+          opens: 0,
+          clicks: 0
+        };
+      }).reverse();
+      
+      g.forEach((t: any) => {
+        const dDate = new Date(t.createdAt || Date.now()).toDateString();
+        const day = daysArr.find(d => d.date === dDate);
+        if (day) day.dispatches++;
+      });
+      allLogs.forEach((l: any) => {
+        const lDate = new Date(l.timestamp).toDateString();
+        const day = daysArr.find(d => d.date === lDate);
+        if (day) {
+          if (l.type === "open") day.opens++;
+          if (l.type === "click") day.clicks++;
+        }
+      });
+      return daysArr;
     },
     xs = Tr.useMemo(() => Al(), [m, Ni, Xr]),
     Ba =
@@ -2010,12 +2036,37 @@ END OF REPORT`,
                   }
                   {
                     <div className="flex items-center gap-3">
-                      <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-500/10 backdrop-blur-xl border border-indigo-500/20 shadow-[0_0_15px_rgba(99,102,241,0.1)] transition-all">
-                        <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.8)] animate-pulse"></span>
-                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
-                          PREMIUM • CREDITS: {profile?.credits ?? 0}
-                        </span>
-                      </div>
+                      {(() => {
+                        const currentCredits = profile?.credits ?? 0;
+                        if (currentCredits > 150) {
+                          return (
+                            <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 backdrop-blur-xl border border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.1)] transition-all animate-pulse">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse"></span>
+                              <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                                PREMIUM • CREDITS: {currentCredits}
+                              </span>
+                            </div>
+                          );
+                        } else if (currentCredits > 20) {
+                          return (
+                            <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 backdrop-blur-xl border border-amber-500/20 shadow-[0_0_15px_rgba(245,158,11,0.1)] transition-all">
+                              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]"></span>
+                              <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">
+                                WARNING • CREDITS: {currentCredits}
+                              </span>
+                            </div>
+                          );
+                        } else {
+                          return (
+                            <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-500/10 backdrop-blur-xl border border-red-500/20 shadow-[0_0_15px_rgba(239,68,68,0.1)] transition-all">
+                              <span className="w-1.5 h-1.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)] animate-bounce"></span>
+                              <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-red-600 dark:text-red-400">
+                                ALERT • CREDITS: {currentCredits}
+                              </span>
+                            </div>
+                          );
+                        }
+                      })()}
                       <T8 theme={r} toggleTheme={o} />
                     </div>
                   }
@@ -5778,7 +5829,17 @@ END OF REPORT`,
                                   {(() => {
                                     const hours = ['12a', '2a', '4a', '6a', '8a', '10a', '12p', '2p', '4p', '6p', '8p', '10p'];
                                     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-                                    const heatmapData = [];
+                                    const heatmapData: any[] = [];
+                                    const allLogs = g.flatMap((t: any) => t.logs || []);
+                                    allLogs.forEach((l: any) => {
+                                      const d = new Date(l.timestamp);
+                                      const dayIdx = d.getDay() === 0 ? 6 : d.getDay() - 1;
+                                      const hour = d.getHours();
+                                      const hourGroup = Math.floor(hour / 2);
+                                      const existing = heatmapData.find(h => h.day === days[dayIdx] && h.hour === hours[hourGroup]);
+                                      if (existing) existing.value += 10;
+                                      else heatmapData.push({ day: days[dayIdx], hour: hours[hourGroup], value: 10 });
+                                    });
                                     return (
                                       <ResponsiveContainer width="100%" height="100%">
                                         {heatmapData.length === 0 ? (
