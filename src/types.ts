@@ -36,6 +36,7 @@ export interface Tracker {
   logs: OpenLog[];
   isManual?: boolean;
   htmlBody?: string; // Optional HTML body content of the email
+  isLocked?: boolean; // Flag to indicate if tracker is locked due to zero credits
 }
 
 export interface TrackerStats {

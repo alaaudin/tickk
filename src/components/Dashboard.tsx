@@ -5909,15 +5909,13 @@ END OF REPORT`,
                                   }
                                   {(() => {
                                     const logCounts = Array(7).fill(0).map(() => Array(24).fill(0));
-                                    (Array.isArray(activityDistData) ? activityDistData : []).forEach((item: any) => {
-                                      if (!item) return;
-                                      const { day, hour, count } = item;
-                                      if (typeof day === 'number' && typeof hour === 'number') {
-                                        const dayIdx = day === 0 ? 6 : day - 1;
-                                        if (logCounts[dayIdx] && logCounts[dayIdx][hour] !== undefined) {
-                                          logCounts[dayIdx][hour] += (count || 0);
-                                        }
-                                      }
+                                    (E && Array.isArray(E) ? E : []).forEach((item: any) => {
+                                      if (!item || (!item.createdAt && !item.created_at)) return;
+                                      const date = new Date(item.createdAt || item.created_at);
+                                      const day = date.getDay();
+                                      const hour = date.getHours();
+                                      const dayIdx = day === 0 ? 6 : day - 1;
+                                      logCounts[dayIdx][hour]++;
                                     });
                                     let maxCount = 0;
                                     logCounts.forEach(r => r.forEach(c => { if(c > maxCount) maxCount = c; }));
@@ -6016,13 +6014,13 @@ END OF REPORT`,
                                               </span>
                                             </div>
                                             <span className="font-mono text-neutral-800 dark:text-zinc-300 font-semibold text-[13px]">
-                                              {"56% (9)"}
+                                              {E && Array.isArray(E) && E.length > 0 ? "0% (0)" : "0% (0)"}
                                             </span>
                                           </div>
                                           <div className="w-full bg-black/5 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
                                             <div
                                               className="bg-emerald-500 dark:bg-emerald-400 h-full rounded-full"
-                                              style={{ width: "56%" }}
+                                              style={{ width: "0%" }}
                                             />
                                           </div>
                                         </div>
@@ -6041,13 +6039,13 @@ END OF REPORT`,
                                               </span>
                                             </div>
                                             <span className="font-mono text-neutral-800 dark:text-zinc-300 font-semibold text-[13px]">
-                                              {"31% (5)"}
+                                              {E && Array.isArray(E) && E.length > 0 ? "0% (0)" : "0% (0)"}
                                             </span>
                                           </div>
                                           <div className="w-full bg-black/5 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
                                             <div
                                               className="bg-amber-500 dark:bg-amber-400 h-full rounded-full"
-                                              style={{ width: "31%" }}
+                                              style={{ width: "0%" }}
                                             />
                                           </div>
                                         </div>

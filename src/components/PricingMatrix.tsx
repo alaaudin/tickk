@@ -8,63 +8,15 @@ interface PricingMatrixProps {
 
 export default function PricingMatrix({ onNavigateToAuth, onBack }: PricingMatrixProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [corrupted, setCorrupted] = useState(false);
+  const [randomMasks, setRandomMasks] = useState<string[]>(['******', '******', '******']);
 
   useEffect(() => {
-    // F12 Inspect Tamper Shield Layer - Counter-Measure Structure
-    // Using MutationObserver to detect removal or alteration of the overlay shield
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'childList') {
-          // If a node was removed
-          mutation.removedNodes.forEach((node) => {
-            if ((node as HTMLElement).id === 'tamper-shield') {
-              setCorrupted(true);
-            }
-          });
-        }
-        if (mutation.type === 'attributes') {
-          // If the style or class attribute of the shield was modified
-          const target = mutation.target as HTMLElement;
-          if (target.id === 'tamper-shield') {
-            const currentDisplay = window.getComputedStyle(target).display;
-            const currentVisibility = window.getComputedStyle(target).visibility;
-            const currentOpacity = window.getComputedStyle(target).opacity;
-            if (currentDisplay === 'none' || currentVisibility === 'hidden' || currentOpacity === '0') {
-              setCorrupted(true);
-            }
-          }
-        }
-      });
-    });
-
-    if (containerRef.current) {
-      observer.observe(containerRef.current, {
-        attributes: true,
-        childList: true,
-        subtree: true,
-        attributeFilter: ['style', 'class']
-      });
-    }
-
-    return () => observer.disconnect();
+    setRandomMasks([
+      Math.random().toString(36).substring(2, 8).toUpperCase(),
+      Math.random().toString(36).substring(2, 8).toUpperCase(),
+      Math.random().toString(36).substring(2, 8).toUpperCase()
+    ]);
   }, []);
-
-  if (corrupted) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center p-8">
-        <div className="text-red-500 font-mono text-center max-w-lg break-words">
-          <p className="text-xl mb-4 font-bold animate-pulse">[SYSTEM_LOCK_CORRUPTED_BLOB_TOKEN_0x99A3F1]</p>
-          <p className="text-sm">Unauthorized Inspector Tampering Detected. Access Protocol Denied.</p>
-          <div className="mt-8 grid grid-cols-8 gap-1 text-[8px] opacity-50">
-            {Array.from({ length: 64 }).map((_, i) => (
-              <span key={i}>{Math.random().toString(36).substring(2, 8).toUpperCase()}</span>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-white dark:bg-[#0c0c0e] py-24 pt-32 px-6 lg:px-16 transition-colors duration-300">
@@ -77,28 +29,10 @@ export default function PricingMatrix({ onNavigateToAuth, onBack }: PricingMatri
 
       <div ref={containerRef} className="max-w-7xl mx-auto w-full relative">
         
-        {/* Anti-Tamper Shield Layer */}
+        {/* Standard Blur Overlay */}
         <div 
-          id="tamper-shield"
-          className="absolute inset-0 z-50 bg-[#0a0a0c] flex items-center justify-center overflow-hidden rounded-[inherit] pointer-events-none select-none"
-        >
-          <div className="absolute font-black text-[120px] sm:text-[180px] tracking-tighter text-white/5 whitespace-nowrap rotate-[-12deg] pointer-events-none">
-            PREMIUM
-          </div>
-          
-          <div className="relative z-10 flex flex-col items-center justify-center">
-            <div className="mb-6 transform rotate-6 bg-red-600/90 border-2 border-red-500 shadow-[0_0_20px_rgba(220,38,38,0.4)] px-4 py-1">
-              <span className="text-white font-black tracking-widest text-2xl uppercase mix-blend-screen">DISABLED</span>
-            </div>
-            
-            <h3 className="text-xl font-bold font-sans tracking-widest text-white mb-2 uppercase">
-              BETA SUPPORTER PROGRAM ACTIVE
-            </h3>
-            <p className="text-xs text-zinc-500 font-mono tracking-[0.3em] uppercase">
-              ENTERPRISE PLANS COMING SOON
-            </p>
-          </div>
-        </div>
+          className="absolute inset-0 z-50 backdrop-blur-md bg-black/40 flex items-center justify-center overflow-hidden rounded-[inherit] pointer-events-none select-none"
+        />
 
         {/* Pricing Tiers Section */}
         <div className="text-center max-w-2xl mx-auto mb-20">
@@ -125,7 +59,7 @@ export default function PricingMatrix({ onNavigateToAuth, onBack }: PricingMatri
               </div>
               <div className="flex items-baseline mt-4 mb-6">
                 <span className="text-2xl font-sans font-light tracking-tighter text-neutral-400 dark:text-neutral-500 mr-0.5">$</span>
-                <span className="text-5xl font-sans font-light tracking-tighter text-neutral-900 dark:text-white subpixel-antialiased">[0x00]</span>
+                <span className="text-5xl font-sans font-light tracking-tighter text-neutral-900 dark:text-white subpixel-antialiased">[{randomMasks[0]}]</span>
                 <span className="text-neutral-500 dark:text-neutral-400 text-xs font-sans ml-2">/ [UNIT_NULL]</span>
               </div>
               <p className="text-neutral-600 dark:text-neutral-400 text-xs leading-relaxed mb-6">[REDACTED_PIPELINE_DESC_0xAF] [BLOB_TOKEN] [CIPHER_FAIL_0x3C]</p>
@@ -167,7 +101,7 @@ export default function PricingMatrix({ onNavigateToAuth, onBack }: PricingMatri
               </div>
               <div className="flex items-baseline mt-4 mb-6">
                 <span className="text-2xl font-sans font-light tracking-tighter text-neutral-500 dark:text-neutral-400 mr-0.5">$</span>
-                <span className="text-5xl font-sans font-light tracking-tighter text-neutral-900 dark:text-white subpixel-antialiased">[0x1D]</span>
+                <span className="text-5xl font-sans font-light tracking-tighter text-neutral-900 dark:text-white subpixel-antialiased">[{randomMasks[1]}]</span>
                 <span className="text-neutral-500 dark:text-neutral-400 text-xs font-sans ml-2">/ [UNIT_TOKEN]</span>
               </div>
               <p className="text-neutral-600 dark:text-neutral-400 text-xs leading-relaxed mb-6">[CORRUPTED_DESC_0xC2] [BLOB_ERR] [CIPHER_NULL_0x9F]</p>
@@ -210,7 +144,7 @@ export default function PricingMatrix({ onNavigateToAuth, onBack }: PricingMatri
               </div>
               <div className="flex items-baseline mt-4 mb-6">
                 <span className="text-2xl font-sans font-light tracking-tighter text-neutral-400 dark:text-neutral-500 mr-0.5">$</span>
-                <span className="text-5xl font-sans font-light tracking-tighter text-neutral-900 dark:text-white subpixel-antialiased">[0x95]</span>
+                <span className="text-5xl font-sans font-light tracking-tighter text-neutral-900 dark:text-white subpixel-antialiased">[{randomMasks[2]}]</span>
                 <span className="text-neutral-500 dark:text-neutral-400 text-xs font-sans ml-2">/ [UNIT_TOKEN]</span>
               </div>
               <p className="text-neutral-600 dark:text-neutral-400 text-xs leading-relaxed mb-6">[SCRAMBLED_ENT_0xFE] [CORRUPTED_PLATFORM_BLOB] [CIPHER_0x4D]</p>

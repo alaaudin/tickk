@@ -374,58 +374,8 @@ app.get("/api/links", (req, res) => {
   res.json(userTrackers);
 });
 
-// 4. Create New Tracker
-app.post("/api/links", (req, res) => {
-  const userId = getUserIdFromRequest(req);
-  if (!userId) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
-
-  const { subject, recipient, linkUrl, webhookUrl, htmlBody } = req.body;
-  if (!subject || !recipient) {
-    return res.status(400).json({ error: "Subject and Recipient are required" });
-  }
-
-  const newTracker: Tracker = {
-    id: `tr_${Math.random().toString(36).substring(2, 8)}`,
-    userId,
-    subject,
-    recipient,
-    createdAt: new Date().toISOString(),
-    openCount: 0,
-    clickCount: 0,
-    status: "unopened",
-    lastOpened: null,
-    linkUrl: linkUrl || undefined,
-    webhookUrl: webhookUrl || undefined,
-    testSent: false,
-    logs: [],
-    htmlBody: htmlBody || undefined,
-  };
-
-  db.trackers.unshift(newTracker);
-  saveDatabase();
-
-  res.status(201).json(newTracker);
-});
-
-// Alias trackers endpoints for frontend compatibility
-app.get("/api/trackers", (req, res) => {
-  const userId = getUserIdFromRequest(req);
-  if (!userId) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
-
-  const existingTrackers = db.trackers.filter(t => t.userId === userId);
-  if (existingTrackers.length === 0) {
-    seedUserTrackers(userId);
-  }
-
-  const userTrackers = db.trackers.filter(t => t.userId === userId);
-  res.json(userTrackers);
-});
-
-app.post("/api/trackers", (req, res) => {
+// 4. Create New Tracker (Unified Handler with Atomic Credit check & Soft Lock)
+const createTrackerHandler = (req: express.Request, res: express.Response) => {
   const userId = getUserIdFromRequest(req);
   if (!userId) {
     return res.status(401).json({ error: "Unauthorized" });
@@ -434,6 +384,20 @@ app.post("/api/trackers", (req, res) => {
   const { subject, recipient, linkUrl, webhookUrl, htmlBody } = req.body;
   if (!subject) {
     return res.status(400).json({ error: "Subject is required" });
+  }
+
+  const user = db.users.find(u => u.id === userId);
+  if (!user) {
+    return res.status(404).json({ error: "User not found" });
+  }
+
+  let isLocked = false;
+  
+  // Deduct Credit (If > 0) or Soft-Lock (If <= 0)
+  if (user.credits > 0) {
+    user.credits -= 1;
+  } else {
+    isLocked = true;
   }
 
   const newTracker: Tracker = {
@@ -451,13 +415,19 @@ app.post("/api/trackers", (req, res) => {
     testSent: false,
     logs: [],
     htmlBody: htmlBody || undefined,
+    isLocked
   };
 
   db.trackers.unshift(newTracker);
   saveDatabase();
 
   res.status(201).json(newTracker);
-});
+};
+
+app.post("/api/links", createTrackerHandler);
+app.post("/api/trackers", createTrackerHandler);
+app.post("/api/track/dispatch", createTrackerHandler);
+app.post("/api/mail/send", createTrackerHandler);
 
 app.delete("/api/trackers/:id", (req, res) => {
   const userId = getUserIdFromRequest(req);
@@ -662,35 +632,40 @@ const pixelRouter = (req: express.Request, res: express.Response) => {
   const tracker = db.trackers.find(t => t.id === trackerId);
 
   if (tracker) {
-    const ip = (req.headers["x-forwarded-for"] as string) || req.socket.remoteAddress || "127.0.0.1";
-    const userAgent = req.headers["user-agent"] || "Unknown";
-    const { browser, device } = parseUserAgent(userAgent);
-    const geo = getRandomGeo();
+    if (tracker.isLocked) {
+      // Security Rule: Tracking functionally disabled
+      // Skip log creation entirely
+    } else {
+      const ip = (req.headers["x-forwarded-for"] as string) || req.socket.remoteAddress || "127.0.0.1";
+      const userAgent = req.headers["user-agent"] || "Unknown";
+      const { browser, device } = parseUserAgent(userAgent);
+      const geo = getRandomGeo();
 
-    // Create a new authentic open log
-    const openLog: OpenLog = {
-      id: `log_live_${Math.random().toString(36).substring(2, 9)}`,
-      timestamp: new Date().toISOString(),
-      ip,
-      userAgent,
-      country: geo.country,
-      city: geo.city,
-      device,
-      browser,
-      isSimulated: false,
-      type: "open",
-    };
+      // Create a new authentic open log
+      const openLog: OpenLog = {
+        id: `log_live_${Math.random().toString(36).substring(2, 9)}`,
+        timestamp: new Date().toISOString(),
+        ip,
+        userAgent,
+        country: geo.country,
+        city: geo.city,
+        device,
+        browser,
+        isSimulated: false,
+        type: "open",
+      };
 
-    tracker.logs.unshift(openLog);
-    tracker.openCount += 1;
-    tracker.status = "opened";
-    tracker.lastOpened = openLog.timestamp;
+      tracker.logs.unshift(openLog);
+      tracker.openCount += 1;
+      tracker.status = "opened";
+      tracker.lastOpened = openLog.timestamp;
 
-    saveDatabase();
+      saveDatabase();
 
-    // Trigger webhook if enabled
-    if (tracker.webhookUrl) {
-      console.log(`[Webhook] Dispatching live payload to ${tracker.webhookUrl}`);
+      // Trigger webhook if enabled
+      if (tracker.webhookUrl) {
+        console.log(`[Webhook] Dispatching live payload to ${tracker.webhookUrl}`);
+      }
     }
   }
 
@@ -719,6 +694,11 @@ const clickRouter = (req: express.Request, res: express.Response) => {
   const targetUrl = (req.query.url as string) || (tracker && tracker.linkUrl);
 
   if (tracker && targetUrl) {
+    if (tracker.isLocked) {
+      // Security Rule: Return link redirect but do NOT log click stats
+      return res.redirect(targetUrl);
+    }
+
     const ip = (req.headers["x-forwarded-for"] as string) || req.socket.remoteAddress || "127.0.0.1";
     const userAgent = req.headers["user-agent"] || "Unknown";
     const { browser, device } = parseUserAgent(userAgent);
