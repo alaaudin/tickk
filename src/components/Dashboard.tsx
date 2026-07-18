@@ -486,6 +486,7 @@ END OF REPORT`,
     [le, be] = O.useState(!1),
     [ue, $] = O.useState(!0),
     [V, X] = O.useState([]),
+    [activityDistData, setActivityDistData] = O.useState([]),
     [ee, de] = O.useState(null),
     [xe, ge] = O.useState(!1),
     [Te, ve] = O.useState(""),
@@ -738,7 +739,20 @@ END OF REPORT`,
   const gr = async () => {
     const uid = supabaseUserId;
     try {
-      // Fetch from local auth endpoint (optional, may fail in dev)
+      try {
+        const adRes = await fetch(`${API_BASE}/api/performance/activity-distribution`, {
+          headers: { Authorization: `Bearer ${e}` }
+        });
+        if (adRes.ok) {
+          const adData = await adRes.json();
+          if (adData.success && adData.distribution) {
+            setActivityDistData(adData.distribution);
+          }
+        }
+      } catch (err) {
+        console.error("Activity distribution fetch error", err);
+      }
+
       try {
         const F = await fetch(`${API_BASE}/api/auth/me`, {
           headers: {
@@ -5874,13 +5888,11 @@ END OF REPORT`,
                                     </div>
                                   }
                                   {(() => {
-                                    const allLogs = (g || []).flatMap((t: any) => t.logs || []);
                                     const logCounts = Array(7).fill(0).map(() => Array(24).fill(0));
-                                    allLogs.forEach((l: any) => {
-                                      const date = new Date(l.timestamp);
-                                      const dayIdx = date.getDay() === 0 ? 6 : date.getDay() - 1;
-                                      const hour = date.getHours();
-                                      logCounts[dayIdx][hour]++;
+                                    (activityDistData || []).forEach((item: any) => {
+                                      const { day, hour, count } = item;
+                                      const dayIdx = day === 0 ? 6 : day - 1;
+                                      logCounts[dayIdx][hour] += count;
                                     });
                                     let maxCount = 0;
                                     logCounts.forEach(r => r.forEach(c => { if(c > maxCount) maxCount = c; }));
