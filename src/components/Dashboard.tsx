@@ -2072,34 +2072,16 @@ END OF REPORT`,
                     <div className="flex items-center gap-3">
                       {(() => {
                         const currentCredits = ba !== 501 ? ba : (profile?.credits ?? 0);
-                        if (currentCredits > 150) {
-                          return (
-                            <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 backdrop-blur-xl border border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.1)] transition-all animate-pulse">
-                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse"></span>
-                              <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
-                                PREMIUM • CREDITS: {currentCredits}
-                              </span>
-                            </div>
-                          );
-                        } else if (currentCredits > 50) {
-                          return (
-                            <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 backdrop-blur-xl border border-blue-500/20 shadow-[0_0_15px_rgba(59,130,246,0.1)] transition-all">
-                              <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"></span>
-                              <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
-                                STANDARD • CREDITS: {currentCredits}
-                              </span>
-                            </div>
-                          );
-                        } else {
-                          return (
-                            <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-500/10 backdrop-blur-xl border border-red-500/20 shadow-[0_0_15px_rgba(239,68,68,0.1)] transition-all">
-                              <span className="w-1.5 h-1.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)] animate-bounce"></span>
-                              <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-red-600 dark:text-red-400">
-                                ALERT • CREDITS: {currentCredits}
-                              </span>
-                            </div>
-                          );
-                        }
+                        const isZero = currentCredits === 0;
+                        return (
+                          <div className={`hidden lg:flex items-center px-3 py-1 rounded-md text-xs font-medium backdrop-blur-md transition-all ${
+                            isZero 
+                              ? "bg-black/[0.03] dark:bg-white/[0.03] border border-red-500/20 dark:border-red-400/20 text-red-500/90 dark:text-red-400/90" 
+                              : "bg-black/[0.03] dark:bg-white/[0.03] border border-black/[0.08] dark:border-white/[0.08] text-neutral-700 dark:text-neutral-300"
+                          }`}>
+                            Credits: {currentCredits}
+                          </div>
+                        );
                       })()}
                       <T8 theme={r} toggleTheme={o} />
                     </div>
