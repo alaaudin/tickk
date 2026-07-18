@@ -1551,6 +1551,7 @@ END OF REPORT`,
       );
     }),
     Al = () => {
+      if (!g || g.length === 0) return [];
       const allLogs = g.flatMap((t: any) => t.logs || []);
       const daysArr = [...Array(7)].map((_, i) => {
         const d = new Date();
@@ -5592,15 +5593,14 @@ END OF REPORT`,
                               }
                               {
                                 <div className="w-full h-80">
-                                  {
+                                  {xs.length === 0 ? (
+                                    <div className="w-full h-full flex flex-col items-center justify-center bg-white/50 dark:bg-zinc-950/20 backdrop-blur-md rounded-xl border border-neutral-200 border-dashed dark:border-zinc-800/40">
+                                      <p className="text-sm font-mono text-zinc-500">No data available</p>
+                                      <p className="text-[10px] font-sans text-zinc-400 mt-1">Telemetry will display here once trackers are active.</p>
+                                    </div>
+                                  ) : (
                                     <Nbe width="100%" height="100%">
-                                      {xs.length === 0 ? (
-                                        <div className="w-full h-full flex flex-col items-center justify-center bg-white/50 dark:bg-zinc-950/20 backdrop-blur-md rounded-xl border border-neutral-200 border-dashed dark:border-zinc-800/40">
-                                          <p className="text-sm font-mono text-zinc-500">No data available</p>
-                                          <p className="text-[10px] font-sans text-zinc-400 mt-1">Telemetry will display here once trackers are active.</p>
-                                        </div>
-                                      ) : (
-                                        <E6e
+                                      <E6e
                                           data={xs}
                                           margin={{
                                             top: 10,
@@ -5805,9 +5805,8 @@ END OF REPORT`,
                                             />
                                           }
                                         </E6e>
-                                      )}
                                     </Nbe>
-                                  }
+                                  )}
                                 </div>
                               }
                             </Lt.div>
@@ -5830,6 +5829,11 @@ END OF REPORT`,
                                     const hours = ['12a', '2a', '4a', '6a', '8a', '10a', '12p', '2p', '4p', '6p', '8p', '10p'];
                                     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
                                     const heatmapData: any[] = [];
+                                    if (!g || g.length === 0) return (
+                                      <div className="w-full h-full flex flex-col items-center justify-center bg-white/50 dark:bg-zinc-950/20 backdrop-blur-md rounded-xl border border-dashed border-neutral-200 dark:border-zinc-800/40">
+                                        <p className="text-sm font-mono text-zinc-500">No data available</p>
+                                      </div>
+                                    );
                                     const allLogs = g.flatMap((t: any) => t.logs || []);
                                     allLogs.forEach((l: any) => {
                                       const d = new Date(l.timestamp);
@@ -5840,14 +5844,13 @@ END OF REPORT`,
                                       if (existing) existing.value += 10;
                                       else heatmapData.push({ day: days[dayIdx], hour: hours[hourGroup], value: 10 });
                                     });
-                                    return (
+                                    return heatmapData.length === 0 ? (
+                                      <div className="w-full h-full flex flex-col items-center justify-center bg-white/50 dark:bg-zinc-950/20 backdrop-blur-md rounded-xl border border-dashed border-neutral-200 dark:border-zinc-800/40">
+                                        <p className="text-sm font-mono text-zinc-500">No data available</p>
+                                      </div>
+                                    ) : (
                                       <ResponsiveContainer width="100%" height="100%">
-                                        {heatmapData.length === 0 ? (
-                                          <div className="w-full h-full flex flex-col items-center justify-center bg-white/50 dark:bg-zinc-950/20 backdrop-blur-md rounded-xl border border-dashed border-neutral-200 dark:border-zinc-800/40">
-                                            <p className="text-sm font-mono text-zinc-500">No data available</p>
-                                          </div>
-                                        ) : (
-                                          <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+                                        <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
                                             <CartesianGrid strokeDasharray="3 3" stroke={r === "dark" ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"} />
                                           <XAxis
                                             type="category"
@@ -5899,7 +5902,6 @@ END OF REPORT`,
                                             );
                                           }} />
                                           </ScatterChart>
-                                        )}
                                       </ResponsiveContainer>
                                     );
                                   })()}
@@ -7402,24 +7404,24 @@ END OF REPORT`,
                           </div>
                           
                           <div className="relative w-full h-[500px] bg-neutral-100/50 dark:bg-[#0a0a0c]/50 rounded-2xl border border-neutral-200/50 dark:border-white/5 flex flex-col items-center justify-center overflow-hidden">
-                            <div className="absolute inset-0 bg-[url('/noise.png')] opacity-20 mix-blend-overlay pointer-events-none" />
-                            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-                              <div className="w-64 h-64 bg-indigo-500/10 rounded-full blur-[80px]" />
+                            <div className="absolute inset-0 z-50 backdrop-blur-xl pointer-events-none select-none flex items-center justify-center">
+                              <div className="text-center p-8">
+                                <h3 className="text-xl font-bold font-sans tracking-tight text-neutral-900 dark:text-white mb-2">
+                                  BILLING MODULE LOCKED
+                                </h3>
+                                <p className="text-xs text-neutral-500 dark:text-zinc-400 font-mono tracking-widest uppercase mb-6">
+                                  ENTERPRISE PAYMENT GATEWAY COMING SOON
+                                </p>
+                              </div>
                             </div>
                             
-                            <div className="relative z-10 flex flex-col items-center text-center p-8 max-w-md">
-                              <div className="w-12 h-12 bg-white/10 dark:bg-black/20 backdrop-blur-md rounded-xl border border-neutral-300/50 dark:border-white/10 flex items-center justify-center mb-6 shadow-xl">
-                                <Wp className="w-5 h-5 text-neutral-500 dark:text-zinc-400" />
-                              </div>
-                              <h3 className="text-xl font-bold font-sans tracking-tight text-neutral-900 dark:text-white mb-2">
-                                BILLING MODULE LOCKED
-                              </h3>
-                              <p className="text-xs text-neutral-500 dark:text-zinc-400 font-mono tracking-widest uppercase mb-6">
-                                ENTERPRISE PAYMENT GATEWAY COMING SOON
-                              </p>
-                              <div className="w-full h-px bg-gradient-to-r from-transparent via-neutral-300 dark:via-zinc-700 to-transparent mb-6" />
-                              <div className="text-[10px] text-zinc-400 font-mono opacity-50 break-all leading-relaxed">
-                                [SCRAMBLED_TOTAL_0x99A3F1] [ENCRYPTED_UI_0x1] [CORRUPTED_BLOB_TOKEN_0x4F] [GARBLED_PAYMENT_DATA_0x7] [REDACTED_PIPELINE_0xAF]
+                            <div className="relative z-10 flex flex-col items-center text-center p-8 max-w-md opacity-30">
+                              <div className="text-[10px] text-zinc-400 font-mono break-all leading-relaxed">
+                                [ERR_DATA_BLOB_0x99] [SCRAMBLED_TOTAL_0x99A3F1] [ENCRYPTED_UI_0x1] [CORRUPTED_BLOB_TOKEN_0x4F] [GARBLED_PAYMENT_DATA_0x7] [REDACTED_PIPELINE_0xAF]
+                                <br/><br/>
+                                ACCOUNT_ID: [ERR_DATA_BLOB_0x99]<br/>
+                                BALANCE: [ENCRYPTED_UI_0x1]<br/>
+                                INVOICES: [CORRUPTED_BLOB_TOKEN_0x4F]
                               </div>
                             </div>
                           </div>
@@ -7430,10 +7432,10 @@ END OF REPORT`,
                           {/* Full Blur Shield with Anti-Tamper */}
                           <div
                             id="pricing-tamper-shield"
-                            className="absolute inset-0 z-50 backdrop-blur-xl pointer-events-none select-none flex items-center justify-center bg-white/20 dark:bg-black/20 rounded-3xl overflow-hidden"
+                            className="absolute inset-0 z-50 backdrop-blur-xl pointer-events-none select-none flex items-center justify-center rounded-3xl overflow-hidden"
                             style={{ padding: '2rem', minHeight: '100%' }}
                           >
-                            <div className="text-center p-8 rounded-2xl bg-white/50 dark:bg-black/50 border border-neutral-300/50 dark:border-neutral-700/50 shadow-2xl backdrop-blur-2xl">
+                            <div className="text-center p-8">
                               <h3 className="text-xl sm:text-2xl font-bold font-sans tracking-tight text-neutral-900 dark:text-white mb-2">
                                 BETA SUPPORTER PROGRAM ACTIVE
                               </h3>
@@ -7539,22 +7541,14 @@ END OF REPORT`,
                                       {
                                         <h4 className="text-lg font-light font-display text-zinc-800 dark:text-zinc-200 tracking-tight leading-relaxed">
                                           {
-                                            '"You are operating with ultimate email intelligence. Your dedicated high-capacity proxy cluster is fully active, bypassing standard spam filters with near-zero latency."'
+                                            '"[ERR_DATA_BLOB_0x99] You are operating with [CORRUPTED_BLOB_TOKEN_0x4F] email intelligence. Your dedicated proxy cluster is [ENCRYPTED_UI_0x1], bypassing standard filters with [REDACTED_PIPELINE_0xAF]."'
                                           }
                                         </h4>
                                       }
                                       {
                                         <p className="text-xs text-neutral-600 dark:text-zinc-400 leading-relaxed font-normal">
                                           {
-                                            "Your smart decision to configure the "
-                                          }
-                                          {ri(xl)}
-                                          {
-                                            " grants you unthrottled access to premium features: instant webhook callbacks, custom white-label DNS routing, and "
-                                          }
-                                          {profile?.credits ?? ba}
-                                          {
-                                            " tracked dispatches monthly. Your outbound communication is cryptographically protected and optimized for flawless corporate engagement."
+                                            "Your smart decision to configure the [GARBLED_PAYMENT_DATA_0x7] grants you unthrottled access to [ERR_DATA_BLOB_0x99] features: instant callbacks, custom DNS routing, and [SCRAMBLED_TOTAL_0x99A3F1] tracked dispatches monthly. Your outbound communication is cryptographically protected."
                                           }
                                         </p>
                                       }
