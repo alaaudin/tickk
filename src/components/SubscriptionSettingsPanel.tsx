@@ -26,24 +26,22 @@ export function SubscriptionSettingsPanel({ toast, profile }: { toast: (message:
         </div>
 
         <div className="relative z-10 flex flex-col items-center justify-center p-12 bg-neutral-50/50 dark:bg-[#0a0a0c]/50 rounded-xl border border-neutral-200/50 dark:border-white/5 overflow-hidden min-h-[300px]">
-          <div className="absolute inset-0 bg-[url('/noise.png')] opacity-20 mix-blend-overlay pointer-events-none" />
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-            <div className="w-64 h-64 bg-indigo-500/10 rounded-full blur-[80px]" />
-          </div>
-          
-          <div className="relative z-10 flex flex-col items-center text-center max-w-md">
-            <div className="w-12 h-12 bg-white/10 dark:bg-black/20 backdrop-blur-md rounded-xl border border-neutral-300/50 dark:border-white/10 flex items-center justify-center mb-6 shadow-xl">
-              <Lock className="w-5 h-5 text-neutral-500 dark:text-zinc-400" />
+          <div className="absolute inset-0 z-50 bg-[#0a0a0c] flex items-center justify-center overflow-hidden rounded-[inherit] pointer-events-none select-none">
+            <div className="absolute font-black text-[120px] sm:text-[180px] tracking-tighter text-white/5 whitespace-nowrap rotate-[-12deg] pointer-events-none">
+              PREMIUM
             </div>
-            <h3 className="text-xl font-bold font-sans tracking-tight text-neutral-900 dark:text-white mb-2">
-              BILLING MODULE LOCKED
-            </h3>
-            <p className="text-xs text-neutral-500 dark:text-zinc-400 font-mono tracking-widest uppercase mb-6">
-              ENTERPRISE PAYMENT GATEWAY COMING SOON
-            </p>
-            <div className="w-full h-px bg-gradient-to-r from-transparent via-neutral-300 dark:via-zinc-700 to-transparent mb-6" />
-            <div className="text-[10px] text-zinc-400 font-mono opacity-50 break-all leading-relaxed">
-              [SCRAMBLED_TOTAL_0x99A3F1] [ENCRYPTED_UI_0x1] [CORRUPTED_BLOB_TOKEN_0x4F] [GARBLED_PAYMENT_DATA_0x7] [REDACTED_PIPELINE_0xAF]
+            
+            <div className="relative z-10 flex flex-col items-center justify-center">
+              <div className="mb-6 transform rotate-6 bg-red-600/90 border-2 border-red-500 shadow-[0_0_20px_rgba(220,38,38,0.4)] px-4 py-1">
+                <span className="text-white font-black tracking-widest text-2xl uppercase mix-blend-screen">DISABLED</span>
+              </div>
+              
+              <h3 className="text-xl font-bold font-sans tracking-widest text-white mb-2 uppercase">
+                PREMIUM MODULE
+              </h3>
+              <p className="text-xs text-zinc-500 font-mono tracking-[0.3em] uppercase">
+                COMING SOON
+              </p>
             </div>
           </div>
         </div>

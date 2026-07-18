@@ -80,14 +80,21 @@ export default function PricingMatrix({ onNavigateToAuth, onBack }: PricingMatri
         {/* Anti-Tamper Shield Layer */}
         <div 
           id="tamper-shield"
-          className="absolute inset-0 z-50 backdrop-blur-xl pointer-events-none user-select-none select-none flex items-center justify-center bg-white/10 dark:bg-black/10 rounded-3xl overflow-hidden"
-          style={{ padding: '2rem' }}
+          className="absolute inset-0 z-50 bg-[#0a0a0c] flex items-center justify-center overflow-hidden rounded-[inherit] pointer-events-none select-none"
         >
-          <div className="text-center p-8 rounded-2xl bg-white/40 dark:bg-black/40 border border-neutral-300/50 dark:border-neutral-700/50 shadow-2xl backdrop-blur-2xl">
-            <h3 className="text-xl sm:text-2xl font-bold font-sans tracking-tight text-neutral-900 dark:text-white mb-2">
+          <div className="absolute font-black text-[120px] sm:text-[180px] tracking-tighter text-white/5 whitespace-nowrap rotate-[-12deg] pointer-events-none">
+            PREMIUM
+          </div>
+          
+          <div className="relative z-10 flex flex-col items-center justify-center">
+            <div className="mb-6 transform rotate-6 bg-red-600/90 border-2 border-red-500 shadow-[0_0_20px_rgba(220,38,38,0.4)] px-4 py-1">
+              <span className="text-white font-black tracking-widest text-2xl uppercase mix-blend-screen">DISABLED</span>
+            </div>
+            
+            <h3 className="text-xl font-bold font-sans tracking-widest text-white mb-2 uppercase">
               BETA SUPPORTER PROGRAM ACTIVE
             </h3>
-            <p className="text-sm text-neutral-600 dark:text-neutral-400 font-mono tracking-widest uppercase">
+            <p className="text-xs text-zinc-500 font-mono tracking-[0.3em] uppercase">
               ENTERPRISE PLANS COMING SOON
             </p>
           </div>

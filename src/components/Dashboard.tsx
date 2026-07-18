@@ -7296,24 +7296,22 @@ END OF REPORT`,
                           </div>
                           
                           <div className="relative w-full h-[500px] bg-neutral-100/50 dark:bg-[#0a0a0c]/50 rounded-2xl border border-neutral-200/50 dark:border-white/5 flex flex-col items-center justify-center overflow-hidden">
-                            <div className="absolute inset-0 z-50 backdrop-blur-xl pointer-events-none select-none flex items-center justify-center">
-                              <div className="text-center p-8">
-                                <h3 className="text-xl font-bold font-sans tracking-tight text-neutral-900 dark:text-white mb-2">
-                                  BILLING MODULE LOCKED
-                                </h3>
-                                <p className="text-xs text-neutral-500 dark:text-zinc-400 font-mono tracking-widest uppercase mb-6">
-                                  ENTERPRISE PAYMENT GATEWAY COMING SOON
-                                </p>
+                            <div className="absolute inset-0 z-50 bg-[#0a0a0c] flex items-center justify-center overflow-hidden rounded-[inherit] pointer-events-none select-none">
+                              <div className="absolute font-black text-[120px] sm:text-[180px] tracking-tighter text-white/5 whitespace-nowrap rotate-[-12deg] pointer-events-none">
+                                PREMIUM
                               </div>
-                            </div>
-                            
-                            <div className="relative z-10 flex flex-col items-center text-center p-8 max-w-md opacity-30">
-                              <div className="text-[10px] text-zinc-400 font-mono break-all leading-relaxed">
-                                [ERR_DATA_BLOB_0x99] [SCRAMBLED_TOTAL_0x99A3F1] [ENCRYPTED_UI_0x1] [CORRUPTED_BLOB_TOKEN_0x4F] [GARBLED_PAYMENT_DATA_0x7] [REDACTED_PIPELINE_0xAF]
-                                <br/><br/>
-                                ACCOUNT_ID: [ERR_DATA_BLOB_0x99]<br/>
-                                BALANCE: [ENCRYPTED_UI_0x1]<br/>
-                                INVOICES: [CORRUPTED_BLOB_TOKEN_0x4F]
+                              
+                              <div className="relative z-10 flex flex-col items-center justify-center">
+                                <div className="mb-6 transform rotate-6 bg-red-600/90 border-2 border-red-500 shadow-[0_0_20px_rgba(220,38,38,0.4)] px-4 py-1">
+                                  <span className="text-white font-black tracking-widest text-2xl uppercase mix-blend-screen">DISABLED</span>
+                                </div>
+                                
+                                <h3 className="text-xl font-bold font-sans tracking-widest text-white mb-2 uppercase">
+                                  PREMIUM MODULE
+                                </h3>
+                                <p className="text-xs text-zinc-500 font-mono tracking-[0.3em] uppercase">
+                                  COMING SOON
+                                </p>
                               </div>
                             </div>
                           </div>
@@ -7324,14 +7322,22 @@ END OF REPORT`,
                           {/* Full Blur Shield with Anti-Tamper */}
                           <div
                             id="pricing-tamper-shield"
-                            className="absolute inset-0 z-50 backdrop-blur-xl pointer-events-none select-none flex items-center justify-center rounded-3xl overflow-hidden"
-                            style={{ padding: '2rem', minHeight: '100%' }}
+                            className="absolute inset-0 z-50 bg-[#0a0a0c] flex items-center justify-center overflow-hidden rounded-[inherit] pointer-events-none select-none"
+                            style={{ minHeight: '100%' }}
                           >
-                            <div className="text-center p-8">
-                              <h3 className="text-xl sm:text-2xl font-bold font-sans tracking-tight text-neutral-900 dark:text-white mb-2">
+                            <div className="absolute font-black text-[120px] sm:text-[180px] tracking-tighter text-white/5 whitespace-nowrap rotate-[-12deg] pointer-events-none">
+                              PREMIUM
+                            </div>
+                            
+                            <div className="relative z-10 flex flex-col items-center justify-center">
+                              <div className="mb-6 transform rotate-6 bg-red-600/90 border-2 border-red-500 shadow-[0_0_20px_rgba(220,38,38,0.4)] px-4 py-1">
+                                <span className="text-white font-black tracking-widest text-2xl uppercase mix-blend-screen">DISABLED</span>
+                              </div>
+                              
+                              <h3 className="text-xl font-bold font-sans tracking-widest text-white mb-2 uppercase">
                                 BETA SUPPORTER PROGRAM ACTIVE
                               </h3>
-                              <p className="text-sm text-neutral-600 dark:text-neutral-400 font-mono tracking-widest uppercase">
+                              <p className="text-xs text-zinc-500 font-mono tracking-[0.3em] uppercase">
                                 ENTERPRISE PLANS COMING SOON
                               </p>
                             </div>
