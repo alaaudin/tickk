@@ -2062,12 +2062,12 @@ END OF REPORT`,
                               </span>
                             </div>
                           );
-                        } else if (currentCredits > 20) {
+                        } else if (currentCredits > 50) {
                           return (
-                            <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 backdrop-blur-xl border border-amber-500/20 shadow-[0_0_15px_rgba(245,158,11,0.1)] transition-all">
-                              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]"></span>
-                              <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">
-                                WARNING • CREDITS: {currentCredits}
+                            <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 backdrop-blur-xl border border-blue-500/20 shadow-[0_0_15px_rgba(59,130,246,0.1)] transition-all">
+                              <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"></span>
+                              <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
+                                STANDARD • CREDITS: {currentCredits}
                               </span>
                             </div>
                           );
@@ -2619,7 +2619,7 @@ END OF REPORT`,
                               {
                                 <Lt.div
                                   variants={Kt}
-                                  className={`lg:col-span-7 ${profile?.credits ?? ba}`}
+                                  className={`lg:col-span-7 ${Ba}`}
                                 >
                                   {
                                     <div className="flex justify-between items-center mb-6">
@@ -2700,7 +2700,7 @@ END OF REPORT`,
                               {
                                 <Lt.div
                                   variants={Kt}
-                                  className={`lg:col-span-5 ${profile?.credits ?? ba} flex flex-col justify-between h-full min-h-[295px]`}
+                                  className={`lg:col-span-5 ${Ba} flex flex-col justify-between h-full min-h-[295px]`}
                                 >
                                   {
                                     <div>
@@ -2745,7 +2745,7 @@ END OF REPORT`,
                           {
                             <Lt.div
                               variants={Kt}
-                              className={`${profile?.credits ?? ba} overflow-hidden p-6 relative`}
+                              className={`${Ba} overflow-hidden p-6 relative`}
                             >
                               {
                                 <Ice
@@ -2919,7 +2919,7 @@ END OF REPORT`,
                           {
                             <Lt.div
                               variants={Kt}
-                              className={`${profile?.credits ?? ba} divide-y divide-neutral-200/60 dark:divide-zinc-900/60 p-0 overflow-hidden`}
+                              className={`${Ba} divide-y divide-neutral-200/60 dark:divide-zinc-900/60 p-0 overflow-hidden`}
                             >
                               {
                                 <div className="p-6 border-b border-neutral-200 dark:border-zinc-900 flex items-center justify-between bg-neutral-50/50 dark:bg-zinc-950/20">
@@ -5890,9 +5890,14 @@ END OF REPORT`,
                                   {(() => {
                                     const logCounts = Array(7).fill(0).map(() => Array(24).fill(0));
                                     (activityDistData || []).forEach((item: any) => {
+                                      if (!item) return;
                                       const { day, hour, count } = item;
-                                      const dayIdx = day === 0 ? 6 : day - 1;
-                                      logCounts[dayIdx][hour] += count;
+                                      if (typeof day === 'number' && typeof hour === 'number') {
+                                        const dayIdx = day === 0 ? 6 : day - 1;
+                                        if (logCounts[dayIdx] && logCounts[dayIdx][hour] !== undefined) {
+                                          logCounts[dayIdx][hour] += (count || 0);
+                                        }
+                                      }
                                     });
                                     let maxCount = 0;
                                     logCounts.forEach(r => r.forEach(c => { if(c > maxCount) maxCount = c; }));
