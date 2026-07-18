@@ -2072,13 +2072,18 @@ END OF REPORT`,
                     <div className="flex items-center gap-3">
                       {(() => {
                         const currentCredits = ba !== 501 ? ba : (profile?.credits ?? 0);
-                        const isZero = currentCredits === 0;
+                        const maxCredits = profile?.max_credits ?? 301;
+                        const pct = (currentCredits / maxCredits) * 100;
+                        
+                        let colorClass = "text-rose-500";
+                        if (pct >= 70) {
+                          colorClass = "text-emerald-400";
+                        } else if (pct >= 30) {
+                          colorClass = "text-amber-500";
+                        }
+
                         return (
-                          <div className={`hidden lg:flex items-center px-3 py-1 rounded-md text-xs font-medium backdrop-blur-md transition-all ${
-                            isZero 
-                              ? "bg-black/[0.03] dark:bg-white/[0.03] border border-red-500/20 dark:border-red-400/20 text-red-500/90 dark:text-red-400/90" 
-                              : "bg-black/[0.03] dark:bg-white/[0.03] border border-black/[0.08] dark:border-white/[0.08] text-neutral-700 dark:text-neutral-300"
-                          }`}>
+                          <div className={`hidden lg:flex items-center backdrop-blur-md bg-white/[0.03] border border-white/[0.08] px-3 py-1.5 rounded-lg text-xs font-medium transition-colors duration-300 ${colorClass}`}>
                             Credits: {currentCredits}
                           </div>
                         );
