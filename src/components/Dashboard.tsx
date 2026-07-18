@@ -5889,7 +5889,7 @@ END OF REPORT`,
                                   }
                                   {(() => {
                                     const logCounts = Array(7).fill(0).map(() => Array(24).fill(0));
-                                    (activityDistData || []).forEach((item: any) => {
+                                    (Array.isArray(activityDistData) ? activityDistData : []).forEach((item: any) => {
                                       if (!item) return;
                                       const { day, hour, count } = item;
                                       if (typeof day === 'number' && typeof hour === 'number') {
