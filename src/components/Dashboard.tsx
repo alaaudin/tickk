@@ -174,7 +174,7 @@ const mapBackendTracker = (raw: any): any => ({
   clickCount: raw.click_count || 0,
   lastOpened: raw.updated_at && raw.open_count > 0 ? raw.updated_at : null,
   testSent: false,
-  logs: raw.logs ? raw.logs.map((l: any) => ({
+  logs: Array.isArray(raw.logs) ? raw.logs.map((l: any) => ({
     id: l.id,
     timestamp: l.timestamp || l.created_at,
     ip: l.ip || "0.0.0.0",
@@ -745,8 +745,10 @@ END OF REPORT`,
         });
         if (adRes.ok) {
           const adData = await adRes.json();
-          if (adData.success && adData.distribution) {
+          if (adData.success && Array.isArray(adData.distribution)) {
             setActivityDistData(adData.distribution);
+          } else if (Array.isArray(adData)) {
+            setActivityDistData(adData);
           }
         }
       } catch (err) {
@@ -817,8 +819,11 @@ END OF REPORT`,
           },
         });
         if (ye.ok) {
-          const Be = await ye.json();
-          w(Be);
+          let Be = await ye.json();
+          if (Be && Be.data && Array.isArray(Be.data)) Be = Be.data;
+          if (Array.isArray(Be)) {
+             w(Be.map((t: any) => ({ ...t, logs: Array.isArray(t.logs) ? t.logs : [] })));
+          } else { w([]); }
         }
       }
     } catch (F) {
@@ -828,7 +833,7 @@ END OF REPORT`,
         const ye = await fetch(`${API_BASE}/api/trackers`, {
           headers: { Authorization: `Bearer ${e}` },
         });
-        if (ye.ok) { const Be = await ye.json(); w(Be); }
+        if (ye.ok) { let Be = await ye.json(); if (Be && Be.data && Array.isArray(Be.data)) Be = Be.data; if (Array.isArray(Be)) w(Be.map((t: any) => ({ ...t, logs: Array.isArray(t.logs) ? t.logs : [] }))); }
       } catch (_) { }
     } finally {
       P(!1);
@@ -855,7 +860,7 @@ END OF REPORT`,
             headers: { Authorization: `Bearer ${e}` },
           })
             .then((ye) => (ye.ok ? ye.json() : null))
-            .then((ye) => { ye && w(ye); })
+            .then((ye) => { if (ye) { let Be = ye; if (Be && Be.data && Array.isArray(Be.data)) Be = Be.data; if (Array.isArray(Be)) w(Be.map((t: any) => ({ ...t, logs: Array.isArray(t.logs) ? t.logs : [] }))); } })
             .catch(() => { });
         });
     }, 8e3);
