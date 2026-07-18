@@ -5812,104 +5812,6 @@ END OF REPORT`,
                             </Lt.div>
                           }
                           {
-                            <Lt.div variants={Kt} className={Bo + " mb-6"}>
-                              <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
-                                <div>
-                                  <h3 className="text-xl font-semibold font-display text-neutral-900 dark:text-white tracking-tight">
-                                    Temporal Activity Heatmap
-                                  </h3>
-                                  <span className="text-[11px] uppercase tracking-widest text-neutral-500 dark:text-neutral-400 font-mono mt-1 block">
-                                    Peak Engagement Windows
-                                  </span>
-                                </div>
-                              </div>
-                              <div className="w-full h-80 overflow-x-auto">
-                                <div className="min-w-[600px] h-full">
-                                  {(() => {
-                                    const hours = ['12a', '2a', '4a', '6a', '8a', '10a', '12p', '2p', '4p', '6p', '8p', '10p'];
-                                    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-                                    const heatmapData: any[] = [];
-                                    if (!g || g.length === 0) return (
-                                      <div className="w-full h-full flex flex-col items-center justify-center bg-white/50 dark:bg-zinc-950/20 backdrop-blur-md rounded-xl border border-dashed border-neutral-200 dark:border-zinc-800/40">
-                                        <p className="text-sm font-mono text-zinc-500">No data available</p>
-                                      </div>
-                                    );
-                                    const allLogs = g.flatMap((t: any) => t.logs || []);
-                                    allLogs.forEach((l: any) => {
-                                      const d = new Date(l.timestamp);
-                                      const dayIdx = d.getDay() === 0 ? 6 : d.getDay() - 1;
-                                      const hour = d.getHours();
-                                      const hourGroup = Math.floor(hour / 2);
-                                      const existing = heatmapData.find(h => h.day === days[dayIdx] && h.hour === hours[hourGroup]);
-                                      if (existing) existing.value += 10;
-                                      else heatmapData.push({ day: days[dayIdx], hour: hours[hourGroup], value: 10 });
-                                    });
-                                    return heatmapData.length === 0 ? (
-                                      <div className="w-full h-full flex flex-col items-center justify-center bg-white/50 dark:bg-zinc-950/20 backdrop-blur-md rounded-xl border border-dashed border-neutral-200 dark:border-zinc-800/40">
-                                        <p className="text-sm font-mono text-zinc-500">No data available</p>
-                                      </div>
-                                    ) : (
-                                      <ResponsiveContainer width="100%" height="100%">
-                                        <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
-                                            <CartesianGrid strokeDasharray="3 3" stroke={r === "dark" ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"} />
-                                          <XAxis
-                                            type="category"
-                                            dataKey="hour"
-                                            name="Hour"
-                                            allowDuplicatedCategory={false}
-                                            stroke="#6b7280"
-                                            fontSize={10}
-                                            tickLine={false}
-                                          />
-                                          <YAxis
-                                            type="category"
-                                            dataKey="day"
-                                            name="Day"
-                                            allowDuplicatedCategory={false}
-                                            stroke="#6b7280"
-                                            fontSize={10}
-                                            tickLine={false}
-                                            reversed
-                                          />
-                                          <ZAxis type="number" dataKey="value" range={[100, 100]} />
-                                          <Tooltip
-                                            cursor={{ strokeDasharray: '3 3' }}
-                                            contentStyle={{
-                                              backgroundColor: r === "dark" ? "rgba(20, 20, 22, 0.8)" : "rgba(255, 255, 255, 0.8)",
-                                              border: r === "dark" ? "1px solid rgba(255, 255, 255, 0.1)" : "1px solid rgba(0, 0, 0, 0.1)",
-                                              borderRadius: "12px",
-                                              fontSize: "11px",
-                                              color: r === "dark" ? "#f4f4f5" : "#111827",
-                                              backdropFilter: "blur(20px)",
-                                            }}
-                                            formatter={(value) => [`${value} interactions`, 'Activity Level']}
-                                          />
-                                          <Scatter data={heatmapData} shape={(props) => {
-                                            const { cx, cy, payload } = props;
-                                            const val = payload.value;
-                                            const opacity = 0.1 + (val / 100) * 0.9;
-                                            return (
-                                              <rect
-                                                x={cx - 15}
-                                                y={cy - 10}
-                                                width={30}
-                                                height={20}
-                                                rx={4}
-                                                fill={r === "dark" ? "#ffffff" : "#000000"}
-                                                fillOpacity={opacity}
-                                                className="transition-all duration-300"
-                                              />
-                                            );
-                                          }} />
-                                          </ScatterChart>
-                                      </ResponsiveContainer>
-                                    );
-                                  })()}
-                                </div>
-                              </div>
-                            </Lt.div>
-                          }
-                          {
                             <Lt.div variants={Kt} className={Bo + " mb-6 mt-6"}>
                               {
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
@@ -5971,94 +5873,62 @@ END OF REPORT`,
                                       ))}
                                     </div>
                                   }
-                                  {[
-                                    {
-                                      day: "Mon",
-                                    },
-                                    {
-                                      day: "Tue",
-                                    },
-                                    {
-                                      day: "Wed",
-                                    },
-                                    {
-                                      day: "Thu",
-                                    },
-                                    {
-                                      day: "Fri",
-                                    },
-                                    {
-                                      day: "Sat",
-                                    },
-                                    {
-                                      day: "Sun",
-                                    },
-                                  ].map((F, ye) => {
-                                    const Be = (Wt, tr) => {
-                                      let Bn =
-                                        (Wt * 7 + tr * 13 + d.length * 3) %
-                                        100;
-                                      return d === "last_24_hours" && Wt !== 0
-                                        ? 0
-                                        : Bn > 85
-                                          ? 3
-                                          : Bn > 65
-                                            ? 2
-                                            : Bn > 40
-                                              ? 1
-                                              : 0;
-                                    },
-                                      pt = Array.from(
-                                        {
-                                          length: 24,
-                                        },
-                                        (Wt, tr) => Be(ye, tr),
-                                      );
-                                    if (d === "last_24_hours" && ye !== 0)
-                                      return null;
-                                    const mt =
-                                      d === "last_24_hours" ? "Today" : F.day;
-                                    return (
-                                      <div key={F.day || ye} className="flex gap-1.5 items-center min-w-max">
-                                        {
-                                          <div className="w-10 text-[11px] font-medium text-neutral-500 dark:text-zinc-400 text-right pr-2 uppercase tracking-wider">
-                                            {mt}
-                                          </div>
+                                  {(() => {
+                                    const allLogs = (g || []).flatMap((t: any) => t.logs || []);
+                                    const logCounts = Array(7).fill(0).map(() => Array(24).fill(0));
+                                    allLogs.forEach((l: any) => {
+                                      const date = new Date(l.timestamp);
+                                      const dayIdx = date.getDay() === 0 ? 6 : date.getDay() - 1;
+                                      const hour = date.getHours();
+                                      logCounts[dayIdx][hour]++;
+                                    });
+                                    let maxCount = 0;
+                                    logCounts.forEach(r => r.forEach(c => { if(c > maxCount) maxCount = c; }));
+
+                                    const daysArr = [
+                                      { day: "Mon" }, { day: "Tue" }, { day: "Wed" },
+                                      { day: "Thu" }, { day: "Fri" }, { day: "Sat" }, { day: "Sun" },
+                                    ];
+
+                                    return daysArr.map((F, ye) => {
+                                      if (d === "last_24_hours" && ye !== 0) return null;
+                                      const mt = d === "last_24_hours" ? "Today" : F.day;
+                                      const activeYe = d === "last_24_hours" ? (new Date().getDay() === 0 ? 6 : new Date().getDay() - 1) : ye;
+                                      const pt = Array.from({ length: 24 }, (_, tr) => {
+                                        const c = logCounts[activeYe][tr];
+                                        let level = 0;
+                                        if (c > 0) {
+                                          if (c <= maxCount * 0.25) level = 1;
+                                          else if (c <= maxCount * 0.6) level = 2;
+                                          else level = 3;
                                         }
-                                        {pt.map((Wt, tr) => {
-                                          const Bn = `${tr.toString().padStart(2, "0")}:00`;
-                                          let bn =
-                                            "bg-black/[0.03] dark:bg-white/[0.03] border-black/[0.04] dark:border-white/[0.04]";
-                                          return (
-                                            Wt === 1 &&
-                                            (bn =
-                                              "bg-black/[0.12] dark:bg-white/[0.1] border-black/[0.08] dark:border-white/[0.08]"),
-                                            Wt === 2 &&
-                                            (bn =
-                                              "bg-black/[0.25] dark:bg-white/[0.25] border-black/[0.15] dark:border-white/[0.15] shadow-[0_2px_10px_rgba(0,0,0,0.05)]"),
-                                            Wt === 3 &&
-                                            (bn =
-                                              "bg-black/[0.45] dark:bg-white/[0.45] border-black/[0.25] dark:border-white/[0.25] shadow-[0_4px_15px_rgba(0,0,0,0.08)] dark:shadow-[0_4px_15px_rgba(255,255,255,0.06)]"),
-                                            (
-                                              <div key={tr}
-                                                className={`group relative w-8 h-6 rounded border transition-all duration-200 hover:scale-[1.25] hover:z-30 cursor-crosshair hover:shadow-lg hover:border-black/30 dark:hover:border-white/40 ${bn}`}
-                                              >
+                                        return { count: c, level };
+                                      });
+
+                                      return (
+                                        <div key={F.day || ye} className="flex gap-1.5 items-center min-w-max">
+                                          {
+                                            <div className="w-10 text-[11px] font-medium text-neutral-500 dark:text-zinc-400 text-right pr-2 uppercase tracking-wider">
+                                              {mt}
+                                            </div>
+                                          }
+                                          {pt.map((data, tr) => {
+                                            const Wt = data.level;
+                                            const count = data.count;
+                                            const Bn = `${tr.toString().padStart(2, "0")}:00`;
+                                            let bn = "bg-black/[0.03] dark:bg-white/[0.03] border-black/[0.04] dark:border-white/[0.04]";
+                                            Wt === 1 && (bn = "bg-black/[0.12] dark:bg-white/[0.1] border-black/[0.08] dark:border-white/[0.08]");
+                                            Wt === 2 && (bn = "bg-black/[0.25] dark:bg-white/[0.25] border-black/[0.15] dark:border-white/[0.15] shadow-[0_2px_10px_rgba(0,0,0,0.05)]");
+                                            Wt === 3 && (bn = "bg-black/[0.45] dark:bg-white/[0.45] border-black/[0.25] dark:border-white/[0.25] shadow-[0_4px_15px_rgba(0,0,0,0.08)] dark:shadow-[0_4px_15px_rgba(255,255,255,0.06)]");
+                                            return (
+                                              <div key={tr} className={`group relative w-8 h-6 rounded border transition-all duration-200 hover:scale-[1.25] hover:z-30 cursor-crosshair hover:shadow-lg hover:border-black/30 dark:hover:border-white/40 ${bn}`}>
                                                 {
                                                   <div className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 px-3 py-2 bg-white/95 dark:bg-zinc-950/95 text-neutral-900 dark:text-white text-[10px] font-medium rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none whitespace-nowrap shadow-[0_12px_40px_rgba(0,0,0,0.18)] dark:shadow-[0_12px_40px_rgba(0,0,0,0.6)] z-50 transform translate-y-1 group-hover:translate-y-0 backdrop-blur-3xl border border-neutral-200/50 dark:border-white/10">
                                                     {
                                                       <div className="flex flex-col items-center gap-1">
                                                         {
                                                           <span className="font-bold text-xs tracking-tight">
-                                                            {Wt === 0
-                                                              ? "No"
-                                                              : Wt *
-                                                              (d ===
-                                                                "last_year"
-                                                                ? 142
-                                                                : d ===
-                                                                  "last_30_days"
-                                                                  ? 12
-                                                                  : 3)}
+                                                            {count === 0 ? "No" : count}
                                                             {" messages"}
                                                           </span>
                                                         }
@@ -6074,12 +5944,12 @@ END OF REPORT`,
                                                   </div>
                                                 }
                                               </div>
-                                            )
-                                          );
-                                        })}
-                                      </div>
-                                    );
-                                  })}
+                                            );
+                                          })}
+                                        </div>
+                                      );
+                                    });
+                                  })()}
                                 </div>
                               }
                             </Lt.div>
