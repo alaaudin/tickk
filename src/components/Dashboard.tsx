@@ -403,7 +403,7 @@ export default function Dashboard({
   theme: r,
   toggleTheme: o,
 }) {
-  const { profile, loading: profileLoading } = useProfile(supabaseUserId);
+  const { profile, loading: profileLoading } = useProfile(supabaseUserId, e);
   const { toast: s } = UB(),
     [c, u] = O.useState("overview"),
     [d, p] = O.useState("last_30_days"),
@@ -764,13 +764,18 @@ END OF REPORT`,
         });
         if (F.ok) {
           const Be = await F.json();
-          Be.user && Be.user.credits !== void 0 && Bi(Be.user.credits);
+          const userData = Be.data || Be.user || Be;
+          if (userData && userData.credits !== undefined) {
+            Bi(userData.credits);
+            // Additionally, if profile is loaded but has wrong credits, we should ensure the UI can use ba
+          }
         }
       } catch (_authErr) {
         // Local auth not available, skip
       }
-      // Fetch trackers from Render backend
-      const renderRes = await fetch(`${API_BASE}/api/stats/${uid}`);
+      const renderRes = await fetch(`${API_BASE}/api/stats/${uid}`, {
+        headers: { Authorization: `Bearer ${e}` }
+      });
       if (renderRes.ok) {
         const rawData = await renderRes.json();
         const mapped = (Array.isArray(rawData) ? rawData : []).map(mapBackendTracker);
@@ -778,7 +783,9 @@ END OF REPORT`,
         // Prefetch logs for all trackers on mount
         const logsPromises = mapped.map(async (t) => {
           try {
-            const res = await fetch(`${API_BASE}/api/logs/${t.id}`);
+            const res = await fetch(`${API_BASE}/api/logs/${t.id}`, {
+              headers: { Authorization: `Bearer ${e}` }
+            });
             if (res.ok) {
               const data = await res.json();
               if (data && data.length > 0) {
@@ -844,7 +851,9 @@ END OF REPORT`,
     gr();
     const uid = supabaseUserId;
     const F = setInterval(() => {
-      fetch(`${API_BASE}/api/stats/${uid}`)
+      fetch(`${API_BASE}/api/stats/${uid}`, {
+        headers: { Authorization: `Bearer ${e}` }
+      })
         .then((res) => (res.ok ? res.json() : null))
         .then((rawData) => {
           if (rawData) {
@@ -1142,7 +1151,9 @@ END OF REPORT`,
       }));
       if (!rt[F]) {
         const trackerId = F.split('-open-')[0];
-        fetch(`${API_BASE}/api/logs/${trackerId}`)
+        fetch(`${API_BASE}/api/logs/${trackerId}`, {
+          headers: { Authorization: `Bearer ${e}` }
+        })
           .then((res) => (res.ok ? res.json() : []))
           .then((data) => {
             console.log("Raw logs from backend:", data);
@@ -2060,7 +2071,7 @@ END OF REPORT`,
                   {
                     <div className="flex items-center gap-3">
                       {(() => {
-                        const currentCredits = profile?.credits ?? 0;
+                        const currentCredits = ba !== 501 ? ba : (profile?.credits ?? 0);
                         if (currentCredits > 150) {
                           return (
                             <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 backdrop-blur-xl border border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.1)] transition-all animate-pulse">
@@ -7476,7 +7487,7 @@ END OF REPORT`,
                                           }
                                           {
                                             <span className="text-base font-bold font-display text-neutral-900 dark:text-white">
-                                              {profile?.credits ?? ba}
+                                              {ba !== 501 ? ba : (profile?.credits ?? 0)}
                                               {" / mo"}
                                             </span>
                                           }
@@ -7700,7 +7711,7 @@ END OF REPORT`,
                                                   {
                                                     <En_Icon className="w-3.5 h-3.5 text-emerald-500 shrink-0 stroke-[3px]" />
                                                   }
-                                                  {profile?.credits ?? ba}
+                                                  {ba !== 501 ? ba : (profile?.credits ?? 0)}
                                                   {" tracked dispatches / mo"}
                                                 </div>
                                               }
@@ -8116,7 +8127,7 @@ END OF REPORT`,
                                   }
                                   {
                                     <span className="text-xl font-bold font-display text-neutral-900 dark:text-white">
-                                      {profile?.credits ?? ba}
+                                      {ba !== 501 ? ba : (profile?.credits ?? 0)}
                                     </span>
                                   }
                                 </div>

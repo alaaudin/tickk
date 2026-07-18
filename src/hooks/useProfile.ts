@@ -8,13 +8,15 @@ export interface UserProfile {
   [key: string]: any;
 }
 
-export function useProfile(userId: string | undefined) {
+const API_BASE = import.meta.env.VITE_API_URL || "https://tickk-backend.onrender.com";
+
+export function useProfile(userId: string | undefined, token?: string) {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const fetchProfile = useCallback(async () => {
-    if (!userId) {
+    if (!userId || !token) {
       setProfile(null);
       setLoading(false);
       return;
@@ -24,33 +26,46 @@ export function useProfile(userId: string | undefined) {
     setError(null);
     
     try {
-      const { data, error: sbError } = await supabase
-        .from('profiles')
-        .select('id, plan_tier, credits, updated_at')
-        .eq('id', userId)
-        .single();
+      const activeToken = token;
 
-      if (sbError) {
-        const errCode = String(sbError.code);
-        const errStatus = String((sbError as any).status || '');
-        if (errCode === 'PGRST116' || errCode === '406' || errStatus === '406' || sbError.message?.includes('Not Acceptable') || sbError.message?.includes('JSON object requested')) {
-          // Graceful fallback for missing profile (e.g. unauthenticated or new user)
-          setProfile({ id: userId, plan: 'free', credits: 0 });
-          return;
-        }
-        throw sbError;
+      if (!activeToken) {
+        setProfile({ id: userId, plan: 'free', credits: 0 });
+        return;
       }
+
+      const res = await fetch(`${API_BASE}/api/auth/me`, {
+        headers: {
+          Authorization: `Bearer ${activeToken}`
+        }
+      });
+
+      if (!res.ok) {
+        // Fallback for unauthorized/missing profile
+        setProfile({ id: userId, plan: 'free', credits: 0 });
+        return;
+      }
+
+      const json = await res.json();
+      
+      if (!json.success || !json.user) {
+        setProfile({ id: userId, plan: 'free', credits: 0 });
+        return;
+      }
+
+      const data = json.user;
       
       const mappedProfile: UserProfile = {
         id: data.id,
-        plan: data.plan_tier || 'free',
+        plan: data.plan_tier || data.plan || 'free',
         credits: data.credits || 0,
         updated_at: data.updated_at
       };
       
       setProfile(mappedProfile);
     } catch (err: any) {
-      console.error('Error fetching profile:', err);
+      console.error('Error fetching profile from backend:', err);
+      // Graceful fallback
+      setProfile({ id: userId, plan: 'free', credits: 0 });
       setError(err.message || 'Failed to load profile');
     } finally {
       setLoading(false);
