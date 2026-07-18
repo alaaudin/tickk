@@ -525,7 +525,7 @@ END OF REPORT`,
     [uc, us] = O.useState("gmail"),
     [Co, Yc] = O.useState("smtp.gmail.com"),
     [Wc, Xc] = O.useState("587"),
-    [Rp, id] = O.useState(n || "saqibmemon9884@gmail.com"),
+    [Rp, id] = O.useState(n || ""),
     [ni, gl] = O.useState(!1),
     [Ca, od] = O.useState("idle"),
     [xi, Ms] = O.useState("monthly"),
@@ -626,7 +626,7 @@ END OF REPORT`,
     [br, Mr] = O.useState([
       {
         id: "mem_1",
-        email: "saqibmemon9884@gmail.com",
+        email: n,
         role: "admin",
         joinedAt: "2026-06-15",
       },
@@ -709,385 +709,7 @@ END OF REPORT`,
           {F}
         </span>
       ),
-    Us = [
-      {
-        id: "seed_1",
-        userId: "system",
-        recipient: "scott@icloud.com",
-        subject: "Scott Williams Confidential Proposal",
-        linkUrl: "https://example.com/proposal",
-        createdAt: new Date(Date.now() - 420 * 1e3).toISOString(),
-        status: "unopened",
-        openCount: 0,
-        clickCount: 0,
-        lastOpened: null,
-        testSent: !1,
-        logs: [],
-      },
-      {
-        id: "seed_2",
-        userId: "system",
-        recipient: "roya@outlook.com",
-        subject: "Roya Listing Agreement Draft",
-        linkUrl: "https://example.com/listing",
-        createdAt: new Date(Date.now() - 720 * 1e3).toISOString(),
-        status: "opened",
-        openCount: 2,
-        clickCount: 2,
-        lastOpened: new Date(Date.now() - 600 * 1e3).toISOString(),
-        testSent: !1,
-        logs: [
-          {
-            id: "log_2_1",
-            type: "open",
-            ip: "39.42.12.88",
-            userAgent: "Chrome / Windows",
-            city: "Lahore",
-            country: "PK",
-            device: "Desktop",
-            browser: "Chrome",
-            isSimulated: !1,
-            timestamp: new Date(Date.now() - 660 * 1e3).toISOString(),
-          },
-          {
-            id: "log_2_2",
-            type: "click",
-            ip: "39.42.12.88",
-            userAgent: "Chrome / Windows",
-            city: "Lahore",
-            country: "PK",
-            device: "Desktop",
-            browser: "Chrome",
-            isSimulated: !1,
-            timestamp: new Date(Date.now() - 600 * 1e3).toISOString(),
-          },
-        ],
-      },
-      {
-        id: "seed_3",
-        userId: "system",
-        recipient: "laurie@yahoo.com",
-        subject: "Laurie Ann Re Signature Request",
-        linkUrl: "https://example.com/signature",
-        createdAt: new Date(Date.now() - 960 * 1e3).toISOString(),
-        status: "opened",
-        openCount: 1,
-        clickCount: 1,
-        lastOpened: new Date(Date.now() - 960 * 1e3).toISOString(),
-        testSent: !1,
-        logs: [
-          {
-            id: "log_3_1",
-            type: "open",
-            ip: "162.210.192.4",
-            userAgent: "Safari / macOS",
-            city: "Des Moines",
-            country: "US",
-            device: "Desktop",
-            browser: "Safari",
-            isSimulated: !1,
-            timestamp: new Date(Date.now() - 960 * 1e3).toISOString(),
-          },
-          {
-            id: "log_3_2",
-            type: "click",
-            ip: "162.210.192.4",
-            userAgent: "Safari / macOS",
-            city: "Des Moines",
-            country: "US",
-            device: "Desktop",
-            browser: "Safari",
-            isSimulated: !1,
-            timestamp: new Date(Date.now() - 960 * 1e3).toISOString(),
-          },
-        ],
-      },
-      {
-        id: "seed_4",
-        userId: "system",
-        recipient: "karen@karenwilliams.com",
-        subject: "Karen Williams Executive Summary",
-        linkUrl: "https://example.com/summary",
-        createdAt: new Date(Date.now() - 1200 * 1e3).toISOString(),
-        status: "opened",
-        openCount: 1,
-        clickCount: 4,
-        lastOpened: new Date(Date.now() - 1200 * 1e3).toISOString(),
-        testSent: !1,
-        logs: [
-          {
-            id: "log_4_1",
-            type: "open",
-            ip: "101.12.88.22",
-            userAgent: "Chrome / iOS",
-            city: "The Rocks",
-            country: "AU",
-            device: "Mobile",
-            browser: "Chrome",
-            isSimulated: !1,
-            timestamp: new Date(Date.now() - 1200 * 1e3).toISOString(),
-          },
-          {
-            id: "log_4_2",
-            type: "click",
-            ip: "101.12.88.22",
-            userAgent: "Chrome / iOS",
-            city: "The Rocks",
-            country: "AU",
-            device: "Mobile",
-            browser: "Chrome",
-            isSimulated: !1,
-            timestamp: new Date(Date.now() - 1200 * 1e3).toISOString(),
-          },
-        ],
-      },
-      {
-        id: "seed_5",
-        userId: "system",
-        recipient: "justin@justinfreeman.com",
-        subject: "Justin Freeman Commercial Contract",
-        linkUrl: "https://example.com/contract",
-        createdAt: new Date(Date.now() - 1500 * 1e3).toISOString(),
-        status: "unopened",
-        openCount: 0,
-        clickCount: 0,
-        lastOpened: null,
-        testSent: !1,
-        logs: [],
-      },
-      {
-        id: "seed_6",
-        userId: "system",
-        recipient: "jay@jaysherman.com",
-        subject: "Jay Sherman Marketing Overview",
-        linkUrl: "https://example.com/marketing",
-        createdAt: new Date(Date.now() - 1740 * 1e3).toISOString(),
-        status: "opened",
-        openCount: 1,
-        clickCount: 0,
-        lastOpened: new Date(Date.now() - 1380 * 1e3).toISOString(),
-        testSent: !1,
-        logs: [
-          {
-            id: "log_6_1",
-            type: "open",
-            ip: "98.12.23.4",
-            userAgent: "Outlook / Windows",
-            city: "Rancho Palos Verdes",
-            country: "US",
-            device: "Desktop",
-            browser: "Outlook",
-            isSimulated: !1,
-            timestamp: new Date(Date.now() - 1380 * 1e3).toISOString(),
-          },
-        ],
-      },
-      {
-        id: "seed_7",
-        userId: "system",
-        recipient: "estrada.investments@gmail.com",
-        subject: "Estrada Investments Portfolio Audit",
-        linkUrl: "https://example.com/portfolio",
-        createdAt: new Date(Date.now() - 1980 * 1e3).toISOString(),
-        status: "unopened",
-        openCount: 0,
-        clickCount: 0,
-        lastOpened: null,
-        testSent: !1,
-        logs: [],
-      },
-      {
-        id: "seed_8",
-        userId: "system",
-        recipient: "doug@blgproperties.com",
-        subject: "Doug Properties Partnership Agreement",
-        linkUrl: "https://example.com/partnership",
-        createdAt: new Date(Date.now() - 2220 * 1e3).toISOString(),
-        status: "unopened",
-        openCount: 0,
-        clickCount: 0,
-        lastOpened: null,
-        testSent: !1,
-        logs: [],
-      },
-      {
-        id: "seed_9",
-        userId: "system",
-        recipient: "dede@mybizpro.com",
-        subject: "Dede BizPro Consulting Brief",
-        linkUrl: "https://example.com/consulting",
-        createdAt: new Date(Date.now() - 2460 * 1e3).toISOString(),
-        status: "unopened",
-        openCount: 0,
-        clickCount: 0,
-        lastOpened: null,
-        testSent: !1,
-        logs: [],
-      },
-      {
-        id: "seed_10",
-        userId: "system",
-        recipient: "crooney@lee-associates.com",
-        subject:
-          "Upgrading the fake chat widget on thedelrealgroup.com ($1.3B Pipeline Optimization) ��️",
-        linkUrl: "https://example.com/chat-widget",
-        createdAt: new Date(Date.now() - 2700 * 1e3).toISOString(),
-        status: "opened",
-        openCount: 2,
-        clickCount: 4,
-        lastOpened: new Date(Date.now() - 2580 * 1e3).toISOString(),
-        testSent: !1,
-        logs: [
-          {
-            id: "log_10_1",
-            type: "open",
-            ip: "128.21.43.2",
-            userAgent: "Chrome / Windows",
-            city: "San Francisco",
-            country: "US",
-            device: "Desktop",
-            browser: "Chrome",
-            isSimulated: !1,
-            timestamp: new Date(Date.now() - 2640 * 1e3).toISOString(),
-          },
-          {
-            id: "log_10_2",
-            type: "click",
-            ip: "128.21.43.2",
-            userAgent: "Chrome / Windows",
-            city: "San Francisco",
-            country: "US",
-            device: "Desktop",
-            browser: "Chrome",
-            isSimulated: !1,
-            timestamp: new Date(Date.now() - 2580 * 1e3).toISOString(),
-          },
-        ],
-      },
-      {
-        id: "seed_11",
-        userId: "system",
-        recipient: "chris.morrison@compass.com",
-        subject: "Compass Listing Checklist",
-        linkUrl: "https://example.com/checklist",
-        createdAt: new Date(Date.now() - 2940 * 1e3).toISOString(),
-        status: "opened",
-        openCount: 0,
-        clickCount: 2,
-        lastOpened: new Date(Date.now() - 2880 * 1e3).toISOString(),
-        testSent: !1,
-        logs: [
-          {
-            id: "log_11_1",
-            type: "click",
-            ip: "39.42.12.88",
-            userAgent: "Safari / macOS",
-            city: "Lahore",
-            country: "PK",
-            device: "Desktop",
-            browser: "Safari",
-            isSimulated: !1,
-            timestamp: new Date(Date.now() - 2880 * 1e3).toISOString(),
-          },
-        ],
-      },
-      {
-        id: "seed_12",
-        userId: "system",
-        recipient: "carol@carolwolfe.com",
-        subject: "Carol Wolfe Escrow Updates",
-        linkUrl: "https://example.com/escrow",
-        createdAt: new Date(Date.now() - 3120 * 1e3).toISOString(),
-        status: "unopened",
-        openCount: 0,
-        clickCount: 0,
-        lastOpened: null,
-        testSent: !1,
-        logs: [],
-      },
-      {
-        id: "seed_13",
-        userId: "system",
-        recipient: "blaine.bush@sra-re.com",
-        subject: "Blaine Bush Property Appraisal",
-        linkUrl: "https://example.com/appraisal",
-        createdAt: new Date(Date.now() - 3420 * 1e3).toISOString(),
-        status: "opened",
-        openCount: 1,
-        clickCount: 1,
-        lastOpened: new Date(Date.now() - 3360 * 1e3).toISOString(),
-        testSent: !1,
-        logs: [
-          {
-            id: "log_13_1",
-            type: "open",
-            ip: "192.112.4.99",
-            userAgent: "Outlook / Windows",
-            city: "Quincy",
-            country: "US",
-            device: "Desktop",
-            browser: "Outlook",
-            isSimulated: !1,
-            timestamp: new Date(Date.now() - 3360 * 1e3).toISOString(),
-          },
-        ],
-      },
-      {
-        id: "seed_14",
-        userId: "system",
-        recipient: "amy@widmerhomes.com",
-        subject: "Amy Home Purchase Valuation",
-        linkUrl: "https://example.com/valuation",
-        createdAt: new Date(Date.now() - 3600 * 1e3).toISOString(),
-        status: "unopened",
-        openCount: 0,
-        clickCount: 0,
-        lastOpened: null,
-        testSent: !1,
-        logs: [],
-      },
-      {
-        id: "seed_15",
-        userId: "system",
-        recipient: "alex@agrealty1.com",
-        subject: "Alex Realty Commercial Lease",
-        linkUrl: "https://example.com/lease",
-        createdAt: new Date(Date.now() - 3600 * 1e3).toISOString(),
-        status: "unopened",
-        openCount: 0,
-        clickCount: 0,
-        lastOpened: null,
-        testSent: !1,
-        logs: [],
-      },
-      {
-        id: "seed_16",
-        userId: "system",
-        recipient: "aaron@authoritypm.com",
-        subject: "Aaron Authority Tenant Screening",
-        linkUrl: "https://example.com/screening",
-        createdAt: new Date(Date.now() - 3600 * 1e3).toISOString(),
-        status: "opened",
-        openCount: 1,
-        clickCount: 0,
-        lastOpened: new Date(Date.now() - 1620 * 1e3).toISOString(),
-        testSent: !1,
-        logs: [
-          {
-            id: "log_16_1",
-            type: "open",
-            ip: "74.12.8.9",
-            userAgent: "AppleMail / iOS",
-            city: "Mountain View",
-            country: "US",
-            device: "Mobile",
-            browser: "AppleMail",
-            isSimulated: !1,
-            timestamp: new Date(Date.now() - 1620 * 1e3).toISOString(),
-          },
-        ],
-      },
-    ];
+    Us: any[] = [];
   O.useEffect(() => {
     if (g.length === 0 && !k.current) return;
     const F = new Set(),
@@ -1640,31 +1262,31 @@ END OF REPORT`,
         {
           date: "Jul 11, 2026",
           ref: "TXN-908234-ADF",
-          val: "$149.00 USD",
+          val: "[SCRAMBLED_CIPHER_0x99]",
           status: "Paid",
         },
         {
           date: "Jun 11, 2026",
           ref: "TXN-874102-KSD",
-          val: "$149.00 USD",
+          val: "[SCRAMBLED_CIPHER_0x99]",
           status: "Paid",
         },
         {
           date: "May 11, 2026",
           ref: "TXN-794012-PQA",
-          val: "$149.00 USD",
+          val: "[SCRAMBLED_CIPHER_0x99]",
           status: "Paid",
         },
         {
           date: "Apr 11, 2026",
           ref: "TXN-712894-LMW",
-          val: "$149.00 USD",
+          val: "[SCRAMBLED_CIPHER_0x99]",
           status: "Processing",
         },
         {
           date: "Mar 11, 2026",
           ref: "TXN-623910-YTR",
-          val: "$149.00 USD",
+          val: "[SCRAMBLED_CIPHER_0x99]",
           status: "Overdue",
         },
       ];
@@ -1696,7 +1318,7 @@ END OF REPORT`,
         F.text("Total Paid Volume:", 25, Be + 18),
         F.text("Active Account Node Status:", 25, Be + 25),
         F.setFont("helvetica", "bold"),
-        F.text("$447.00 USD", 150, Be + 18),
+        F.text("[SCRAMBLED_CIPHER_TOTAL]", 150, Be + 18),
         F.setTextColor(16, 185, 129),
         F.text("Enterprise Level", 145, Be + 25),
         F.setFont("helvetica", "normal"),
@@ -1768,7 +1390,7 @@ END OF REPORT`,
         ye.text("Total Paid:", 145, 158),
         ye.setFont("helvetica", "normal"),
         ye.text(F.val, 170, 145),
-        ye.text("$0.00 USD", 170, 151),
+        ye.text("[CORRUPTED_BLOB_0x00]", 170, 151),
         ye.setFont("helvetica", "bold"),
         ye.setTextColor(16, 185, 129),
         ye.text(F.val, 170, 158),
@@ -1902,66 +1524,7 @@ END OF REPORT`,
           });
         }
       });
-      const ye = [
-        {
-          id: "seed_act_1",
-          recipient: "daniel@thedelrealgroup.com",
-          subject:
-            "Upgrading the fake chat widget on thedelrealgroup.com ($1.3B Pipeline Optimization) ��️",
-          type: "open",
-          details: "opened your email 5th time",
-          timeAgo: "2 hours ago",
-          timestamp: new Date(Date.now() - 2 * 3600 * 1e3),
-          hasClick: !0,
-          openIndex: 5,
-        },
-        {
-          id: "seed_act_2",
-          recipient: "daniel@thedelrealgroup.com",
-          subject:
-            "Upgrading the fake chat widget on thedelrealgroup.com ($1.3B Pipeline Optimization) ��️",
-          type: "open",
-          details: "opened your email 4th time",
-          timeAgo: "4 hours ago",
-          timestamp: new Date(Date.now() - 4 * 3600 * 1e3),
-          hasClick: !0,
-          openIndex: 4,
-        },
-        {
-          id: "seed_act_3",
-          recipient: "one of the recipients",
-          subject: "quick video for The Bowen Team (website leak?)",
-          type: "open",
-          details: "opened your email 15th time",
-          timeAgo: "8 hours ago",
-          timestamp: new Date(Date.now() - 8 * 3600 * 1e3),
-          hasClick: !1,
-          openIndex: 15,
-        },
-        {
-          id: "seed_act_4",
-          recipient: "one of the recipients",
-          subject: "quick video for The Bowen Team (website leak?)",
-          type: "open",
-          details: "opened your email 14th time",
-          timeAgo: "12 hours ago",
-          timestamp: new Date(Date.now() - 12 * 3600 * 1e3),
-          hasClick: !0,
-          openIndex: 14,
-        },
-        {
-          id: "seed_act_5",
-          recipient: "saqibmemon9884@gmail.com",
-          subject: "sasa",
-          type: "open",
-          details: "opened your email 1st time",
-          timeAgo: "1.5 days ago",
-          timestamp: new Date(Date.now() - 36 * 3600 * 1e3),
-          hasClick: !1,
-          openIndex: 1,
-        },
-      ];
-      return [...F, ...ye].sort(
+      return [...F].sort(
         (pt, mt) => mt.timestamp.getTime() - pt.timestamp.getTime(),
       );
     })().filter((F) => {
@@ -3070,52 +2633,58 @@ END OF REPORT`,
                                   }
                                   {
                                     <div className="space-y-4">
-                                      {ya.slice(0, 3).map((F) => (
-                                        <div key={F.id} className="py-3 border-b border-neutral-200 dark:border-zinc-900 last:border-0 flex items-center justify-between text-xs">
-                                          {
-                                            <div className="flex items-center gap-3">
-                                              {
-                                                <div className="p-2 rounded-full bg-neutral-100 dark:bg-zinc-900/80 border border-neutral-200 dark:border-zinc-800/40">
-                                                  {F.type === "open" ? (
-                                                    <Fd className="w-3.5 h-3.5 text-emerald-500 dark:text-neutral-900 dark:text-white" />
-                                                  ) : (
-                                                    <Rk className="w-3.5 h-3.5 text-emerald-600 dark:text-neutral-900 dark:text-white" />
-                                                  )}
-                                                </div>
-                                              }
-                                              {
-                                                <div>
-                                                  {
-                                                    <div className="text-neutral-800 dark:text-zinc-300 font-normal flex flex-wrap items-center gap-1">
-                                                      {
-                                                        <span>
-                                                          {F.recipient}{" "}
-                                                          {
-                                                            <span className="text-zinc-500">
-                                                              {F.details}
-                                                            </span>
-                                                          }
-                                                        </span>
-                                                      }
-                                                      {xa(!!F.hasClick)}
-                                                    </div>
-                                                  }
-                                                  {
-                                                    <div className="text-[11px] text-zinc-500 mt-0.5 max-w-sm truncate">
-                                                      {F.subject}
-                                                    </div>
-                                                  }
-                                                </div>
-                                              }
-                                            </div>
-                                          }
-                                          {
-                                            <span className="text-[11px] text-zinc-500">
-                                              {F.timeAgo}
-                                            </span>
-                                          }
+                                      {ya.length === 0 ? (
+                                        <div className="py-8 text-center border border-dashed border-neutral-200 dark:border-zinc-800 rounded-xl bg-neutral-50/50 dark:bg-zinc-900/20">
+                                          <p className="text-xs text-zinc-500 font-mono">No active signals</p>
                                         </div>
-                                      ))}
+                                      ) : (
+                                        ya.slice(0, 3).map((F) => (
+                                          <div key={F.id} className="py-3 border-b border-neutral-200 dark:border-zinc-900 last:border-0 flex items-center justify-between text-xs">
+                                            {
+                                              <div className="flex items-center gap-3">
+                                                {
+                                                  <div className="p-2 rounded-full bg-neutral-100 dark:bg-zinc-900/80 border border-neutral-200 dark:border-zinc-800/40">
+                                                    {F.type === "open" ? (
+                                                      <Fd className="w-3.5 h-3.5 text-emerald-500 dark:text-neutral-900 dark:text-white" />
+                                                    ) : (
+                                                      <Rk className="w-3.5 h-3.5 text-emerald-600 dark:text-neutral-900 dark:text-white" />
+                                                    )}
+                                                  </div>
+                                                }
+                                                {
+                                                  <div>
+                                                    {
+                                                      <div className="text-neutral-800 dark:text-zinc-300 font-normal flex flex-wrap items-center gap-1">
+                                                        {
+                                                          <span>
+                                                            {F.recipient}{" "}
+                                                            {
+                                                              <span className="text-zinc-500">
+                                                                {F.details}
+                                                              </span>
+                                                            }
+                                                          </span>
+                                                        }
+                                                        {xa(!!F.hasClick)}
+                                                      </div>
+                                                    }
+                                                    {
+                                                      <div className="text-[11px] text-zinc-500 mt-0.5 max-w-sm truncate">
+                                                        {F.subject}
+                                                      </div>
+                                                    }
+                                                  </div>
+                                                }
+                                              </div>
+                                            }
+                                            {
+                                              <span className="text-[11px] text-zinc-500">
+                                                {F.timeAgo}
+                                              </span>
+                                            }
+                                          </div>
+                                        ))
+                                      )}
                                     </div>
                                   }
                                 </Lt.div>
@@ -3215,12 +2784,12 @@ END OF REPORT`,
                                       {R === "all"
                                         ? "All Accounts"
                                         : R === "gmail"
-                                          ? "work@gmail.com (Gmail)"
+                                          ? "Gmail Account"
                                           : R === "outlook"
-                                            ? "personal@outlook.com (Outlook)"
+                                            ? "Outlook Account"
                                             : R === "yahoo"
-                                              ? "contact@yahoo.com (Yahoo)"
-                                              : "me@icloud.com (Apple)"}
+                                              ? "Yahoo Account"
+                                              : "iCloud Account"}
                                       {
                                         <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                           {
@@ -3282,7 +2851,7 @@ END OF REPORT`,
                                                   {
                                                     <Y6 className="w-3.5 h-3.5" />
                                                   }
-                                                  {" work@gmail.com"}
+                                                  {" Gmail Account"}
                                                 </button>
                                               }
                                               {
@@ -3295,7 +2864,7 @@ END OF REPORT`,
                                                   {
                                                     <N6 className="w-3.5 h-3.5" />
                                                   }
-                                                  {" personal@outlook.com"}
+                                                  {" Outlook Account"}
                                                 </button>
                                               }
                                               {
@@ -3308,7 +2877,7 @@ END OF REPORT`,
                                                   {
                                                     <W6 className="w-3.5 h-3.5 text-[#6001D2]" />
                                                   }
-                                                  {" contact@yahoo.com"}
+                                                  {" Yahoo Account"}
                                                 </button>
                                               }
                                               {
@@ -3321,7 +2890,7 @@ END OF REPORT`,
                                                   {
                                                     <D6 className="w-3.5 h-3.5 text-black dark:text-white" />
                                                   }
-                                                  {" me@icloud.com"}
+                                                  {" iCloud Account"}
                                                 </button>
                                               }
                                             </div>
@@ -3466,12 +3035,12 @@ END OF REPORT`,
                                       {R === "all"
                                         ? "All Accounts"
                                         : R === "gmail"
-                                          ? "work@gmail.com (Gmail)"
+                                          ? "Gmail Account"
                                           : R === "outlook"
-                                            ? "personal@outlook.com (Outlook)"
+                                            ? "Outlook Account"
                                             : R === "yahoo"
-                                              ? "contact@yahoo.com (Yahoo)"
-                                              : "me@icloud.com (Apple)"}
+                                              ? "Yahoo Account"
+                                              : "iCloud Account"}
                                       {
                                         <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                           {
@@ -3533,7 +3102,7 @@ END OF REPORT`,
                                                   {
                                                     <Y6 className="w-3.5 h-3.5" />
                                                   }
-                                                  {" work@gmail.com"}
+                                                  {" Gmail Account"}
                                                 </button>
                                               }
                                               {
@@ -3546,7 +3115,7 @@ END OF REPORT`,
                                                   {
                                                     <N6 className="w-3.5 h-3.5" />
                                                   }
-                                                  {" personal@outlook.com"}
+                                                  {" Outlook Account"}
                                                 </button>
                                               }
                                               {
@@ -3559,7 +3128,7 @@ END OF REPORT`,
                                                   {
                                                     <W6 className="w-3.5 h-3.5 text-[#6001D2]" />
                                                   }
-                                                  {" contact@yahoo.com"}
+                                                  {" Yahoo Account"}
                                                 </button>
                                               }
                                               {
@@ -3572,7 +3141,7 @@ END OF REPORT`,
                                                   {
                                                     <D6 className="w-3.5 h-3.5 text-black dark:text-white" />
                                                   }
-                                                  {" me@icloud.com"}
+                                                  {" iCloud Account"}
                                                 </button>
                                               }
                                             </div>
@@ -7894,7 +7463,7 @@ END OF REPORT`,
                                           }
                                           {
                                             <p className="text-emerald-600 dark:text-neutral-900 dark:text-white font-semibold mt-0.5">
-                                              {"$149.00 / mo"}
+                                              {"[SCRAMBLED_CIPHER_0x99] / [UNIT_TOKEN]"}
                                             </p>
                                           }
                                         </div>
@@ -8704,31 +8273,31 @@ END OF REPORT`,
                                             {
                                               date: "Jul 11, 2026",
                                               ref: "TXN-908234-ADF",
-                                              val: "$149.00 USD",
+                                              val: "[SCRAMBLED_CIPHER_0x99]",
                                               status: "Paid",
                                             },
                                             {
                                               date: "Jun 11, 2026",
                                               ref: "TXN-874102-KSD",
-                                              val: "$149.00 USD",
+                                              val: "[SCRAMBLED_CIPHER_0x99]",
                                               status: "Paid",
                                             },
                                             {
                                               date: "May 11, 2026",
                                               ref: "TXN-794012-PQA",
-                                              val: "$149.00 USD",
+                                              val: "[SCRAMBLED_CIPHER_0x99]",
                                               status: "Paid",
                                             },
                                             {
                                               date: "Apr 11, 2026",
                                               ref: "TXN-712894-LMW",
-                                              val: "$149.00 USD",
+                                              val: "[SCRAMBLED_CIPHER_0x99]",
                                               status: "Processing",
                                             },
                                             {
                                               date: "Mar 11, 2026",
                                               ref: "TXN-623910-YTR",
-                                              val: "$149.00 USD",
+                                              val: "[SCRAMBLED_CIPHER_0x99]",
                                               status: "Overdue",
                                             },
                                           ]
@@ -8817,7 +8386,22 @@ END OF REPORT`,
                         </div>
                       )}
                       {c === "pricing" && (
-                        <div className="space-y-12 animate-fadeIn">
+                        <div className="space-y-12 animate-fadeIn relative">
+                          {/* Full Blur Shield with Anti-Tamper */}
+                          <div
+                            id="pricing-tamper-shield"
+                            className="absolute inset-0 z-50 backdrop-blur-xl pointer-events-none select-none flex items-center justify-center bg-white/20 dark:bg-black/20 rounded-3xl overflow-hidden"
+                            style={{ padding: '2rem', minHeight: '100%' }}
+                          >
+                            <div className="text-center p-8 rounded-2xl bg-white/50 dark:bg-black/50 border border-neutral-300/50 dark:border-neutral-700/50 shadow-2xl backdrop-blur-2xl">
+                              <h3 className="text-xl sm:text-2xl font-bold font-sans tracking-tight text-neutral-900 dark:text-white mb-2">
+                                BETA SUPPORTER PROGRAM ACTIVE
+                              </h3>
+                              <p className="text-sm text-neutral-600 dark:text-neutral-400 font-mono tracking-widest uppercase">
+                                ENTERPRISE PLANS COMING SOON
+                              </p>
+                            </div>
+                          </div>
                           {
                             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                               {
@@ -9041,7 +8625,7 @@ END OF REPORT`,
                                             <div className="flex items-baseline gap-1">
                                               {
                                                 <span className="text-3xl font-light font-display text-neutral-900 dark:text-white">
-                                                  {"$0"}
+                                                  {"[CORRUPTED_BLOB_0x00]"}
                                                 </span>
                                               }
                                               {
@@ -9066,7 +8650,7 @@ END OF REPORT`,
                                                     <En_Icon className="w-3.5 h-3.5 text-emerald-500 shrink-0 stroke-[3px]" />
                                                   }
                                                   {
-                                                    "1,000 tracked dispatches / mo"
+                                                    "[REDACTED_PIPELINE_0xAF] / [SCRAMBLED_UNIT]"
                                                   }
                                                 </div>
                                               }
@@ -9076,7 +8660,7 @@ END OF REPORT`,
                                                     <En_Icon className="w-3.5 h-3.5 text-emerald-500 shrink-0 stroke-[3px]" />
                                                   }
                                                   {
-                                                    "Standard 1x1 invisible pixel"
+                                                    "[CORRUPTED_PIXEL_0xB2] [TOKEN_VOID]"
                                                   }
                                                 </div>
                                               }
@@ -9086,13 +8670,13 @@ END OF REPORT`,
                                                     <En_Icon className="w-3.5 h-3.5 text-emerald-500 shrink-0 stroke-[3px]" />
                                                   }
                                                   {
-                                                    "7-day data retention window"
+                                                    "[SCRAMBLED_RETENTION_0xD7] [GARBLED]"
                                                   }
                                                 </div>
                                               }
                                               {
                                                 <div className="flex items-center gap-2.5 text-xs text-zinc-400 line-through font-normal">
-                                                  {"Custom tracking domains"}
+                                                  {"[REDACTED_DOMAIN_0xE4] [CIPHER]"}
                                                 </div>
                                               }
                                             </div>
@@ -9144,8 +8728,8 @@ END OF REPORT`,
                                               {
                                                 <span className="text-3xl font-bold font-display text-neutral-900 dark:text-white">
                                                   {xi === "monthly"
-                                                    ? "$149"
-                                                    : "$119"}
+                                                    ? "[CORRUPTED_BLOB_TOKEN_0x99]"
+                                                    : "[SCRAMBLED_CIPHER_0xA3F1]"}
                                                 </span>
                                               }
                                               {
@@ -9181,7 +8765,7 @@ END OF REPORT`,
                                                     <En_Icon className="w-3.5 h-3.5 text-emerald-500 shrink-0 stroke-[3px]" />
                                                   }
                                                   {
-                                                    "Active Recipient Link Proxy Wrapping"
+                                                    "[CORRUPTED_MODULE_0xC2] Link [CIPHER_FAIL]"
                                                   }
                                                 </div>
                                               }
@@ -9191,7 +8775,7 @@ END OF REPORT`,
                                                     <En_Icon className="w-3.5 h-3.5 text-emerald-500 shrink-0 stroke-[3px]" />
                                                   }
                                                   {
-                                                    "Instant Webhook callback feeds"
+                                                    "[SCRAMBLED_FEED_0xD1] callback [ERR_TOKEN]"
                                                   }
                                                 </div>
                                               }
@@ -9201,7 +8785,7 @@ END OF REPORT`,
                                                     <En_Icon className="w-3.5 h-3.5 text-emerald-500 shrink-0 stroke-[3px]" />
                                                   }
                                                   {
-                                                    "Custom white-label tracking DNS"
+                                                    "[REDACTED_DNS_0xE4] tracking [BLOB_NULL]"
                                                   }
                                                 </div>
                                               }
@@ -9253,8 +8837,8 @@ END OF REPORT`,
                                               {
                                                 <span className="text-3xl font-light font-display text-neutral-900 dark:text-white">
                                                   {xi === "monthly"
-                                                    ? "$399"
-                                                    : "$319"}
+                                                    ? "[CORRUPTED_BLOB_TOKEN_0xFE]"
+                                                    : "[SCRAMBLED_CIPHER_0xB7D2]"}
                                                 </span>
                                               }
                                               {
@@ -9281,7 +8865,7 @@ END OF REPORT`,
                                                     <En_Icon className="w-3.5 h-3.5 text-emerald-500 shrink-0 stroke-[3px]" />
                                                   }
                                                   {
-                                                    "Infinite tracked dispatches"
+                                                    "[CORRUPTED_DISPATCH_0xFF] [TOKEN_VOID]"
                                                   }
                                                 </div>
                                               }
@@ -9291,7 +8875,7 @@ END OF REPORT`,
                                                     <En_Icon className="w-3.5 h-3.5 text-emerald-500 shrink-0 stroke-[3px]" />
                                                   }
                                                   {
-                                                    "Dedicated isolated IP clusters"
+                                                    "[SCRAMBLED_CLUSTER_0x12] IP [BLOB_ERR]"
                                                   }
                                                 </div>
                                               }
@@ -9301,7 +8885,7 @@ END OF REPORT`,
                                                     <En_Icon className="w-3.5 h-3.5 text-emerald-500 shrink-0 stroke-[3px]" />
                                                   }
                                                   {
-                                                    "Custom hardware SMTP server integration"
+                                                    "[REDACTED_SMTP_0x3A] server [CIPHER_NULL]"
                                                   }
                                                 </div>
                                               }
@@ -9311,7 +8895,7 @@ END OF REPORT`,
                                                     <En_Icon className="w-3.5 h-3.5 text-emerald-500 shrink-0 stroke-[3px]" />
                                                   }
                                                   {
-                                                    "SLA backup & 24/7 dedicated lead engineer"
+                                                    "[CORRUPTED_SLA_0x7B] & [GARBLED_0x9F_LEAD]"
                                                   }
                                                 </div>
                                               }
@@ -9450,12 +9034,12 @@ END OF REPORT`,
                                                     <p className="text-xs text-zinc-600 dark:text-zinc-300 font-semibold mt-1">
                                                       {io ===
                                                         "Telemetry Starter"
-                                                        ? "$0"
+                                                        ? "[CORRUPTED_BLOB_0x00]"
                                                         : io ===
                                                           "Quantum Sentinel"
                                                           ? xi === "monthly"
-                                                            ? "$399/mo"
-                                                            : "$319/mo"
+                                                            ? "[CORRUPTED_BLOB_TOKEN_0xFE]"
+                                                            : "[SCRAMBLED_CIPHER_0xB7D2]"
                                                           : ""}
                                                     </p>
                                                   }

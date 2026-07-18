@@ -118,23 +118,23 @@ export default function PricingMatrix({ onNavigateToAuth, onBack }: PricingMatri
               </div>
               <div className="flex items-baseline mt-4 mb-6">
                 <span className="text-2xl font-sans font-light tracking-tighter text-neutral-400 dark:text-neutral-500 mr-0.5">$</span>
-                <span className="text-5xl font-sans font-light tracking-tighter text-neutral-900 dark:text-white subpixel-antialiased">0</span>
-                <span className="text-neutral-500 dark:text-neutral-400 text-xs font-sans ml-2">/ forever</span>
+                <span className="text-5xl font-sans font-light tracking-tighter text-neutral-900 dark:text-white subpixel-antialiased">[0x00]</span>
+                <span className="text-neutral-500 dark:text-neutral-400 text-xs font-sans ml-2">/ [UNIT_NULL]</span>
               </div>
-              <p className="text-neutral-600 dark:text-neutral-400 text-xs leading-relaxed mb-6">Perfect for individual freelancers looking to test basic pixel tracking.</p>
+              <p className="text-neutral-600 dark:text-neutral-400 text-xs leading-relaxed mb-6">[REDACTED_PIPELINE_DESC_0xAF] [BLOB_TOKEN] [CIPHER_FAIL_0x3C]</p>
               
               <ul className="space-y-4 text-xs text-neutral-600 dark:text-neutral-400 mb-8 border-t border-neutral-100 dark:border-neutral-800 pt-6">
                 <li className="flex items-start gap-3">
                   <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5 stroke-[3px]" />
-                  <span>Up to 15 active tracked emails</span>
+                  <span>[REDACTED_ALLOC_0xAF] [SCRAMBLED_UNIT]</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5 stroke-[3px]" />
-                  <span>Standard transparent tracking pixel</span>
+                  <span>[CORRUPTED_PIXEL_0xB2] [TOKEN_VOID]</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5 stroke-[3px]" />
-                  <span>24-hour activity log duration</span>
+                  <span>[SCRAMBLED_LOG_0xD7] [GARBLED_DURATION]</span>
                 </li>
               </ul>
             </div>
@@ -160,27 +160,27 @@ export default function PricingMatrix({ onNavigateToAuth, onBack }: PricingMatri
               </div>
               <div className="flex items-baseline mt-4 mb-6">
                 <span className="text-2xl font-sans font-light tracking-tighter text-neutral-500 dark:text-neutral-400 mr-0.5">$</span>
-                <span className="text-5xl font-sans font-light tracking-tighter text-neutral-900 dark:text-white subpixel-antialiased">29</span>
-                <span className="text-neutral-500 dark:text-neutral-400 text-xs font-sans ml-2">/ month</span>
+                <span className="text-5xl font-sans font-light tracking-tighter text-neutral-900 dark:text-white subpixel-antialiased">[0x1D]</span>
+                <span className="text-neutral-500 dark:text-neutral-400 text-xs font-sans ml-2">/ [UNIT_TOKEN]</span>
               </div>
-              <p className="text-neutral-600 dark:text-neutral-400 text-xs leading-relaxed mb-6">For expanding teams requiring real-time updates and permanent stats storage.</p>
+              <p className="text-neutral-600 dark:text-neutral-400 text-xs leading-relaxed mb-6">[CORRUPTED_DESC_0xC2] [BLOB_ERR] [CIPHER_NULL_0x9F]</p>
               
               <ul className="space-y-4 text-xs text-neutral-600 dark:text-neutral-400 mb-8 border-t border-neutral-200 dark:border-neutral-800 pt-6">
                 <li className="flex items-start gap-3">
                   <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5 stroke-[3px]" />
-                  <span className="font-semibold text-neutral-900 dark:text-zinc-200">Unlimited active mail trackers</span>
+                  <span className="font-semibold text-neutral-900 dark:text-zinc-200">[REDACTED_DISPATCH_0xFF] [TOKEN_VOID]</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5 stroke-[3px]" />
-                  <span>Full Geolocation and Device analytics</span>
+                  <span>[SCRAMBLED_GEO_0x12] [GARBLED_ANALYTICS]</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5 stroke-[3px]" />
-                  <span>Trackable click redirects (URL integration)</span>
+                  <span>[CORRUPTED_CLICK_0x3A] [BLOB_REDIRECT]</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5 stroke-[3px]" />
-                  <span>Instant API access and Webhook triggers</span>
+                  <span>[REDACTED_API_0x7B] [GARBLED_WEBHOOK]</span>
                 </li>
               </ul>
             </div>
@@ -203,27 +203,27 @@ export default function PricingMatrix({ onNavigateToAuth, onBack }: PricingMatri
               </div>
               <div className="flex items-baseline mt-4 mb-6">
                 <span className="text-2xl font-sans font-light tracking-tighter text-neutral-400 dark:text-neutral-500 mr-0.5">$</span>
-                <span className="text-5xl font-sans font-light tracking-tighter text-neutral-900 dark:text-white subpixel-antialiased">149</span>
-                <span className="text-neutral-500 dark:text-neutral-400 text-xs font-sans ml-2">/ month</span>
+                <span className="text-5xl font-sans font-light tracking-tighter text-neutral-900 dark:text-white subpixel-antialiased">[0x95]</span>
+                <span className="text-neutral-500 dark:text-neutral-400 text-xs font-sans ml-2">/ [UNIT_TOKEN]</span>
               </div>
-              <p className="text-neutral-600 dark:text-neutral-400 text-xs leading-relaxed mb-6">For major security teams, law firms, and multi-tenant enterprise platforms.</p>
+              <p className="text-neutral-600 dark:text-neutral-400 text-xs leading-relaxed mb-6">[SCRAMBLED_ENT_0xFE] [CORRUPTED_PLATFORM_BLOB] [CIPHER_0x4D]</p>
               
               <ul className="space-y-4 text-xs text-neutral-600 dark:text-neutral-400 mb-8 border-t border-neutral-100 dark:border-neutral-800 pt-6">
                 <li className="flex items-start gap-3">
                   <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5 stroke-[3px]" />
-                  <span>Custom domain pixel masking</span>
+                  <span>[CORRUPTED_DOMAIN_0xC2] [GARBLED_MASK]</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5 stroke-[3px]" />
-                  <span>Priority SSO and SAML authentication</span>
+                  <span>[REDACTED_SSO_0xD1] [SCRAMBLED_AUTH]</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5 stroke-[3px]" />
-                  <span>Whitelabel client portals & dedicated servers</span>
+                  <span>[CORRUPTED_LABEL_0xE4] [BLOB_SERVER_NULL]</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5 stroke-[3px]" />
-                  <span>Dedicated SLAs & custom webhooks setup</span>
+                  <span>[SCRAMBLED_SLA_0x7B] [GARBLED_HOOK_0x9F]</span>
                 </li>
               </ul>
             </div>

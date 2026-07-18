@@ -33,7 +33,8 @@ export default function App() {
           id: session.user.id, 
           email: session.user.email || '', 
           name: session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'User', 
-          role: 'user' 
+          credits: 15,
+          createdAt: new Date().toISOString()
         });
         setToken(session.access_token);
         setView('dashboard');
@@ -50,7 +51,8 @@ export default function App() {
           id: session.user.id, 
           email: session.user.email || '', 
           name: session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'User', 
-          role: 'user' 
+          credits: 15,
+          createdAt: new Date().toISOString()
         });
         setToken(session.access_token);
       } else {

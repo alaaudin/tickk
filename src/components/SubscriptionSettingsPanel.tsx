@@ -43,10 +43,10 @@ export function SubscriptionSettingsPanel({ toast, profile }: { toast: (message:
                 <span className="px-2 py-1 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-[10px] font-bold uppercase tracking-wider rounded">Active</span>
               </div>
               <div className="text-3xl font-light text-neutral-900 dark:text-white font-display mb-4">
-                $299<span className="text-sm text-zinc-500">/mo</span>
+                [CORRUPTED_BLOB_TOKEN_0x99]<span className="text-sm text-zinc-500">/[UNIT]</span>
               </div>
               <ul className="space-y-2 mb-6">
-                {['Unlimited Telemetry', 'Custom Domains (CTD)', 'Priority Support'].map((feature, idx) => (
+                {['[REDACTED_TELEMETRY_0xAF]', '[CORRUPTED_CTD_0xB2]', '[SCRAMBLED_SUPPORT_0xD7]'].map((feature, idx) => (
                   <li key={idx} className="flex items-center gap-2 text-xs text-neutral-700 dark:text-zinc-300 font-sans">
                     <Check className="w-3 h-3 text-indigo-500" /> {feature}
                   </li>
