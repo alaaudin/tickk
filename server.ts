@@ -5,7 +5,10 @@ import fs from "fs";
 import { fileURLToPath } from "url";
 import { createServer as createViteServer } from "vite";
 import { Tracker, User, OpenLog, TrackerStats, Ticket } from "./src/types.js";
-import { generateMockTrackers, generateMockTickets } from "./src/services/mockDataService.js";
+import { createClient } from "@supabase/supabase-js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,237 +18,15 @@ const PORT = process.env.PORT || 5174;
 
 app.use(express.json());
 
-// Path to file database
-const DB_FILE = path.join(process.cwd(), "tracker_db.json");
+// Initialize Supabase Client
+const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || "";
+const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || "";
 
-// Core database structure
-interface Database {
-  users: User[];
-  trackers: Tracker[];
-  apiKeys: { [key: string]: { userId: string; createdAt: string } };
-  tickets: Ticket[];
+if (!supabaseUrl || !supabaseKey) {
+  console.warn("WARNING: Supabase URL or Key is missing. Database queries will fail.");
 }
 
-let db: Database = {
-  users: [],
-  trackers: [],
-  apiKeys: {},
-  tickets: [],
-};
-
-
-// Seed initial database if not exists
-function loadDatabase() {
-  try {
-    if (fs.existsSync(DB_FILE)) {
-      const data = fs.readFileSync(DB_FILE, "utf-8");
-      db = JSON.parse(data);
-      if (!db.tickets) {
-        db.tickets = [];
-      }
-      if (db.tickets.length === 0) {
-        db.tickets = [
-          {
-            id: "tkt_01j23k45l6",
-            userId: "user_enterprise_1",
-            subject: "Dark mode contrast issue on tracking graphs",
-            category: "bug",
-            status: "reviewed" as const,
-            createdAt: new Date(Date.now() - 2 * 24 * 3600 * 1000).toISOString(),
-            updatedAt: new Date(Date.now() - 1 * 24 * 3600 * 1000).toISOString(),
-            message: "Hey team, just testing out the beta from Twitter. The app looks super sleek, but the tooltips on the activity line chart are a bit hard to read in dark mode (black text on dark grey)."
-          },
-          {
-            id: "tkt_02z89y78x1",
-            userId: "user_enterprise_1",
-            subject: "Add support for UTM parameter tracking?",
-            category: "feature",
-            status: "rewarded" as const,
-            createdAt: new Date(Date.now() - 5 * 24 * 3600 * 1000).toISOString(),
-            updatedAt: new Date(Date.now() - 4 * 24 * 3600 * 1000).toISOString(),
-            message: "Awesome product so far. Are you guys planning to support automatic UTM tagging parsing when generating the pixel URLs? Would save a lot of time for campaign management."
-          }
-        ];
-        saveDatabase();
-      }
-      console.log(`Database loaded. Users: ${db.users.length}, Trackers: ${db.trackers.length}, Tickets: ${db.tickets.length}`);
-    } else {
-      seedInitialData();
-      saveDatabase();
-    }
-  } catch (error) {
-    console.error("Failed to load database, resetting...", error);
-    seedInitialData();
-    saveDatabase();
-  }
-}
-
-function saveDatabase() {
-  try {
-    fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2), "utf-8");
-  } catch (error) {
-    console.error("Failed to save database", error);
-  }
-}
-
-// Helper to seed professional luxury telemetry data for visual layout
-function seedInitialData() {
-  const adminUser: User = {
-    id: "user_enterprise_1",
-    email: "saqibmemon9884@gmail.com",
-    name: "Saqib Memon",
-      credits: 501,
-      createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
-  };
-
-  db.users = [adminUser];
-
-  // Pre-seed API Key
-  db.apiKeys["tk_live_f692a831e0b57f0d04c55d045"] = {
-    userId: adminUser.id,
-    createdAt: new Date().toISOString(),
-  };
-
-  const geoLocations = [
-    { country: "United States", city: "New York", ip: "104.244.42.1" },
-    { country: "United Kingdom", city: "London", ip: "82.165.197.1" },
-    { country: "Japan", city: "Tokyo", ip: "210.140.10.1" },
-    { country: "Germany", city: "Berlin", ip: "46.165.2.1" },
-    { country: "Australia", city: "Sydney", ip: "1.120.0.1" },
-    { country: "Canada", city: "Toronto", ip: "198.235.24.1" },
-  ];
-
-  const subjects = [
-    "Q3 Product Strategy Proposal v2",
-    "Onboarding Deck & Executive Board Agenda",
-    "Signed Contract - Enterprise Partnership Agreement",
-    "Tickk Integration API Keys & Documentation Link",
-    "Your Invoice for July 2026",
-    "Welcome to the Premium Club",
-    "Product Launch Early Access Link",
-  ];
-
-  const recipients = [
-    "executive@linear.app",
-    "partner@apple.com",
-    "board@vercel.com",
-    "developer@github.com",
-    "billing@stripe.com",
-    "vip@customer.com",
-    "beta@testers.com",
-  ];
-
-  const trackers: Tracker[] = [];
-
-  for (let i = 0; i < subjects.length; i++) {
-    const createdDaysAgo = 10 - i * 2;
-    const trackerId = `tr_${100000 + i}`;
-    const createdAt = new Date(Date.now() - createdDaysAgo * 24 * 60 * 60 * 1000).toISOString();
-
-    const logs: OpenLog[] = [];
-    const openCount = i === 3 ? 0 : Math.floor(Math.random() * 5) + 1;
-    const hasLink = [1, 2, 4, 5, 6].includes(i);
-    const clickCount = hasLink && openCount > 0 ? Math.floor(Math.random() * 3) + 1 : 0;
-    const linkUrls = [
-      "",
-      "https://tickk.io/docs/setup",
-      "https://example.com/contract",
-      "",
-      "https://tickk.io/invoice/123",
-      "https://tickk.io/premium/welcome",
-      "https://tickk.io/beta/signup"
-    ];
-    const linkUrlToUse = linkUrls[i] || undefined;
-
-    // Generate simulated open events
-    for (let o = 0; o < openCount; o++) {
-      const geo = geoLocations[(i + o) % geoLocations.length];
-      const hoursOffset = Math.floor(Math.random() * 12) + 1;
-      const logTimestamp = new Date(
-        new Date(createdAt).getTime() + (o * 18 + hoursOffset) * 60 * 60 * 1000
-      ).toISOString();
-
-      logs.push({
-        id: `log_${Math.random().toString(36).substring(2, 9)}`,
-        timestamp: logTimestamp,
-        ip: geo.ip,
-        userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        country: geo.country,
-        city: geo.city,
-        device: o % 2 === 0 ? "Desktop" : "Mobile",
-        browser: o % 3 === 0 ? "Safari" : "Chrome",
-        isSimulated: true,
-        type: "open",
-      });
-    }
-
-    // Generate simulated link click events
-    for (let c = 0; c < clickCount; c++) {
-      const geo = geoLocations[(i + c) % geoLocations.length];
-      const logTimestamp = new Date(
-        new Date(createdAt).getTime() + (c * 24 + 4) * 60 * 60 * 1000
-      ).toISOString();
-
-      logs.push({
-        id: `log_clk_${Math.random().toString(36).substring(2, 9)}`,
-        timestamp: logTimestamp,
-        ip: geo.ip,
-        userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
-        country: geo.country,
-        city: geo.city,
-        device: "Mobile",
-        browser: "Safari",
-        isSimulated: true,
-        type: "click",
-        urlClicked: linkUrlToUse as string,
-      });
-    }
-
-    trackers.push({
-      id: trackerId,
-      userId: adminUser.id,
-      subject: subjects[i],
-      recipient: recipients[i],
-      createdAt,
-      openCount,
-      clickCount,
-      status: openCount > 0 ? "opened" : "unopened",
-      lastOpened: openCount > 0 ? logs[logs.length - 1].timestamp : null,
-      linkUrl: linkUrlToUse,
-      testSent: true,
-      isManual: i % 3 === 1,
-      logs: logs.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()),
-    });
-  }
-
-  db.trackers = trackers;
-
-  const tickets: Ticket[] = [
-    {
-      id: "tkt_01j23k45l6",
-      userId: adminUser.id,
-      subject: "Dark mode contrast issue on tracking graphs",
-      category: "bug",
-      status: "reviewed" as const,
-      createdAt: new Date(Date.now() - 2 * 24 * 3600 * 1000).toISOString(),
-      updatedAt: new Date(Date.now() - 1 * 24 * 3600 * 1000).toISOString(),
-      message: "Hey team, just testing out the beta from Twitter. The app looks super sleek, but the tooltips on the activity line chart are a bit hard to read in dark mode (black text on dark grey)."
-    },
-    {
-      id: "tkt_02z89y78x1",
-      userId: adminUser.id,
-      subject: "Add support for UTM parameter tracking?",
-      category: "feature",
-      status: "rewarded" as const,
-      createdAt: new Date(Date.now() - 5 * 24 * 3600 * 1000).toISOString(),
-      updatedAt: new Date(Date.now() - 4 * 24 * 3600 * 1000).toISOString(),
-      message: "Awesome product so far. Are you guys planning to support automatic UTM tagging parsing when generating the pixel URLs? Would save a lot of time for campaign management."
-    }
-  ];
-
-  db.tickets = tickets;
-  console.log("Seeded database with minimalist premium data and support tickets.");
-}
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 // User-Agent parser helper
 function parseUserAgent(ua: string) {
@@ -267,7 +48,7 @@ function parseUserAgent(ua: string) {
   return { browser, device };
 }
 
-// Geo-IP randomized helper for actual non-simulated hits
+// Geo-IP randomized helper for actual non-simulated hits (Fallback if real geo ip not used)
 const GLOBAL_CITIES = [
   { city: "San Francisco", country: "United States" },
   { city: "Paris", country: "France" },
@@ -285,98 +66,125 @@ function getRandomGeo() {
   return GLOBAL_CITIES[Math.floor(Math.random() * GLOBAL_CITIES.length)];
 }
 
-// Dynamically seed tracking and activity logs for any new or existing user that has 0 trackers
-function seedUserTrackers(userId: string) {
-  const trackers = generateMockTrackers(userId);
-  const tickets = generateMockTickets(userId);
-
-  db.trackers.push(...trackers);
-  db.tickets.push(...tickets);
-  saveDatabase();
-}
-
-loadDatabase();
-
-// --- API ENDPOINTS ---
-
 // Authenticated user check helper
-function getUserIdFromRequest(req: express.Request): string | null {
+async function getUserIdFromRequest(req: express.Request): Promise<string | null> {
   const authHeader = req.headers.authorization;
   if (authHeader && authHeader.startsWith("Bearer ")) {
     const token = authHeader.substring(7);
+    
     if (token.startsWith("tk_live_")) {
-      const keyInfo = db.apiKeys[token];
-      if (keyInfo) return keyInfo.userId;
+      const { data: keyInfo } = await supabase
+        .from('api_keys')
+        .select('user_id')
+        .eq('token', token)
+        .single();
+        
+      if (keyInfo) return keyInfo.user_id;
     }
-    const userExists = db.users.find(u => u.id === token);
-    if (userExists) {
-      return userExists.id;
+    
+    const { data: { user }, error } = await supabase.auth.getUser(token);
+    if (!error && user) {
+      return user.id;
     }
-    return "user_enterprise_1";
   }
   return null;
 }
 
-// 1. Auth Login
+// 1. Auth Login (Deprecated, handled by frontend + Supabase Auth)
 app.post("/api/auth/login", (req, res) => {
-  const { email, password } = req.body;
-  if (!email) {
-    return res.status(400).json({ error: "Email is required" });
-  }
-
-  // Auto sign-in / retrieve existing or create
-  let user = db.users.find(u => u.email.toLowerCase() === email.toLowerCase());
-  if (!user) {
-    // Elegant automatic creation for sandbox experience
-    user = {
-      id: `usr_${Math.random().toString(36).substring(2, 9)}`,
-      email: email.toLowerCase(),
-      name: email.split("@")[0].charAt(0).toUpperCase() + email.split("@")[0].slice(1),
-      credits: 501,
-      createdAt: new Date().toISOString(),
-    };
-    db.users.push(user);
-    saveDatabase();
-  }
-
-  res.json({
-    user,
-    token: user.id, // we use user ID as the bearer token for local simplicity
-  });
+  res.status(400).json({ error: "Use frontend Supabase Auth directly." });
 });
 
 // 2. Get Current Auth User
-app.get("/api/auth/me", (req, res) => {
-  const userId = getUserIdFromRequest(req);
+app.get("/api/auth/me", async (req, res) => {
+  const userId = await getUserIdFromRequest(req);
   if (!userId) {
     return res.status(401).json({ error: "Unauthorized" });
   }
-  const user = db.users.find(u => u.id === userId);
-  if (!user) {
+  
+  const { data: user, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', userId)
+    .single();
+    
+  if (error || !user) {
     return res.status(404).json({ error: "User not found" });
   }
   res.json({ user });
 });
 
 // 3. Get User Trackers & Detailed Telemetry stats
-app.get("/api/links", (req, res) => {
-  const userId = getUserIdFromRequest(req);
+app.get("/api/links", async (req, res) => {
+  const userId = await getUserIdFromRequest(req);
   if (!userId) {
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  const existingTrackers = db.trackers.filter(t => t.userId === userId);
-  if (existingTrackers.length === 0) {
-    seedUserTrackers(userId);
+  const { data: userTrackers, error } = await supabase
+    .from('trackers')
+    .select('*')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
+    
+  if (error) {
+    return res.status(500).json({ error: error.message });
   }
 
-  const userTrackers = db.trackers.filter(t => t.userId === userId);
-  res.json(userTrackers);
+  res.json(userTrackers || []);
+});
+
+// Alias trackers endpoints for frontend compatibility
+app.get("/api/trackers", async (req, res) => {
+  const userId = await getUserIdFromRequest(req);
+  if (!userId) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  const { data: userTrackers, error } = await supabase
+    .from('trackers')
+    .select('*, logs:telemetry_logs(*)')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    return res.status(500).json({ error: error.message });
+  }
+
+  // Map to frontend expected format
+  const formattedTrackers = userTrackers?.map(t => ({
+    id: t.id,
+    userId: t.user_id,
+    subject: t.subject,
+    recipient: t.recipient,
+    createdAt: t.created_at,
+    openCount: t.open_count,
+    clickCount: t.click_count,
+    status: t.status,
+    lastOpened: t.updated_at,
+    linkUrl: t.link_url,
+    webhookUrl: t.webhook_url,
+    isLocked: t.is_locked,
+    logs: t.logs?.map((l: any) => ({
+      id: l.id,
+      timestamp: l.created_at,
+      ip: l.ip_address,
+      userAgent: l.user_agent,
+      country: l.country,
+      city: l.city,
+      device: l.device || "Desktop",
+      browser: l.browser || "Chrome",
+      type: l.type,
+      urlClicked: l.url_clicked
+    })) || []
+  }));
+
+  res.json(formattedTrackers || []);
 });
 
 // 4. Create New Tracker (Unified Handler with Atomic Credit check & Soft Lock)
-const createTrackerHandler = (req: express.Request, res: express.Response) => {
-  const userId = getUserIdFromRequest(req);
+const createTrackerHandler = async (req: express.Request, res: express.Response) => {
+  const userId = await getUserIdFromRequest(req);
   if (!userId) {
     return res.status(401).json({ error: "Unauthorized" });
   }
@@ -386,42 +194,69 @@ const createTrackerHandler = (req: express.Request, res: express.Response) => {
     return res.status(400).json({ error: "Subject is required" });
   }
 
-  const user = db.users.find(u => u.id === userId);
-  if (!user) {
-    return res.status(404).json({ error: "User not found" });
+  // Directly fetch from Supabase public.profiles
+  const { data: profile, error: profileErr } = await supabase
+    .from('profiles')
+    .select('credits')
+    .eq('id', userId)
+    .single();
+
+  if (profileErr || !profile) {
+    return res.status(500).json({ error: "Failed to retrieve user profile or credits." });
   }
 
+  const credits = profile.credits || 0;
   let isLocked = false;
   
   // Deduct Credit (If > 0) or Soft-Lock (If <= 0)
-  if (user.credits > 0) {
-    user.credits -= 1;
+  if (credits > 0) {
+    const { error: deductErr } = await supabase
+        .from('profiles')
+        .update({ credits: credits - 1 })
+        .eq('id', userId);
+        
+    if (deductErr) {
+        return res.status(500).json({ error: "Transaction failed: Could not deduct credit." });
+    }
   } else {
     isLocked = true;
   }
 
-  const newTracker: Tracker = {
-    id: `tr_${Math.random().toString(36).substring(2, 8)}`,
-    userId,
-    subject,
-    recipient: recipient || `${subject.toLowerCase().replace(/[^a-z0-9]/g, '') || 'campaign'}-node@tickk.io`,
-    createdAt: new Date().toISOString(),
-    openCount: 0,
-    clickCount: 0,
-    status: "unopened",
-    lastOpened: null,
-    linkUrl: linkUrl || undefined,
-    webhookUrl: webhookUrl || undefined,
-    testSent: false,
-    logs: [],
-    htmlBody: htmlBody || undefined,
-    isLocked
+  // Insert to trackers table
+  const { data: newTrackerData, error: insertErr } = await supabase
+    .from('trackers')
+    .insert([{
+      user_id: userId,
+      subject,
+      recipient: recipient || `${subject.toLowerCase().replace(/[^a-z0-9]/g, '') || 'campaign'}-node@tickk.io`,
+      link_url: linkUrl || null,
+      webhook_url: webhookUrl || null,
+      is_locked: isLocked
+    }])
+    .select()
+    .single();
+
+  if (insertErr || !newTrackerData) {
+    return res.status(500).json({ error: insertErr?.message || "Failed to create tracker." });
+  }
+
+  // Map to frontend expected format
+  const formattedTracker = {
+    id: newTrackerData.id,
+    userId: newTrackerData.user_id,
+    subject: newTrackerData.subject,
+    recipient: newTrackerData.recipient,
+    createdAt: newTrackerData.created_at,
+    openCount: newTrackerData.open_count,
+    clickCount: newTrackerData.click_count,
+    status: newTrackerData.status,
+    linkUrl: newTrackerData.link_url,
+    webhookUrl: newTrackerData.webhook_url,
+    isLocked: newTrackerData.is_locked,
+    logs: []
   };
 
-  db.trackers.unshift(newTracker);
-  saveDatabase();
-
-  res.status(201).json(newTracker);
+  res.status(201).json(formattedTracker);
 };
 
 app.post("/api/links", createTrackerHandler);
@@ -429,70 +264,86 @@ app.post("/api/trackers", createTrackerHandler);
 app.post("/api/track/dispatch", createTrackerHandler);
 app.post("/api/mail/send", createTrackerHandler);
 
-app.delete("/api/trackers/:id", (req, res) => {
-  const userId = getUserIdFromRequest(req);
+app.delete("/api/trackers/:id", async (req, res) => {
+  const userId = await getUserIdFromRequest(req);
   if (!userId) {
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  const trackerIndex = db.trackers.findIndex(t => t.id === req.params.id && t.userId === userId);
-  if (trackerIndex === -1) {
-    return res.status(404).json({ error: "Tracker not found" });
-  }
+  const { error } = await supabase
+    .from('trackers')
+    .delete()
+    .eq('id', req.params.id)
+    .eq('user_id', userId);
 
-  db.trackers.splice(trackerIndex, 1);
-  saveDatabase();
+  if (error) {
+    return res.status(500).json({ error: "Failed to delete tracker" });
+  }
 
   res.json({ success: true, message: "Tracker successfully deleted" });
 });
 
 // 5. Delete Mail Tracker
-app.delete("/api/links/:id", (req, res) => {
-  const userId = getUserIdFromRequest(req);
+app.delete("/api/links/:id", async (req, res) => {
+  const userId = await getUserIdFromRequest(req);
   if (!userId) {
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  const trackerIndex = db.trackers.findIndex(t => t.id === req.params.id && t.userId === userId);
-  if (trackerIndex === -1) {
-    return res.status(404).json({ error: "Tracker not found" });
-  }
+  const { error } = await supabase
+    .from('trackers')
+    .delete()
+    .eq('id', req.params.id)
+    .eq('user_id', userId);
 
-  db.trackers.splice(trackerIndex, 1);
-  saveDatabase();
+  if (error) {
+    return res.status(500).json({ error: "Failed to delete tracker" });
+  }
 
   res.json({ success: true, message: "Tracker successfully deleted" });
 });
 
 // 6. Get Tracker Stats Dashboard Aggregations
-app.get("/api/links/stats", (req, res) => {
-  const userId = getUserIdFromRequest(req);
+app.get("/api/links/stats", async (req, res) => {
+  const userId = await getUserIdFromRequest(req);
   if (!userId) {
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  const existingTrackers = db.trackers.filter(t => t.userId === userId);
-  if (existingTrackers.length === 0) {
-    seedUserTrackers(userId);
+  const { data: trackers, error } = await supabase
+    .from('trackers')
+    .select('*, logs:telemetry_logs(*)')
+    .eq('user_id', userId);
+
+  if (error || !trackers) {
+    return res.status(500).json({ error: "Failed to fetch stats" });
   }
 
-  const trackers = db.trackers.filter(t => t.userId === userId);
   const totalSent = trackers.length;
-  const openedCount = trackers.filter(t => t.status === "opened").length;
+  const openedCount = trackers.filter(t => t.status === "OPENED" || t.open_count > 0).length;
   const unopenedCount = totalSent - openedCount;
   const openRate = totalSent > 0 ? Math.round((openedCount / totalSent) * 100) : 0;
 
-  const clickCount = trackers.reduce((acc, t) => acc + (t.clickCount || 0), 0);
-  const clickableTrackers = trackers.filter(t => t.linkUrl).length;
-  const clickedTrackersCount = trackers.filter(t => t.linkUrl && t.clickCount > 0).length;
+  const clickCount = trackers.reduce((acc, t) => acc + (t.click_count || 0), 0);
+  const clickableTrackers = trackers.filter(t => t.link_url).length;
+  const clickedTrackersCount = trackers.filter(t => t.link_url && t.click_count > 0).length;
   const clickRate = clickableTrackers > 0 ? Math.round((clickedTrackersCount / clickableTrackers) * 100) : 0;
 
   // Flatten and join recent logs
-  const allLogs: (OpenLog & { trackerSubject: string; trackerRecipient: string; trackerId: string })[] = [];
+  const allLogs: any[] = [];
   trackers.forEach(t => {
-    t.logs.forEach(log => {
+    (t.logs || []).forEach((log: any) => {
       allLogs.push({
-        ...log,
+        id: log.id,
+        timestamp: log.created_at,
+        ip: log.ip_address,
+        userAgent: log.user_agent,
+        country: log.country,
+        city: log.city,
+        device: log.device || "Desktop",
+        browser: log.browser || "Chrome",
+        type: log.type,
+        urlClicked: log.url_clicked,
         trackerId: t.id,
         trackerSubject: t.subject,
         trackerRecipient: t.recipient,
@@ -500,12 +351,11 @@ app.get("/api/links/stats", (req, res) => {
     });
   });
 
-  // Sort logs by newest first
   const recentActivity = allLogs
     .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
     .slice(0, 15);
 
-  const stats: TrackerStats = {
+  const stats = {
     totalSent,
     openedCount,
     unopenedCount,
@@ -518,80 +368,105 @@ app.get("/api/links/stats", (req, res) => {
   res.json(stats);
 });
 
-
-
 // 9. API Keys settings
-app.get("/api/settings/keys", (req, res) => {
-  const userId = getUserIdFromRequest(req);
+app.get("/api/settings/keys", async (req, res) => {
+  const userId = await getUserIdFromRequest(req);
   if (!userId) {
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  const userKeys = Object.entries(db.apiKeys)
-    .filter(([_, info]) => info.userId === userId)
-    .map(([key, info]) => ({
-      key,
-      createdAt: info.createdAt,
-    }));
+  const { data: keys, error } = await supabase
+    .from('api_keys')
+    .select('*')
+    .eq('user_id', userId);
+
+  if (error) {
+    return res.status(500).json({ error: error.message });
+  }
+
+  const userKeys = keys?.map(k => ({
+    key: k.token,
+    createdAt: k.created_at,
+  })) || [];
 
   res.json(userKeys);
 });
 
-app.post("/api/settings/keys", (req, res) => {
-  const userId = getUserIdFromRequest(req);
+app.post("/api/settings/keys", async (req, res) => {
+  const userId = await getUserIdFromRequest(req);
   if (!userId) {
     return res.status(401).json({ error: "Unauthorized" });
   }
 
   const newKey = `tk_live_${Math.random().toString(36).substring(2, 10)}${Math.random().toString(36).substring(2, 10)}`;
-  db.apiKeys[newKey] = {
-    userId,
-    createdAt: new Date().toISOString(),
-  };
-  saveDatabase();
+  
+  const { data, error } = await supabase
+    .from('api_keys')
+    .insert([{ user_id: userId, token: newKey }])
+    .select()
+    .single();
 
-  res.status(201).json({ key: newKey, createdAt: db.apiKeys[newKey].createdAt });
+  if (error || !data) {
+    return res.status(500).json({ error: "Failed to generate key" });
+  }
+
+  res.status(201).json({ key: data.token, createdAt: data.created_at });
 });
 
-app.delete("/api/settings/keys/:key", (req, res) => {
-  const userId = getUserIdFromRequest(req);
+app.delete("/api/settings/keys/:key", async (req, res) => {
+  const userId = await getUserIdFromRequest(req);
   if (!userId) {
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  const keyToDelete = req.params.key;
-  if (db.apiKeys[keyToDelete] && db.apiKeys[keyToDelete].userId === userId) {
-    delete db.apiKeys[keyToDelete];
-    saveDatabase();
-    return res.json({ success: true });
+  const { error } = await supabase
+    .from('api_keys')
+    .delete()
+    .eq('token', req.params.key)
+    .eq('user_id', userId);
+
+  if (error) {
+    return res.status(500).json({ error: "Failed to delete key" });
   }
 
-  res.status(404).json({ error: "Key not found" });
+  res.json({ success: true });
 });
-
-
-// --- SUPPORT TICKETS API ---
 
 
 // --- FEEDBACK & REWARDS API ---
 
-app.get("/api/tickets", (req, res) => {
-  const userId = getUserIdFromRequest(req);
+app.get("/api/tickets", async (req, res) => {
+  const userId = await getUserIdFromRequest(req);
   if (!userId) {
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  const existingTrackers = db.trackers.filter(t => t.userId === userId);
-  if (existingTrackers.length === 0) {
-    seedUserTrackers(userId);
+  const { data: tickets, error } = await supabase
+    .from('tickets')
+    .select('*')
+    .eq('user_id', userId);
+
+  if (error) {
+    return res.status(500).json({ error: error.message });
   }
 
-  const userTickets = db.tickets.filter(t => t.userId === userId);
-  res.json(userTickets);
+  // Format to camelCase
+  const formattedTickets = tickets?.map(t => ({
+    id: t.id,
+    userId: t.user_id,
+    subject: t.subject,
+    category: t.category,
+    message: t.message,
+    status: t.status,
+    createdAt: t.created_at,
+    updatedAt: t.updated_at
+  })) || [];
+
+  res.json(formattedTickets);
 });
 
-app.post("/api/tickets", (req, res) => {
-  const userId = getUserIdFromRequest(req);
+app.post("/api/tickets", async (req, res) => {
+  const userId = await getUserIdFromRequest(req);
   if (!userId) {
     return res.status(401).json({ error: "Unauthorized" });
   }
@@ -601,70 +476,89 @@ app.post("/api/tickets", (req, res) => {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
-  const user = db.users.find(u => u.id === userId);
-  if (!user) {
-    return res.status(404).json({ error: "User not found" });
+  const { data: newTicket, error } = await supabase
+    .from('tickets')
+    .insert([{
+      user_id: userId,
+      subject,
+      category,
+      message,
+      status: "submitted"
+    }])
+    .select()
+    .single();
+
+  if (error || !newTicket) {
+    return res.status(500).json({ error: "Failed to submit ticket" });
   }
 
-  const newTicket = {
-    id: `tkt_${Math.random().toString(36).substring(2, 12)}`,
-    userId,
-    subject,
-    category,
-    message,
-    status: "submitted" as const,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
+  // Grant 99 credits
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('credits')
+    .eq('id', userId)
+    .single();
+
+  let newCredits = profile?.credits || 0;
+  if (profile) {
+    newCredits += 99;
+    await supabase.from('profiles').update({ credits: newCredits }).eq('id', userId);
+  }
+
+  const formattedTicket = {
+    id: newTicket.id,
+    userId: newTicket.user_id,
+    subject: newTicket.subject,
+    category: newTicket.category,
+    message: newTicket.message,
+    status: newTicket.status,
+    createdAt: newTicket.created_at,
+    updatedAt: newTicket.updated_at
   };
 
-  db.tickets.unshift(newTicket);
-  
-  // They get 99 credits for submitting good feedback (we'll just assume it's good right now for the beta)
-  user.credits = (user.credits || 501) + 99;
-
-  saveDatabase();
-  res.status(201).json({ ticket: newTicket, newCredits: user.credits });
+  res.status(201).json({ ticket: formattedTicket, newCredits });
 });
+
 // --- CORE SYSTEM ENFORCEMENT: THE TRACKING PIXEL ---
-// Matches GET /api/track/:id or GET /api/track/:id.png
-const pixelRouter = (req: express.Request, res: express.Response) => {
-  const trackerId = req.params.id.split(".")[0]; // remove optional .png extensions
-  const tracker = db.trackers.find(t => t.id === trackerId);
+const pixelRouter = async (req: express.Request, res: express.Response) => {
+  const trackerId = req.params.id.split(".")[0]; 
+
+  const { data: tracker } = await supabase
+    .from('trackers')
+    .select('*')
+    .eq('id', trackerId)
+    .single();
 
   if (tracker) {
-    if (tracker.isLocked) {
+    if (tracker.is_locked) {
       // Security Rule: Tracking functionally disabled
-      // Skip log creation entirely
     } else {
       const ip = (req.headers["x-forwarded-for"] as string) || req.socket.remoteAddress || "127.0.0.1";
       const userAgent = req.headers["user-agent"] || "Unknown";
       const { browser, device } = parseUserAgent(userAgent);
       const geo = getRandomGeo();
 
-      // Create a new authentic open log
-      const openLog: OpenLog = {
-        id: `log_live_${Math.random().toString(36).substring(2, 9)}`,
-        timestamp: new Date().toISOString(),
-        ip,
-        userAgent,
+      // Insert log
+      await supabase.from('telemetry_logs').insert([{
+        tracker_id: trackerId,
+        type: 'open',
+        ip_address: ip,
+        user_agent: userAgent,
         country: geo.country,
         city: geo.city,
         device,
-        browser,
-        isSimulated: false,
-        type: "open",
-      };
+        browser
+      }]);
 
-      tracker.logs.unshift(openLog);
-      tracker.openCount += 1;
-      tracker.status = "opened";
-      tracker.lastOpened = openLog.timestamp;
-
-      saveDatabase();
+      // Update count
+      await supabase.from('trackers').update({
+        open_count: (tracker.open_count || 0) + 1,
+        status: 'OPENED'
+      }).eq('id', trackerId);
 
       // Trigger webhook if enabled
-      if (tracker.webhookUrl) {
-        console.log(`[Webhook] Dispatching live payload to ${tracker.webhookUrl}`);
+      if (tracker.webhook_url) {
+        console.log(`[Webhook] Dispatching live payload to ${tracker.webhook_url}`);
       }
     }
   }
@@ -687,16 +581,22 @@ app.get("/api/track/:id/pixel", pixelRouter);
 
 
 // --- CORE SYSTEM ENFORCEMENT: THE LINK CLICK REDIRECTOR ---
-// Matches GET /api/click/:id or GET /api/track/:id/click
-const clickRouter = (req: express.Request, res: express.Response) => {
+const clickRouter = async (req: express.Request, res: express.Response) => {
   const trackerId = req.params.id;
-  const tracker = db.trackers.find(t => t.id === trackerId);
-  const targetUrl = (req.query.url as string) || (tracker && tracker.linkUrl);
+  const targetUrl = (req.query.url as string);
 
-  if (tracker && targetUrl) {
-    if (tracker.isLocked) {
+  const { data: tracker } = await supabase
+    .from('trackers')
+    .select('*')
+    .eq('id', trackerId)
+    .single();
+
+  const finalUrl = targetUrl || (tracker && tracker.link_url);
+
+  if (tracker && finalUrl) {
+    if (tracker.is_locked) {
       // Security Rule: Return link redirect but do NOT log click stats
-      return res.redirect(targetUrl);
+      return res.redirect(finalUrl);
     }
 
     const ip = (req.headers["x-forwarded-for"] as string) || req.socket.remoteAddress || "127.0.0.1";
@@ -704,30 +604,25 @@ const clickRouter = (req: express.Request, res: express.Response) => {
     const { browser, device } = parseUserAgent(userAgent);
     const geo = getRandomGeo();
 
-    // Create click log
-    const clickLog: OpenLog = {
-      id: `log_live_clk_${Math.random().toString(36).substring(2, 9)}`,
-      timestamp: new Date().toISOString(),
-      ip,
-      userAgent,
+    await supabase.from('telemetry_logs').insert([{
+      tracker_id: trackerId,
+      type: 'click',
+      url_clicked: finalUrl,
+      ip_address: ip,
+      user_agent: userAgent,
       country: geo.country,
       city: geo.city,
       device,
-      browser,
-      isSimulated: false,
-      type: "click",
-      urlClicked: targetUrl,
-    };
+      browser
+    }]);
 
-    tracker.logs.unshift(clickLog);
-    tracker.clickCount += 1;
+    await supabase.from('trackers').update({
+      click_count: (tracker.click_count || 0) + 1
+    }).eq('id', trackerId);
 
-    saveDatabase();
-
-    return res.redirect(targetUrl);
+    return res.redirect(finalUrl);
   }
 
-  // Fallback if tracker or linkUrl doesn't exist
   res.send("Link redirect tracked, but destination missing.");
 };
 
@@ -738,7 +633,7 @@ app.get("/api/track/:id/click", clickRouter);
 
 // --- GEMINI QUICK REPLY API ---
 app.post("/api/suggest-reply", async (req, res) => {
-  const userId = getUserIdFromRequest(req);
+  const userId = await getUserIdFromRequest(req);
   if (!userId) {
     return res.status(401).json({ error: "Unauthorized" });
   }
@@ -750,8 +645,6 @@ app.post("/api/suggest-reply", async (req, res) => {
 
   try {
     if (!process.env.GEMINI_API_KEY) {
-      // Mock for when API key is not present, though it should ideally fail fast or tell user to add it.
-      // We will provide a static suggestion to avoid breaking if not configured.
       return res.json({ suggestion: "Thank you for reviewing the email. Let me know if you have any questions or need further clarification." });
     }
 
