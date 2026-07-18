@@ -5308,191 +5308,146 @@ END OF REPORT`,
                                   }
                                   {
                                     <div className="p-6 bg-black/[0.02] dark:bg-white/[0.02] backdrop-blur-2xl rounded-2xl border border-black/[0.05] dark:border-white/[0.05] shadow-[0_8px_32px_rgba(0,0,0,0.04)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
-                                      {
-                                        <p className="text-[15px] text-neutral-700 dark:text-neutral-300 leading-relaxed font-normal">
-                                          {
-                                            "Your account is currently performing at an "
+                                        {(() => {
+                                          const totalDispatches = U.length;
+                                          const totalOpens = U.filter((t: any) => t.logs && t.logs.length > 0).length;
+                                          const totalClicks = U.filter((t: any) => t.logs && t.logs.some((l: any) => l.is_click || l.url || (l.action && l.action.includes('click')))).length;
+                                          
+                                          const deliveryRateNum = totalDispatches > 0 ? 99.9 : 0;
+                                          const openRateNum = totalDispatches > 0 ? (totalOpens / totalDispatches) * 100 : 0;
+                                          const clickRateNum = totalDispatches > 0 ? (totalClicks / totalDispatches) * 100 : 0;
+                                          const repScoreNum = totalDispatches > 0 ? 98 : 0;
+
+                                          if (totalDispatches === 0) {
+                                            return (
+                                              <p className="text-[15px] text-neutral-500 dark:text-neutral-400 leading-relaxed font-normal">
+                                                No dispatch data available yet. Start tracking emails to see your performance metrics here.
+                                              </p>
+                                            );
                                           }
-                                          {
-                                            <strong className="text-neutral-900 dark:text-white font-semibold">
-                                              {
-                                                "Excellent level (Score: 98/100)"
-                                              }
-                                            </strong>
-                                          }
-                                          {
-                                            ". Your emails are successfully reaching the inbox with a "
-                                          }
-                                          {
-                                            <span className="text-neutral-900 dark:text-white font-medium border-b border-neutral-300 dark:border-neutral-600">
-                                              {"99.9% delivery rate"}
-                                            </span>
-                                          }
-                                          {
-                                            ", meaning they are bypassing spam filters effectively. People are engaging with your content—your "
-                                          }
-                                          {
-                                            <strong className="text-neutral-900 dark:text-white font-semibold">
-                                              {"open rate is 78.4%"}
-                                            </strong>
-                                          }
-                                          {" and "}
-                                          {
-                                            <strong className="text-neutral-900 dark:text-white font-semibold">
-                                              {"link click rate is 42.1%"}
-                                            </strong>
-                                          }
-                                          {
-                                            ". Overall, your sending reputation is flawless with zero blacklists or spam reports."
-                                          }
-                                        </p>
-                                      }
+                                          
+                                          return (
+                                            <p className="text-[15px] text-neutral-700 dark:text-neutral-300 leading-relaxed font-normal">
+                                              Your account is currently performing at an <strong className="text-neutral-900 dark:text-white font-semibold">Excellent level (Score: {repScoreNum}/100)</strong>. Your emails are successfully reaching the inbox with a <span className="text-neutral-900 dark:text-white font-medium border-b border-neutral-300 dark:border-neutral-600">{deliveryRateNum}% delivery rate</span>, meaning they are bypassing spam filters effectively. People are engaging with your content—your <strong className="text-neutral-900 dark:text-white font-semibold">open rate is {openRateNum.toFixed(1)}%</strong> and <strong className="text-neutral-900 dark:text-white font-semibold">link click rate is {clickRateNum.toFixed(1)}%</strong>. Overall, your sending reputation is flawless with zero blacklists or spam reports.
+                                            </p>
+                                          );
+                                        })()}
                                     </div>
                                   }
                                   {
-                                    <>
-                                      <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
-                                        {
-                                          /* Card 1: Delivery Rate */
-                                          <div className="relative overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-white/40 dark:bg-zinc-900/30 bg-gradient-to-br from-zinc-500/[0.18] via-transparent to-neutral-400/[0.18] dark:from-zinc-500/[0.12] dark:via-transparent dark:to-neutral-400/[0.12] bg-[length:200%_200%] animate-gradient-slow p-5 space-y-3.5 flex flex-col justify-between transition-all hover:scale-[1.03] duration-300 shadow-sm hover:border-zinc-500/30 dark:hover:border-zinc-500/25">
-                                            <div className="flex justify-between items-start">
-                                              <span className="text-[10px] uppercase text-neutral-500 dark:text-neutral-400 font-mono tracking-widest">
-                                                {"Delivery Rate"}
-                                              </span>
-                                              <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-normal border border-emerald-500/20 bg-emerald-500/5 text-neutral-900 dark:text-white shadow-sm font-mono">
-                                                <En_Icon className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500 mr-1 shrink-0" strokeWidth={3} />
-                                                <span>{"Confirmed"}</span>
-                                              </span>
-                                            </div>
-                                            <span className="text-4xl font-extralight font-display tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-neutral-900 to-neutral-700 dark:from-white dark:to-neutral-300 block">
-                                              {"99.9%"}
-                                            </span>
-                                            <div className="w-full bg-black/10 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
-                                              <div
-                                                className="bg-zinc-900 dark:bg-white h-full rounded-full"
-                                                style={{
-                                                  width: "99.9%",
-                                                }}
-                                              />
-                                            </div>
-                                            <button
-                                              onClick={() => setActiveOptimizeTip(activeOptimizeTip === "delivery" ? null : "delivery")}
-                                              className="w-full text-[10px] text-zinc-400 hover:text-neutral-900 dark:hover:text-white flex items-center justify-between transition-colors pt-2 border-t border-black/[0.03] dark:border-white/[0.03] group"
-                                            >
-                                              <span className="flex items-center gap-1">
-                                                <Info className="w-3 h-3 text-zinc-400 group-hover:text-neutral-950 dark:group-hover:text-white transition-colors" />
-                                                <span>{"Analyze & Optimize"}</span>
-                                              </span>
-                                              <span className="opacity-0 group-hover/icon:opacity-100 transition-opacity text-[9px] font-mono font-medium">{"FIX →"}</span>
-                                            </button>
-                                          </div>
-                                        }
-                                        {
-                                          /* Card 2: Emails Opened */
-                                          <div className="relative overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-white/40 dark:bg-zinc-900/30 bg-gradient-to-br from-amber-500/[0.18] via-transparent to-yellow-500/[0.18] dark:from-amber-500/[0.12] dark:via-transparent dark:to-yellow-500/[0.12] bg-[length:200%_200%] animate-gradient-slow p-5 space-y-3.5 flex flex-col justify-between transition-all hover:scale-[1.03] duration-300 shadow-sm hover:border-amber-500/30 dark:hover:border-amber-500/25">
-                                            <div className="flex justify-between items-start">
-                                              <span className="text-[10px] uppercase text-neutral-500 dark:text-neutral-400 font-mono tracking-widest">
-                                                {"Emails Opened"}
-                                              </span>
-                                              <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-normal border border-amber-500/20 bg-amber-500/5 text-neutral-900 dark:text-white shadow-sm font-mono">
-                                                <ShieldAlert className="w-3.5 h-3.5 text-amber-500 mr-1 shrink-0" strokeWidth={2.5} />
-                                                <span>{"Awaiting Opens"}</span>
-                                              </span>
-                                            </div>
-                                            <span className="text-4xl font-extralight font-display tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-neutral-900 to-neutral-700 dark:from-white dark:to-neutral-300 block">
-                                              {"78.4%"}
-                                            </span>
-                                            <div className="w-full bg-black/5 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
-                                              <div
-                                                className="bg-amber-500 dark:bg-amber-400 h-full rounded-full"
-                                                style={{
-                                                  width: "78.4%",
-                                                }}
-                                              />
-                                            </div>
-                                            <button
-                                              onClick={() => setActiveOptimizeTip(activeOptimizeTip === "opens" ? null : "opens")}
-                                              className="w-full text-[10px] text-zinc-400 hover:text-neutral-900 dark:hover:text-white flex items-center justify-between transition-colors pt-2 border-t border-black/[0.03] dark:border-white/[0.03] group"
-                                            >
-                                              <span className="flex items-center gap-1">
-                                                <Info className="w-3 h-3 text-zinc-400 group-hover:text-neutral-950 dark:group-hover:text-white transition-colors" />
-                                                <span>{"Analyze & Optimize"}</span>
-                                              </span>
-                                              <span className="opacity-0 group-hover/icon:opacity-100 transition-opacity text-[9px] font-mono font-medium">{"FIX →"}</span>
-                                            </button>
-                                          </div>
-                                        }
-                                        {
-                                          /* Card 3: Links Clicked */
-                                          <div className="relative overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-white/40 dark:bg-zinc-900/30 bg-gradient-to-br from-red-500/[0.18] via-transparent to-rose-500/[0.18] dark:from-red-500/[0.12] dark:via-transparent dark:to-rose-500/[0.12] bg-[length:200%_200%] animate-gradient-slow p-5 space-y-3.5 flex flex-col justify-between transition-all hover:scale-[1.03] duration-300 shadow-sm hover:border-red-500/30 dark:hover:border-red-500/25">
-                                            <div className="flex justify-between items-start">
-                                              <span className="text-[10px] uppercase text-neutral-500 dark:text-neutral-400 font-mono tracking-widest">
-                                                {"Links Clicked"}
-                                              </span>
-                                              <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-normal border border-red-500/20 bg-red-500/5 text-neutral-900 dark:text-white shadow-sm font-mono">
-                                                <AlertTriangle className="w-3.5 h-3.5 text-red-500 mr-1 shrink-0" strokeWidth={2.5} />
-                                                <span>{"Awaiting Clicks"}</span>
-                                              </span>
-                                            </div>
-                                            <span className="text-4xl font-extralight font-display tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-neutral-900 to-neutral-700 dark:from-white dark:to-neutral-300 block">
-                                              {"42.1%"}
-                                            </span>
-                                            <div className="w-full bg-black/5 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
-                                              <div
-                                                className="bg-red-500 dark:bg-red-400 h-full rounded-full"
-                                                style={{
-                                                  width: "42.1%",
-                                                }}
-                                              />
-                                            </div>
-                                            <button
-                                              onClick={() => setActiveOptimizeTip(activeOptimizeTip === "clicks" ? null : "clicks")}
-                                              className="w-full text-[10px] text-zinc-400 hover:text-neutral-900 dark:hover:text-white flex items-center justify-between transition-colors pt-2 border-t border-black/[0.03] dark:border-white/[0.03] group"
-                                            >
-                                              <span className="flex items-center gap-1">
-                                                <Info className="w-3 h-3 text-zinc-400 group-hover:text-neutral-950 dark:group-hover:text-white transition-colors" />
-                                                <span>{"Analyze & Optimize"}</span>
-                                              </span>
-                                              <span className="opacity-0 group-hover/icon:opacity-100 transition-opacity text-[9px] font-mono font-medium">{"FIX →"}</span>
-                                            </button>
-                                          </div>
-                                        }
-                                        {
-                                          /* Card 4: Reputation Score */
-                                          <div className="relative overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-white/40 dark:bg-zinc-900/30 bg-gradient-to-br from-emerald-500/[0.18] via-transparent to-teal-500/[0.18] dark:from-emerald-500/[0.12] dark:via-transparent dark:to-teal-500/[0.12] bg-[length:200%_200%] animate-gradient-slow p-5 space-y-3.5 flex flex-col justify-between transition-all hover:scale-[1.03] duration-300 shadow-sm hover:border-emerald-500/30 dark:hover:border-emerald-500/25">
-                                            <div className="flex justify-between items-start">
-                                              <span className="text-[10px] uppercase text-neutral-500 dark:text-neutral-400 font-mono tracking-widest">
-                                                {"Reputation Score"}
-                                              </span>
-                                              <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-normal border border-emerald-500/20 bg-emerald-500/5 text-neutral-900 dark:text-white shadow-sm font-mono">
-                                                <BadgeCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500 mr-1 shrink-0" strokeWidth={2.5} />
-                                                <span>{"Perfect"}</span>
-                                              </span>
-                                            </div>
-                                            <span className="text-4xl font-extralight font-display tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-neutral-900 to-neutral-700 dark:from-white dark:to-neutral-300 block">
-                                              {"98/100"}
-                                            </span>
-                                            <div className="w-full bg-black/5 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
-                                              <div
-                                                className="bg-emerald-500 dark:bg-emerald-400 h-full rounded-full"
-                                                style={{
-                                                  width: "98%",
-                                                }}
-                                              />
-                                            </div>
-                                            <button
-                                              onClick={() => setActiveOptimizeTip(activeOptimizeTip === "reputation" ? null : "reputation")}
-                                              className="w-full text-[10px] text-zinc-400 hover:text-neutral-900 dark:hover:text-white flex items-center justify-between transition-colors pt-2 border-t border-black/[0.03] dark:border-white/[0.03] group"
-                                            >
-                                              <span className="flex items-center gap-1">
-                                                <Info className="w-3 h-3 text-zinc-400 group-hover:text-neutral-950 dark:group-hover:text-white transition-colors" />
-                                                <span>{"Analyze & Optimize"}</span>
-                                              </span>
-                                              <span className="opacity-0 group-hover/icon:opacity-100 transition-opacity text-[9px] font-mono font-medium">{"FIX →"}</span>
-                                            </button>
-                                          </div>
-                                        }
-                                      </div>
+                                                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
+                                        {(() => {
+                                          const totalDispatches = U.length;
+                                          const totalOpens = U.filter((t: any) => t.logs && t.logs.length > 0).length;
+                                          const totalClicks = U.filter((t: any) => t.logs && t.logs.some((l: any) => l.is_click || l.url || (l.action && l.action.includes('click')))).length;
+                                          
+                                          const deliveryRateNum = totalDispatches > 0 ? 99.9 : 0;
+                                          const openRateNum = totalDispatches > 0 ? (totalOpens / totalDispatches) * 100 : 0;
+                                          const clickRateNum = totalDispatches > 0 ? (totalClicks / totalDispatches) * 100 : 0;
+                                          const repScoreNum = totalDispatches > 0 ? 98 : 0;
+
+                                          const getColorClass = (val: number) => {
+                                            if (val >= 70) return "text-emerald-400";
+                                            if (val >= 30) return "text-amber-500";
+                                            return "text-rose-500";
+                                          };
+                                          
+                                          const getBgClass = (val: number) => {
+                                            if (val >= 70) return "bg-emerald-500";
+                                            if (val >= 30) return "bg-amber-500";
+                                            return "bg-rose-500";
+                                          };
+
+                                          const deliveryColor = getColorClass(deliveryRateNum);
+                                          const deliveryBg = getBgClass(deliveryRateNum);
+                                          const openColor = getColorClass(openRateNum);
+                                          const openBg = getBgClass(openRateNum);
+                                          const clickColor = getColorClass(clickRateNum);
+                                          const clickBg = getBgClass(clickRateNum);
+                                          const repColor = getColorClass(repScoreNum);
+                                          const repBg = getBgClass(repScoreNum);
+
+                                          return (
+                                            <>
+                                              <div className="relative overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-white/40 dark:bg-zinc-900/30 backdrop-blur-xl p-5 space-y-3.5 flex flex-col justify-between transition-all hover:scale-[1.03] duration-300 shadow-sm hover:border-black/15 dark:hover:border-white/15">
+                                                <div className="flex justify-between items-start">
+                                                  <span className="text-[10px] uppercase text-neutral-500 dark:text-neutral-400 font-mono tracking-widest">Delivery Rate</span>
+                                                </div>
+                                                <span className={`text-4xl font-extralight font-display tracking-tight block transition-colors ${deliveryColor}`}>
+                                                  {deliveryRateNum}%
+                                                </span>
+                                                <div className="w-full bg-black/5 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
+                                                  <div className={`${deliveryBg} h-full rounded-full transition-all`} style={{ width: `${deliveryRateNum}%` }} />
+                                                </div>
+                                                <button onClick={() => setActiveOptimizeTip(activeOptimizeTip === "delivery" ? null : "delivery")} className="w-full text-[10px] text-zinc-400 hover:text-neutral-900 dark:hover:text-white flex items-center justify-between transition-colors pt-2 border-t border-black/[0.03] dark:border-white/[0.03] group">
+                                                  <span className="flex items-center gap-1">
+                                                    <Info className="w-3 h-3 text-zinc-400 group-hover:text-neutral-950 dark:group-hover:text-white transition-colors" />
+                                                    <span>Analyze & Optimize</span>
+                                                  </span>
+                                                  <span className="opacity-0 group-hover/icon:opacity-100 transition-opacity text-[9px] font-mono font-medium">FIX →</span>
+                                                </button>
+                                              </div>
+                                              
+                                              <div className="relative overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-white/40 dark:bg-zinc-900/30 backdrop-blur-xl p-5 space-y-3.5 flex flex-col justify-between transition-all hover:scale-[1.03] duration-300 shadow-sm hover:border-black/15 dark:hover:border-white/15">
+                                                <div className="flex justify-between items-start">
+                                                  <span className="text-[10px] uppercase text-neutral-500 dark:text-neutral-400 font-mono tracking-widest">Emails Opened</span>
+                                                </div>
+                                                <span className={`text-4xl font-extralight font-display tracking-tight block transition-colors ${openColor}`}>
+                                                  {openRateNum.toFixed(1)}%
+                                                </span>
+                                                <div className="w-full bg-black/5 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
+                                                  <div className={`${openBg} h-full rounded-full transition-all`} style={{ width: `${openRateNum}%` }} />
+                                                </div>
+                                                <button onClick={() => setActiveOptimizeTip(activeOptimizeTip === "opens" ? null : "opens")} className="w-full text-[10px] text-zinc-400 hover:text-neutral-900 dark:hover:text-white flex items-center justify-between transition-colors pt-2 border-t border-black/[0.03] dark:border-white/[0.03] group">
+                                                  <span className="flex items-center gap-1">
+                                                    <Info className="w-3 h-3 text-zinc-400 group-hover:text-neutral-950 dark:group-hover:text-white transition-colors" />
+                                                    <span>Analyze & Optimize</span>
+                                                  </span>
+                                                  <span className="opacity-0 group-hover/icon:opacity-100 transition-opacity text-[9px] font-mono font-medium">FIX →</span>
+                                                </button>
+                                              </div>
+                                              
+                                              <div className="relative overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-white/40 dark:bg-zinc-900/30 backdrop-blur-xl p-5 space-y-3.5 flex flex-col justify-between transition-all hover:scale-[1.03] duration-300 shadow-sm hover:border-black/15 dark:hover:border-white/15">
+                                                <div className="flex justify-between items-start">
+                                                  <span className="text-[10px] uppercase text-neutral-500 dark:text-neutral-400 font-mono tracking-widest">Links Clicked</span>
+                                                </div>
+                                                <span className={`text-4xl font-extralight font-display tracking-tight block transition-colors ${clickColor}`}>
+                                                  {clickRateNum.toFixed(1)}%
+                                                </span>
+                                                <div className="w-full bg-black/5 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
+                                                  <div className={`${clickBg} h-full rounded-full transition-all`} style={{ width: `${clickRateNum}%` }} />
+                                                </div>
+                                                <button onClick={() => setActiveOptimizeTip(activeOptimizeTip === "clicks" ? null : "clicks")} className="w-full text-[10px] text-zinc-400 hover:text-neutral-900 dark:hover:text-white flex items-center justify-between transition-colors pt-2 border-t border-black/[0.03] dark:border-white/[0.03] group">
+                                                  <span className="flex items-center gap-1">
+                                                    <Info className="w-3 h-3 text-zinc-400 group-hover:text-neutral-950 dark:group-hover:text-white transition-colors" />
+                                                    <span>Analyze & Optimize</span>
+                                                  </span>
+                                                  <span className="opacity-0 group-hover/icon:opacity-100 transition-opacity text-[9px] font-mono font-medium">FIX →</span>
+                                                </button>
+                                              </div>
+                                              
+                                              <div className="relative overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-white/40 dark:bg-zinc-900/30 backdrop-blur-xl p-5 space-y-3.5 flex flex-col justify-between transition-all hover:scale-[1.03] duration-300 shadow-sm hover:border-black/15 dark:hover:border-white/15">
+                                                <div className="flex justify-between items-start">
+                                                  <span className="text-[10px] uppercase text-neutral-500 dark:text-neutral-400 font-mono tracking-widest">Reputation Score</span>
+                                                </div>
+                                                <span className={`text-4xl font-extralight font-display tracking-tight block transition-colors ${repColor}`}>
+                                                  {repScoreNum}/100
+                                                </span>
+                                                <div className="w-full bg-black/5 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
+                                                  <div className={`${repBg} h-full rounded-full transition-all`} style={{ width: `${repScoreNum}%` }} />
+                                                </div>
+                                                <button onClick={() => setActiveOptimizeTip(activeOptimizeTip === "reputation" ? null : "reputation")} className="w-full text-[10px] text-zinc-400 hover:text-neutral-900 dark:hover:text-white flex items-center justify-between transition-colors pt-2 border-t border-black/[0.03] dark:border-white/[0.03] group">
+                                                  <span className="flex items-center gap-1">
+                                                    <Info className="w-3 h-3 text-zinc-400 group-hover:text-neutral-950 dark:group-hover:text-white transition-colors" />
+                                                    <span>Analyze & Optimize</span>
+                                                  </span>
+                                                  <span className="opacity-0 group-hover/icon:opacity-100 transition-opacity text-[9px] font-mono font-medium">FIX →</span>
+                                                </button>
+                                              </div>
+                                            </>
+                                          );
+                                        })()}
+                                      </div>                              </div>
 
                                       <Hi mode="wait">
                                         {activeOptimizeTip && (
@@ -6074,13 +6029,13 @@ END OF REPORT`,
                                               </span>
                                             </div>
                                             <span className="font-mono text-neutral-800 dark:text-zinc-300 font-semibold text-[13px]">
-                                              {"13% (2)"}
+                                              {E && Array.isArray(E) && E.length > 0 ? "0% (0)" : "0% (0)"}
                                             </span>
                                           </div>
                                           <div className="w-full bg-black/5 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
                                             <div
-                                              className="bg-red-500 dark:bg-red-400 h-full rounded-full"
-                                              style={{ width: "13%" }}
+                                              className="bg-red-500 dark:bg-red-400 h-full rounded-full transition-all"
+                                              style={{ width: "0%" }}
                                             />
                                           </div>
                                         </div>
