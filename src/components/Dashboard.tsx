@@ -173,6 +173,7 @@ const mapBackendTracker = (raw: any): any => ({
   openCount: raw.open_count || 0,
   clickCount: raw.click_count || 0,
   lastOpened: raw.updated_at && raw.open_count > 0 ? raw.updated_at : null,
+  isLocked: raw.is_locked === true || raw.isLocked === true,
   testSent: false,
   logs: Array.isArray(raw.logs) ? raw.logs.map((l: any) => ({
     id: l.id,
@@ -1510,6 +1511,7 @@ END OF REPORT`,
               timestamp: new Date(mt.timestamp),
               hasClick: tr,
               openIndex: Wt,
+              isLocked: pt.isLocked,
             });
           });
         else if (pt.openCount > 0) {
@@ -1540,6 +1542,7 @@ END OF REPORT`,
             timestamp: new Date(pt.createdAt),
             hasClick: mt,
             openIndex: 1,
+            isLocked: pt.isLocked,
           });
         }
       });
@@ -2944,62 +2947,69 @@ END OF REPORT`,
                               {
                                 <div className="p-6 space-y-0 divide-y divide-neutral-200 dark:divide-zinc-900/40">
                                   {ya.map((F) => (
-                                    <div key={F.id} className="py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors hover:bg-neutral-100/40 dark:hover:bg-zinc-900/10">
-                                      {
-                                        <div className="flex items-start gap-4">
-                                          {
-                                            <div className="p-2.5 rounded-full bg-neutral-100 dark:bg-zinc-900/80 border border-neutral-200 dark:border-zinc-800/50 shrink-0 mt-0.5">
-                                              {F.type === "open" ? (
-                                                <Fd className="w-4 h-4 text-neutral-900 dark:text-white" />
-                                              ) : (
-                                                <Rk className="w-4 h-4 text-neutral-900 dark:text-white" />
-                                              )}
-                                            </div>
-                                          }
-                                          {
-                                            <div className="space-y-1">
-                                              {
-                                                <div className="text-sm font-normal text-neutral-800 dark:text-zinc-200 flex flex-wrap items-center gap-1">
-                                                  {F.id.charCodeAt(
-                                                    F.id.length - 1,
-                                                  ) %
-                                                    2 ===
-                                                    0 ? (
-                                                    <div className="p-1 bg-white dark:bg-zinc-900/60 border border-neutral-200 dark:border-zinc-800/50 w-6 h-6 inline-flex items-center justify-center rounded-md mr-3 shadow-sm">
-                                                      {<A6e />}
-                                                    </div>
-                                                  ) : (
-                                                    <div className="p-1 bg-white dark:bg-zinc-900/60 border border-neutral-200 dark:border-zinc-800/50 w-6 h-6 inline-flex items-center justify-center rounded-md mr-3 shadow-sm">
-                                                      {<R6e />}
-                                                    </div>
-                                                  )}
-                                                  {
-                                                    <span>
-                                                      {F.recipient}{" "}
-                                                      {
-                                                        <span className="text-zinc-500 font-normal">
-                                                          {F.details}
-                                                        </span>
-                                                      }
-                                                    </span>
-                                                  }
-                                                  {xa(!!F.hasClick)}
-                                                </div>
-                                              }
-                                              {
-                                                <div className="text-xs text-zinc-500 font-normal max-w-2xl leading-relaxed">
-                                                  {F.subject}
-                                                </div>
-                                              }
-                                            </div>
-                                          }
+                                    <div key={F.id} className="relative group">
+                                      {F.isLocked && (
+                                        <div className="absolute inset-0 z-10 flex items-center justify-center backdrop-blur-xl bg-black/40 pointer-events-none rounded-lg overflow-hidden border border-amber-500/20">
+                                          <span className="px-3 py-1.5 bg-black text-amber-500 text-[10px] font-bold rounded shadow-xl uppercase tracking-wider whitespace-nowrap">PREMIUM TRACKING LOCKED - CREDITS EXHAUSTED</span>
                                         </div>
-                                      }
-                                      {
-                                        <div className="text-xs text-zinc-500 text-right shrink-0 sm:self-center font-mono">
-                                          {F.timeAgo}
-                                        </div>
-                                      }
+                                      )}
+                                      <div className={`py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors hover:bg-neutral-100/40 dark:hover:bg-zinc-900/10 ${F.isLocked ? 'opacity-50' : ''}`}>
+                                        {
+                                          <div className="flex items-start gap-4">
+                                            {
+                                              <div className="p-2.5 rounded-full bg-neutral-100 dark:bg-zinc-900/80 border border-neutral-200 dark:border-zinc-800/50 shrink-0 mt-0.5">
+                                                {F.type === "open" ? (
+                                                  <Fd className="w-4 h-4 text-neutral-900 dark:text-white" />
+                                                ) : (
+                                                  <Rk className="w-4 h-4 text-neutral-900 dark:text-white" />
+                                                )}
+                                              </div>
+                                            }
+                                            {
+                                              <div className="space-y-1">
+                                                {
+                                                  <div className="text-sm font-normal text-neutral-800 dark:text-zinc-200 flex flex-wrap items-center gap-1">
+                                                    {F.id.charCodeAt(
+                                                      F.id.length - 1,
+                                                    ) %
+                                                      2 ===
+                                                      0 ? (
+                                                      <div className="p-1 bg-white dark:bg-zinc-900/60 border border-neutral-200 dark:border-zinc-800/50 w-6 h-6 inline-flex items-center justify-center rounded-md mr-3 shadow-sm">
+                                                        {<A6e />}
+                                                      </div>
+                                                    ) : (
+                                                      <div className="p-1 bg-white dark:bg-zinc-900/60 border border-neutral-200 dark:border-zinc-800/50 w-6 h-6 inline-flex items-center justify-center rounded-md mr-3 shadow-sm">
+                                                        {<R6e />}
+                                                      </div>
+                                                    )}
+                                                    {
+                                                      <span>
+                                                        {F.recipient}{" "}
+                                                        {
+                                                          <span className="text-zinc-500 font-normal">
+                                                            {F.isLocked ? "[TRACKING_INACTIVE_NO_CREDITS_TOKEN]" : F.details}
+                                                          </span>
+                                                        }
+                                                      </span>
+                                                    }
+                                                    {xa(!!F.hasClick)}
+                                                  </div>
+                                                }
+                                                {
+                                                  <div className="text-xs text-zinc-500 font-normal max-w-2xl leading-relaxed">
+                                                    {F.isLocked ? "[TRACKING_INACTIVE_NO_CREDITS_TOKEN]" : F.subject}
+                                                  </div>
+                                                }
+                                              </div>
+                                            }
+                                          </div>
+                                        }
+                                        {
+                                          <div className="text-xs text-zinc-500 text-right shrink-0 sm:self-center font-mono">
+                                            {F.isLocked ? "[TRACKING_INACTIVE_NO_CREDITS_TOKEN]" : F.timeAgo}
+                                          </div>
+                                        }
+                                      </div>
                                     </div>
                                   ))}
                                   {ya.length === 0 && (
@@ -3373,8 +3383,13 @@ END OF REPORT`,
                                                   <Tr.Fragment key={ye.rowId || ye.id}>
                                                     {
                                                       <tr
-                                                        className={`border-b border-neutral-200/50 dark:border-zinc-900/50 transition-colors ${pt ? "bg-neutral-100/30 dark:bg-zinc-900/10 border-b-0" : "hover:bg-neutral-100/40 dark:hover:bg-zinc-900/10"}`}
+                                                        className={`relative border-b border-neutral-200/50 dark:border-zinc-900/50 transition-colors ${pt ? "bg-neutral-100/30 dark:bg-zinc-900/10 border-b-0" : "hover:bg-neutral-100/40 dark:hover:bg-zinc-900/10"} ${ye.isLocked ? 'opacity-50' : ''}`}
                                                       >
+                                                        {ye.isLocked && (
+                                                          <td className="absolute inset-0 z-10 flex items-center justify-center backdrop-blur-xl bg-black/40 pointer-events-none overflow-hidden" colSpan={6}>
+                                                            <span className="px-3 py-1.5 bg-black text-amber-500 text-[10px] font-bold rounded shadow-xl uppercase tracking-wider whitespace-nowrap">PREMIUM TRACKING LOCKED - CREDITS EXHAUSTED</span>
+                                                          </td>
+                                                        )}
                                                         {
                                                           <td className="px-6 py-6">
                                                             {
@@ -3406,14 +3421,14 @@ END OF REPORT`,
                                                             }
                                                             {
                                                               <div className="text-[11px] text-zinc-500 mt-1 font-normal tracking-tight">
-                                                                {ye.subject}
+                                                                {ye.isLocked ? "[TRACKING_INACTIVE_NO_CREDITS_TOKEN]" : ye.subject}
                                                               </div>
                                                             }
                                                           </td>
                                                         }
                                                         {
                                                           <td className="px-6 py-6">
-                                                            {
+                                                            {ye.isLocked ? "[TRACKING_INACTIVE_NO_CREDITS_TOKEN]" :
                                                               <span
                                                                 className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-normal border ${Be.badgeClass}`}
                                                               >
@@ -3435,7 +3450,7 @@ END OF REPORT`,
                                                         }
                                                         {
                                                           <td className="px-6 py-6 text-neutral-600 dark:text-zinc-400 font-normal">
-                                                            {
+                                                            {ye.isLocked ? "[TRACKING_INACTIVE_NO_CREDITS_TOKEN]" :
                                                               <div className="flex flex-col gap-1.5 justify-center">
                                                                 {
                                                                   <div>
@@ -3537,17 +3552,17 @@ END OF REPORT`,
                                                         }
                                                         {
                                                           <td className="px-6 py-6 text-neutral-600 dark:text-zinc-400 font-normal">
-                                                            {mt}
+                                                            {ye.isLocked ? "[TRACKING_INACTIVE_NO_CREDITS_TOKEN]" : mt}
                                                           </td>
                                                         }
                                                         {
                                                           <td className="px-6 py-6 text-neutral-500 dark:text-zinc-500 font-normal">
-                                                            {Wt}
+                                                            {ye.isLocked ? "[TRACKING_INACTIVE_NO_CREDITS_TOKEN]" : Wt}
                                                           </td>
                                                         }
                                                         {
                                                           <td className="px-6 py-6 text-right whitespace-nowrap">
-                                                            {
+                                                            {ye.isLocked ? "[TRACKING_INACTIVE_NO_CREDITS_TOKEN]" :
                                                               <div className="inline-flex items-center gap-3">
                                                                 {
                                                                   <button

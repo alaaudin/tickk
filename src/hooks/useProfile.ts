@@ -32,7 +32,7 @@ export function useProfile(userId: string | undefined) {
 
       if (sbError) {
         const errCode = String(sbError.code);
-        const errStatus = String(sbError.status || '');
+        const errStatus = String((sbError as any).status || '');
         if (errCode === 'PGRST116' || errCode === '406' || errStatus === '406' || sbError.message?.includes('Not Acceptable') || sbError.message?.includes('JSON object requested')) {
           // Graceful fallback for missing profile (e.g. unauthenticated or new user)
           setProfile({ id: userId, plan: 'free', credits: 0 });
@@ -59,6 +59,10 @@ export function useProfile(userId: string | undefined) {
 
   useEffect(() => {
     fetchProfile();
+    const intervalId = setInterval(() => {
+      fetchProfile();
+    }, 15000); // Auto-reload profile every 15 seconds
+    return () => clearInterval(intervalId);
   }, [fetchProfile]);
 
   return { profile, loading, error, refetch: fetchProfile };
