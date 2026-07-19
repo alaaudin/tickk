@@ -1760,35 +1760,37 @@ END OF REPORT`,
             className="fixed inset-0 z-[10000] flex items-center justify-center backdrop-blur-sm bg-neutral-900/10 dark:bg-black/60 p-4"
           >
             <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              className="backdrop-blur-2xl bg-[#0B0F19]/80 border border-white/10 p-8 rounded-2xl max-w-md w-full shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),0_20px_40px_-10px_rgba(0,0,0,0.5)] ring-1 ring-white/5 relative overflow-hidden"
-            >
-              <div className="flex flex-col items-center text-center">
-                <motion.div 
-                  animate={{ scale: [1, 1.05, 1], boxShadow: ["0px 0px 0px rgba(0,0,0,0)", "0px 0px 20px rgba(255,255,255,0.05)", "0px 0px 0px rgba(0,0,0,0)"] }}
-                  transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-                  className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mb-6 border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)]"
-                >
-                  <Award className="w-10 h-10 text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
-                </motion.div>
-                
-                <h3 className="text-3xl font-sans font-semibold text-white mb-3 tracking-tight">Bug Verified!</h3>
-                <p className="text-zinc-300 mb-6 text-sm leading-relaxed font-sans">
-                  Aap ki madad ka shukriya! Aap ne hamari bohot help ki hai, to <span className="font-semibold text-white">ye lijiye aap ka inaam</span>:
-                  <br/><br/>
-                  <span className="text-xl font-sans font-bold text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.3)] mt-2 inline-block">99 Premium Credits Added</span>
-                </p>
-                
-                <button
-                  onClick={handleRewardPopupClose}
-                  className="w-full bg-white text-black hover:bg-neutral-200 py-3 rounded-xl font-bold font-sans transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg border border-white/20"
-                >
-                  Got it, thanks!
-                </button>
-              </div>
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.95, opacity: 0 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="backdrop-blur-2xl bg-white/80 dark:bg-[#0B0F19]/80 border border-black/10 dark:border-white/10 p-8 rounded-2xl max-w-md w-full shadow-[0_20px_40px_-10px_rgba(0,0,0,0.2)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),0_20px_40px_-10px_rgba(0,0,0,0.5)] ring-1 ring-black/5 dark:ring-white/5 relative overflow-hidden"
+              >
+                <div className="flex flex-col items-center text-center">
+                  <motion.div 
+                    animate={{ scale: [1, 1.05, 1], boxShadow: ["0px 0px 0px rgba(0,0,0,0)", "0px 0px 20px rgba(0,0,0,0.05)", "0px 0px 0px rgba(0,0,0,0)"] }}
+                    transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                    className="w-20 h-20 bg-neutral-100/50 dark:bg-white/5 rounded-full flex items-center justify-center mb-6 border border-black/5 dark:border-white/10 shadow-[inset_0_1px_1px_rgba(0,0,0,0.05)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)]"
+                  >
+                    <Award className="w-10 h-10 text-neutral-800 dark:text-white drop-shadow-[0_0_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
+                  </motion.div>
+                  
+                  <h3 className="text-3xl font-sans font-semibold text-neutral-900 dark:text-white mb-3 tracking-tight">Bug Verified!</h3>
+                  <p className="text-neutral-600 dark:text-zinc-300 mb-6 text-sm leading-relaxed font-sans">
+                    Thank you for your valuable feedback! You have genuinely helped us improve the platform.
+                    <br/><br/>
+                    Please accept this reward as a token of our appreciation:
+                    <br/>
+                    <span className="text-xl font-sans font-bold text-neutral-900 dark:text-white drop-shadow-[0_0_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)] mt-2 inline-block">99 Premium Credits Added</span>
+                  </p>
+                  
+                  <button
+                    onClick={handleRewardPopupClose}
+                    className="w-full bg-neutral-900 text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 py-3 rounded-xl font-bold font-sans transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg border border-transparent dark:border-white/20"
+                  >
+                    Got it, thanks!
+                  </button>
+                </div>
             </motion.div>
           </motion.div>
         )}
