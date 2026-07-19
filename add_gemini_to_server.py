@@ -41,7 +41,7 @@ ${JSON.stringify(timelineLogs || [])}
 Based on this, suggest a concise, professional, and context-aware follow-up email. Do not include subject line, just the body. Keep it under 3 sentences.`;
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-2.5-flash",  
       contents: prompt,
     });
 
