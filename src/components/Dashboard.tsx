@@ -5515,75 +5515,89 @@ END OF REPORT`,
                                             </div>
 
                                             <div className="text-xs text-neutral-600 dark:text-zinc-400 space-y-3 leading-relaxed">
-                                              {activeOptimizeTip === "delivery" && (
-                                                <>
-                                                  <p>{"Your delivery rate is exceptional (99.9%). To maintain this perfect status, ensure your SPF, DKIM, and DMARC settings are fully aligned in your DNS registry."}</p>
-                                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3 pt-3 border-t border-black/5 dark:border-white/5 font-mono text-[10px]">
-                                                    <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
-                                                      <span className="text-neutral-900 dark:text-white block font-semibold mb-1">{"SPF Record"}</span>
-                                                      <code className="text-zinc-500 dark:text-zinc-400 block break-all">{"v=spf1 include:mx.yourserver.com ~all"}</code>
-                                                    </div>
-                                                    <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
-                                                      <span className="text-neutral-900 dark:text-white block font-semibold mb-1">{"DKIM Signature"}</span>
-                                                      <code className="text-zinc-500 dark:text-zinc-400 block break-all">{"v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG..."}</code>
-                                                    </div>
-                                                  </div>
-                                                </>
-                                              )}
-                                              {activeOptimizeTip === "opens" && (
-                                                <>
-                                                  <p>{"An open rate of 78.4% is highly active. To boost this further and resolve pending reads, consider testing dynamic subject lines and avoiding generic spam-trigger words like 'Urgent' or 'Free'."}</p>
-                                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3 pt-3 border-t border-black/5 dark:border-white/5 font-mono text-[10px]">
-                                                    <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
-                                                      <span className="text-amber-500 block font-semibold mb-1">{"Recommended Actions"}</span>
-                                                      <ul className="list-disc pl-4 space-y-1 text-zinc-500 dark:text-zinc-400">
-                                                        <li>{"Personalize headers with dynamic recipient templates"}</li>
-                                                        <li>{"Schedule delivery times to align with local workspace mornings"}</li>
-                                                      </ul>
-                                                    </div>
-                                                    <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
-                                                      <span className="text-neutral-900 dark:text-white block font-semibold mb-1">{"Target Timezones"}</span>
-                                                      <code className="text-zinc-500 dark:text-zinc-400 block">{"EST / GMT Workspace hours (9:30 AM optimal)"}</code>
-                                                    </div>
-                                                  </div>
-                                                </>
-                                              )}
-                                              {activeOptimizeTip === "clicks" && (
-                                                <>
-                                                  <p>{"Your link click-through rate (42.1%) is currently awaiting user action. This can be significantly increased by improving CTA button visibility and making links look extremely clean and secure."}</p>
-                                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3 pt-3 border-t border-black/5 dark:border-white/5 font-mono text-[10px]">
-                                                    <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
-                                                      <span className="text-red-500 block font-semibold mb-1">{"CTA Enhancements"}</span>
-                                                      <ul className="list-disc pl-4 space-y-1 text-zinc-500 dark:text-zinc-400">
-                                                        <li>{"Position main CTA buttons in the upper 50% of the email copy"}</li>
-                                                        <li>{"Ensure all redirected URLs utilize HTTPS with certified SSL"}</li>
-                                                      </ul>
-                                                    </div>
-                                                    <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
-                                                      <span className="text-neutral-900 dark:text-white block font-semibold mb-1">{"SSL Integrity"}</span>
-                                                      <code className="text-zinc-500 dark:text-zinc-400 block">{"TLS 1.3 Certified / SHA-256 Signature verified"}</code>
-                                                    </div>
-                                                  </div>
-                                                </>
-                                              )}
-                                              {activeOptimizeTip === "reputation" && (
-                                                <>
-                                                  <p>{"Your IP Reputation is near-perfect (98/100). To protect this status, continuously scrub your subscriber lists for bounced emails and implement double-opt-in subscription methods."}</p>
-                                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3 pt-3 border-t border-black/5 dark:border-white/5 font-mono text-[10px]">
-                                                    <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
-                                                      <span className="text-indigo-500 block font-semibold mb-1">{"Deliverability Guidelines"}</span>
-                                                      <ul className="list-disc pl-4 space-y-1 text-zinc-500 dark:text-zinc-400">
-                                                        <li>{"Strictly filter out secondary disposable/temporary emails"}</li>
-                                                        <li>{"Monitor RBL blacklist aggregators every 24 hours"}</li>
-                                                      </ul>
-                                                    </div>
-                                                    <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
-                                                      <span className="text-neutral-900 dark:text-white block font-semibold mb-1">{"RBL Monitored Status"}</span>
-                                                      <code className="text-emerald-500 block font-semibold">{"0/120 blacklists listed (Clean)"}</code>
-                                                    </div>
-                                                  </div>
-                                                </>
-                                              )}
+                                              {(() => {
+                                                const totalDispatches = U?.length || 0;
+                                                const totalOpens = (U || []).filter((t: any) => t.logs && t.logs.length > 0).length;
+                                                const totalClicks = (U || []).filter((t: any) => t.logs && t.logs.some((l: any) => l.is_click || l.url || (l.action && l.action.includes('click')))).length;
+                                                const deliveryRateNum = totalDispatches > 0 ? 100 : 0;
+                                                const openRateNum = totalDispatches > 0 ? (totalOpens / totalDispatches) * 100 : 0;
+                                                const clickRateNum = totalDispatches > 0 ? (totalClicks / totalDispatches) * 100 : 0;
+                                                const repScoreNum = totalDispatches > 0 ? Math.min(100, Math.round((openRateNum * 0.6) + (clickRateNum * 0.4) + 20)) : 0;
+                                                
+                                                return (
+                                                  <>
+                                                    {activeOptimizeTip === "delivery" && (
+                                                      <>
+                                                        <p>{`Your delivery rate is ${deliveryRateNum >= 90 ? "exceptional" : deliveryRateNum >= 50 ? "average" : "critical"} (${deliveryRateNum}%). To maintain this status, ensure your SPF, DKIM, and DMARC settings are fully aligned in your DNS registry.`}</p>
+                                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3 pt-3 border-t border-black/5 dark:border-white/5 font-mono text-[10px]">
+                                                          <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
+                                                            <span className="text-neutral-900 dark:text-white block font-semibold mb-1">{"SPF Record"}</span>
+                                                            <code className="text-zinc-500 dark:text-zinc-400 block break-all">{"v=spf1 include:mx.yourserver.com ~all"}</code>
+                                                          </div>
+                                                          <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
+                                                            <span className="text-neutral-900 dark:text-white block font-semibold mb-1">{"DKIM Signature"}</span>
+                                                            <code className="text-zinc-500 dark:text-zinc-400 block break-all">{"v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG..."}</code>
+                                                          </div>
+                                                        </div>
+                                                      </>
+                                                    )}
+                                                    {activeOptimizeTip === "opens" && (
+                                                      <>
+                                                        <p>{`An open rate of ${openRateNum.toFixed(1)}% is ${openRateNum >= 50 ? "highly active" : openRateNum >= 20 ? "moderate" : "low"}. To boost this further and resolve pending reads, consider testing dynamic subject lines and avoiding generic spam-trigger words like 'Urgent' or 'Free'.`}</p>
+                                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3 pt-3 border-t border-black/5 dark:border-white/5 font-mono text-[10px]">
+                                                          <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
+                                                            <span className="text-amber-500 block font-semibold mb-1">{"Recommended Actions"}</span>
+                                                            <ul className="list-disc pl-4 space-y-1 text-zinc-500 dark:text-zinc-400">
+                                                              <li>{"Personalize headers with dynamic recipient templates"}</li>
+                                                              <li>{"Schedule delivery times to align with local workspace mornings"}</li>
+                                                            </ul>
+                                                          </div>
+                                                          <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
+                                                            <span className="text-neutral-900 dark:text-white block font-semibold mb-1">{"Target Timezones"}</span>
+                                                            <code className="text-zinc-500 dark:text-zinc-400 block">{"EST / GMT Workspace hours (9:30 AM optimal)"}</code>
+                                                          </div>
+                                                        </div>
+                                                      </>
+                                                    )}
+                                                    {activeOptimizeTip === "clicks" && (
+                                                      <>
+                                                        <p>{`Your link click-through rate (${clickRateNum.toFixed(1)}%) is currently ${clickRateNum >= 30 ? "performing well" : "awaiting user action"}. This can be significantly increased by improving CTA button visibility and making links look extremely clean and secure.`}</p>
+                                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3 pt-3 border-t border-black/5 dark:border-white/5 font-mono text-[10px]">
+                                                          <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
+                                                            <span className="text-red-500 block font-semibold mb-1">{"CTA Enhancements"}</span>
+                                                            <ul className="list-disc pl-4 space-y-1 text-zinc-500 dark:text-zinc-400">
+                                                              <li>{"Position main CTA buttons in the upper 50% of the email copy"}</li>
+                                                              <li>{"Ensure all redirected URLs utilize HTTPS with certified SSL"}</li>
+                                                            </ul>
+                                                          </div>
+                                                          <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
+                                                            <span className="text-neutral-900 dark:text-white block font-semibold mb-1">{"SSL Integrity"}</span>
+                                                            <code className="text-zinc-500 dark:text-zinc-400 block">{"TLS 1.3 Certified / SHA-256 Signature verified"}</code>
+                                                          </div>
+                                                        </div>
+                                                      </>
+                                                    )}
+                                                    {activeOptimizeTip === "reputation" && (
+                                                      <>
+                                                        <p>{`Your IP Reputation is ${repScoreNum >= 80 ? "near-perfect" : repScoreNum >= 50 ? "average" : "critical"} (${repScoreNum}/100). To protect this status, continuously scrub your subscriber lists for bounced emails and implement double-opt-in subscription methods.`}</p>
+                                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3 pt-3 border-t border-black/5 dark:border-white/5 font-mono text-[10px]">
+                                                          <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
+                                                            <span className="text-indigo-500 block font-semibold mb-1">{"Deliverability Guidelines"}</span>
+                                                            <ul className="list-disc pl-4 space-y-1 text-zinc-500 dark:text-zinc-400">
+                                                              <li>{"Strictly filter out secondary disposable/temporary emails"}</li>
+                                                              <li>{"Monitor RBL blacklist aggregators every 24 hours"}</li>
+                                                            </ul>
+                                                          </div>
+                                                          <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
+                                                            <span className="text-neutral-900 dark:text-white block font-semibold mb-1">{"RBL Monitored Status"}</span>
+                                                            <code className="text-emerald-500 block font-semibold">{"0/120 blacklists listed (Clean)"}</code>
+                                                          </div>
+                                                        </div>
+                                                      </>
+                                                    )}
+                                                  </>
+                                                );
+                                              })()}
                                             </div>
                                           </Lt.div>
                                         )}
