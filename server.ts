@@ -303,64 +303,9 @@ app.delete("/api/links/:id", async (req, res) => {
   res.json({ success: true, message: "Tracker successfully deleted" });
 });
 
-app.get("/api/tickets", async (req, res) => {
-  const userId = await getUserIdFromRequest(req);
-  if (!userId) return res.status(401).json({ error: "Unauthorized" });
 
-  const { data: tickets, error } = await supabase
-    .from('tickets')
-    .select('*')
-    .eq('user_id', userId)
-    .order('created_at', { ascending: false });
 
-  res.json(tickets || []);
-});
 
-app.post("/api/feedback", async (req, res) => {
-  const userId = await getUserIdFromRequest(req);
-  if (!userId) return res.status(401).json({ error: "Unauthorized" });
-
-  const { subject, category, message } = req.body;
-  
-  const { data: ticket, error } = await supabase
-    .from('tickets')
-    .insert([{
-      user_id: userId,
-      subject,
-      category,
-      message,
-      status: 'rewarded'
-    }])
-    .select()
-    .single();
-
-  const insertedTicket = ticket || {
-    id: "tk_" + Math.random().toString(36).substr(2, 9),
-    userId,
-    subject,
-    category,
-    message,
-    status: 'rewarded',
-    createdAt: new Date().toISOString()
-  };
-
-  let newCredits = 0;
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('credits')
-    .eq('id', userId)
-    .single();
-
-  if (profile) {
-    newCredits = (profile.credits || 0) + 99;
-    await supabase
-      .from('profiles')
-      .update({ credits: newCredits })
-      .eq('id', userId);
-  }
-
-  res.status(201).json({ ticket: insertedTicket, newCredits });
-});
 
 // 6. Get Tracker Stats Dashboard Aggregations
 app.get("/api/links/stats", async (req, res) => {
@@ -492,18 +437,24 @@ app.delete("/api/settings/keys/:key", async (req, res) => {
 });
 
 
+
+
+
+
+
 // --- FEEDBACK & REWARDS API ---
 
-app.get("/api/tickets", async (req, res) => {
+app.get("/api/feedback", async (req, res) => {
   const userId = await getUserIdFromRequest(req);
   if (!userId) {
     return res.status(401).json({ error: "Unauthorized" });
   }
 
   const { data: tickets, error } = await supabase
-    .from('tickets')
+    .from('feedback')
     .select('*')
-    .eq('user_id', userId);
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
 
   if (error) {
     return res.status(500).json({ error: error.message });
@@ -517,6 +468,7 @@ app.get("/api/tickets", async (req, res) => {
     category: t.category,
     message: t.message,
     status: t.status,
+    is_notified: t.is_notified,
     createdAt: t.created_at,
     updatedAt: t.updated_at
   })) || [];
@@ -524,7 +476,7 @@ app.get("/api/tickets", async (req, res) => {
   res.json(formattedTickets);
 });
 
-app.post("/api/tickets", async (req, res) => {
+app.post("/api/feedback", async (req, res) => {
   const userId = await getUserIdFromRequest(req);
   if (!userId) {
     return res.status(401).json({ error: "Unauthorized" });
@@ -536,13 +488,14 @@ app.post("/api/tickets", async (req, res) => {
   }
 
   const { data: newTicket, error } = await supabase
-    .from('tickets')
+    .from('feedback')
     .insert([{
       user_id: userId,
       subject,
       category,
       message,
-      status: "submitted"
+      status: "pending",
+      is_notified: false
     }])
     .select()
     .single();
@@ -571,11 +524,32 @@ app.post("/api/tickets", async (req, res) => {
     category: newTicket.category,
     message: newTicket.message,
     status: newTicket.status,
+    is_notified: newTicket.is_notified,
     createdAt: newTicket.created_at,
     updatedAt: newTicket.updated_at
   };
 
   res.status(201).json({ ticket: formattedTicket, newCredits });
+});
+
+app.patch("/api/feedback/:id/notify", async (req, res) => {
+  const userId = await getUserIdFromRequest(req);
+  if (!userId) return res.status(401).json({ error: "Unauthorized" });
+
+  const { id } = req.params;
+
+  const { error } = await supabase
+    .from('feedback')
+    .update({ is_notified: true })
+    .eq('id', id)
+    .eq('user_id', userId);
+
+  if (error) {
+    console.error("Error updating ticket notification status:", error);
+    return res.status(500).json({ error: "Failed to update notification status" });
+  }
+
+  res.json({ success: true });
 });
 
 // --- CORE SYSTEM ENFORCEMENT: THE TRACKING PIXEL ---
