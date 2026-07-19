@@ -110,6 +110,7 @@ import {
   ZAxis,
   Cell
 } from "recharts";
+import confetti from "canvas-confetti";
 import { Tracker, TrackerStats, OpenLog, Ticket, } from "../types";
 import { QuickStartGuide } from "./QuickStartGuide";
 import { NotificationSettingsPanel } from "./NotificationSettingsPanel";
@@ -408,6 +409,7 @@ export default function Dashboard({
     [c, u] = O.useState("overview"),
     [d, p] = O.useState("last_30_days"),
     [m, b] = O.useState("last_30_days"),
+    [showRewardPopup, setShowRewardPopup] = O.useState<any>(null),
     v = () => {
       const totalDispatches = g?.length || 0;
       const totalOpens = (g || []).filter((t: any) => t.logs && t.logs.length > 0).length;
@@ -480,6 +482,53 @@ END OF REPORT`,
     [g, w] = O.useState([]),
     [showBanner, setShowBanner] = O.useState(!0),
     [E, S] = O.useState([]);
+
+  O.useEffect(() => {
+    const checkRewardedTickets = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/api/feedback`, {
+          headers: { Authorization: `Bearer ${e}` }
+        });
+        if (res.ok) {
+          const tickets = await res.json();
+          const approvedUnnotified = tickets.find((t: any) => t.status === 'approved' && t.is_notified === false);
+          if (approvedUnnotified) {
+            setShowRewardPopup(approvedUnnotified);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch feedback:", err);
+      }
+    };
+    if (e) {
+      checkRewardedTickets();
+    }
+  }, [e]);
+
+  O.useEffect(() => {
+    if (showRewardPopup) {
+      confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 }, colors: ['#FF007A', '#7928CA', '#00DFD8', '#FFFF00', '#00FF00'], zIndex: 10001 });
+    }
+  }, [showRewardPopup]);
+
+  const handleRewardPopupClose = async () => {
+    if (!showRewardPopup) return;
+    try {
+      const res = await fetch(`${API_BASE}/api/feedback/${showRewardPopup.id}/notify`, {
+        method: "PATCH",
+        headers: { Authorization: `Bearer ${e}` }
+      });
+      if (res.ok) {
+        console.log("PATCH /api/feedback/:id/notify successfully fired with status 200!");
+      } else {
+        console.error("PATCH failed with status:", res.status);
+      }
+    } catch (err) {
+      console.error("Failed to update notification status:", err);
+    }
+    setShowRewardPopup(null);
+  };
+
   O.useEffect(() => {
     if (E.length > 0) {
       const F = setTimeout(() => {
@@ -920,7 +969,7 @@ END OF REPORT`,
   const $s = async (F = !1) => {
     F || nt(!0);
     try {
-      const ye = await fetch(`${API_BASE}/api/tickets`, {
+      const ye = await fetch(`${API_BASE}/api/feedback`, {
         headers: {
           Authorization: `Bearer ${e}`,
         },
@@ -1702,6 +1751,50 @@ END OF REPORT`,
     };
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-[#0c0c0e] dark:bg-gradient-to-b dark:from-[#0c0c0e] dark:via-[#09090b] dark:to-[#050506] text-neutral-800 dark:text-zinc-100 font-sans flex flex-col md:flex-row relative transition-colors duration-500 overflow-hidden">
+      <AnimatePresence>
+        {showRewardPopup && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[10000] flex items-center justify-center backdrop-blur-sm bg-neutral-900/10 dark:bg-black/60 p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="backdrop-blur-xl bg-[#0B0F19]/60 border border-white/[0.08] p-8 rounded-2xl max-w-md w-full shadow-2xl relative overflow-hidden"
+            >
+              <div className="flex flex-col items-center text-center">
+                <motion.div 
+                  animate={{ scale: [1, 1.05, 1], boxShadow: ["0px 0px 0px rgba(0,0,0,0)", "0px 0px 20px rgba(0,0,0,0.05)", "0px 0px 0px rgba(0,0,0,0)"] }}
+                  transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                  className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mb-6 border border-white/10"
+                >
+                  <Award className="w-10 h-10 text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
+                </motion.div>
+                
+                <h3 className="text-3xl font-display font-light text-white mb-3 tracking-tight">Bug Verified!</h3>
+                <p className="text-zinc-300 mb-6 text-sm leading-relaxed">
+                  Your feedback on <span className="font-semibold text-white">"{showRewardPopup.subject}"</span> was incredibly helpful.
+                  <br/><br/>
+                  As a token of our appreciation, please accept this gift:
+                  <br/>
+                  <span className="text-xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FF007A] via-[#7928CA] to-[#00DFD8] drop-shadow-[0_0_10px_rgba(0,0,0,0.1)] mt-2 inline-block">99 Premium Credits Added</span>
+                </p>
+                
+                <button
+                  onClick={handleRewardPopupClose}
+                  className="w-full bg-white text-black hover:bg-neutral-200 py-3 rounded-xl font-bold font-display transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg"
+                >
+                  Got it, thanks!
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       {
         <div className="fixed top-6 right-6 z-[9999] flex flex-col gap-3 pointer-events-none">
           {
