@@ -24,7 +24,7 @@ app.post("/api/suggest-reply", async (req, res) => {
   try {
     if (!process.env.GEMINI_API_KEY) {
       // Mock for when API key is not present, though it should ideally fail fast or tell user to add it.
-      // We will provide a static suggestion to avoid breaking if not configured.
+      // We will  provide a static suggestion to avoid breaking if not configured.
       return res.json({ suggestion: "Thank you for reviewing the email. Let me know if you have any questions or need further clarification." });
     }
 
