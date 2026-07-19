@@ -994,6 +994,8 @@ END OF REPORT`,
                 "success",
               ),
               Xe && Im());
+          } else {
+            s("Failed to submit feedback. Server error.", "error");
           }
         } catch (ye) {
           console.error("Failed to create ticket:", ye);
