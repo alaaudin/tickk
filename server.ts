@@ -303,6 +303,65 @@ app.delete("/api/links/:id", async (req, res) => {
   res.json({ success: true, message: "Tracker successfully deleted" });
 });
 
+app.get("/api/tickets", async (req, res) => {
+  const userId = await getUserIdFromRequest(req);
+  if (!userId) return res.status(401).json({ error: "Unauthorized" });
+
+  const { data: tickets, error } = await supabase
+    .from('tickets')
+    .select('*')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
+
+  res.json(tickets || []);
+});
+
+app.post("/api/feedback", async (req, res) => {
+  const userId = await getUserIdFromRequest(req);
+  if (!userId) return res.status(401).json({ error: "Unauthorized" });
+
+  const { subject, category, message } = req.body;
+  
+  const { data: ticket, error } = await supabase
+    .from('tickets')
+    .insert([{
+      user_id: userId,
+      subject,
+      category,
+      message,
+      status: 'rewarded'
+    }])
+    .select()
+    .single();
+
+  const insertedTicket = ticket || {
+    id: "tk_" + Math.random().toString(36).substr(2, 9),
+    userId,
+    subject,
+    category,
+    message,
+    status: 'rewarded',
+    createdAt: new Date().toISOString()
+  };
+
+  let newCredits = 0;
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('credits')
+    .eq('id', userId)
+    .single();
+
+  if (profile) {
+    newCredits = (profile.credits || 0) + 99;
+    await supabase
+      .from('profiles')
+      .update({ credits: newCredits })
+      .eq('id', userId);
+  }
+
+  res.status(201).json({ ticket: insertedTicket, newCredits });
+});
+
 // 6. Get Tracker Stats Dashboard Aggregations
 app.get("/api/links/stats", async (req, res) => {
   const userId = await getUserIdFromRequest(req);
