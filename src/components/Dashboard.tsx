@@ -5365,14 +5365,15 @@ END OF REPORT`,
                                           
                                           return (
                                             <p className="text-[15px] text-neutral-700 dark:text-neutral-300 leading-relaxed font-normal">
-                                              Your account is currently performing at a <strong className="text-neutral-900 dark:text-white font-semibold">{levelText} level (Score: {repScoreNum}/100)</strong>. Your emails are successfully reaching the inbox with a <span className="text-neutral-900 dark:text-white font-medium border-b border-neutral-300 dark:border-neutral-600">{deliveryRateNum}% delivery rate</span>, meaning they are bypassing spam filters effectively. People are engaging with your content—your <strong className="text-neutral-900 dark:text-white font-semibold">open rate is {openRateNum.toFixed(1)}%</strong> and <strong className="text-neutral-900 dark:text-white font-semibold">link click rate is {clickRateNum.toFixed(1)}%</strong>. Overall, your sending reputation {descText}.
+                                              Your account is currently performing at a <strong className="text-neutral-900 dark:text-white font-semibold">{levelText} level (Score: {repScoreNum}/100)</strong>. Your emails are successfully reaching the inbox with a <span className="text-neutral-900 dark:text-white font-medium border-b border-neutral-300 dark:border-neutral-600">{deliveryRateNum}% delivery rate</span>, meaning they are bypassing spam filters effectively. People are engaging with your content - your <strong className="text-neutral-900 dark:text-white font-semibold">open rate is {openRateNum.toFixed(1)}%</strong> and <strong className="text-neutral-900 dark:text-white font-semibold">link click rate is {clickRateNum.toFixed(1)}%</strong>. Overall, your sending reputation {descText}.
                                             </p>
                                           );
                                         })()}
                                     </div>
                                   }
                                   {
-                                                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
+                                    <>
+                                      <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
                                         {(() => {
                                           const totalDispatches = U.length;
                                           const totalOpens = U.filter((t: any) => t.logs && t.logs.length > 0).length;
@@ -5484,7 +5485,7 @@ END OF REPORT`,
                                             </>
                                           );
                                         })()}
-                                      </div>                              </div>
+                                      </div>
 
                                       <Hi mode="wait">
                                         {activeOptimizeTip && (
