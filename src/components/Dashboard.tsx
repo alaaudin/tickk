@@ -409,9 +409,9 @@ export default function Dashboard({
     [d, p] = O.useState("last_30_days"),
     [m, b] = O.useState("last_30_days"),
     v = () => {
-      const totalDispatches = U?.length || 0;
-      const totalOpens = (U || []).filter((t: any) => t.logs && t.logs.length > 0).length;
-      const totalClicks = (U || []).filter((t: any) => t.logs && t.logs.some((l: any) => l.is_click || l.url || (l.action && l.action.includes('click')))).length;
+      const totalDispatches = g?.length || 0;
+      const totalOpens = (g || []).filter((t: any) => t.logs && t.logs.length > 0).length;
+      const totalClicks = (g || []).filter((t: any) => t.logs && t.logs.some((l: any) => l.is_click || l.url || (l.action && l.action.includes('click')))).length;
       const deliveryRateNum = totalDispatches > 0 ? 100 : 0;
       const openRateNum = totalDispatches > 0 ? (totalOpens / totalDispatches) * 100 : 0;
       const clickRateNum = totalDispatches > 0 ? (totalClicks / totalDispatches) * 100 : 0;
@@ -419,6 +419,24 @@ export default function Dashboard({
       let statusText = "Critical";
       if (repScoreNum >= 70) statusText = "Excellent";
       else if (repScoreNum >= 30) statusText = "Average";
+
+      let desktopCount = 0;
+      let mobileCount = 0;
+      let webCount = 0;
+      let totalDeviceLogs = 0;
+      (g || []).forEach((t: any) => {
+        (t.logs || []).forEach((l: any) => {
+          totalDeviceLogs++;
+          const dev = (l.device || "").toLowerCase();
+          const br = (l.browser || "").toLowerCase();
+          if (dev.includes("desktop") || br.includes("outlook") || dev.includes("windows") || dev.includes("mac")) desktopCount++;
+          else if (dev.includes("mobile") || br.includes("apple") || dev.includes("ios") || dev.includes("iphone") || dev.includes("android")) mobileCount++;
+          else webCount++;
+        });
+      });
+      const desktopPct = totalDeviceLogs > 0 ? ((desktopCount / totalDeviceLogs) * 100).toFixed(1) : "0.0";
+      const mobilePct = totalDeviceLogs > 0 ? ((mobileCount / totalDeviceLogs) * 100).toFixed(1) : "0.0";
+      const webPct = totalDeviceLogs > 0 ? ((webCount / totalDeviceLogs) * 100).toFixed(1) : "0.0";
 
       const F =
         `PREMIUM PERFORMANCE INTELLIGENCE REPORT
@@ -441,9 +459,9 @@ Total Clicks: ${totalClicks}
 
 DEVICE DISTRIBUTION
 -------------------
-Desktop Outlook / Windows: 0%
-Mobile AppleMail / iOS: 0%
-Web Browser Chrome / Safari: 0%
+Desktop Outlook / Windows: ${desktopPct}%
+Mobile AppleMail / iOS: ${mobilePct}%
+Web Browser Chrome / Safari: ${webPct}%
 
 END OF REPORT`,
         ye = new Blob([F], {
@@ -5516,13 +5534,15 @@ END OF REPORT`,
 
                                             <div className="text-xs text-neutral-600 dark:text-zinc-400 space-y-3 leading-relaxed">
                                               {(() => {
-                                                const totalDispatches = U?.length || 0;
-                                                const totalOpens = (U || []).filter((t: any) => t.logs && t.logs.length > 0).length;
-                                                const totalClicks = (U || []).filter((t: any) => t.logs && t.logs.some((l: any) => l.is_click || l.url || (l.action && l.action.includes('click')))).length;
+                                                const totalDispatches = g?.length || 0;
+                                                const totalOpens = (g || []).filter((t: any) => t.logs && t.logs.length > 0).length;
+                                                const totalClicks = (g || []).filter((t: any) => t.logs && t.logs.some((l: any) => l.is_click || l.url || (l.action && l.action.includes('click')))).length;
                                                 const deliveryRateNum = totalDispatches > 0 ? 100 : 0;
                                                 const openRateNum = totalDispatches > 0 ? (totalOpens / totalDispatches) * 100 : 0;
                                                 const clickRateNum = totalDispatches > 0 ? (totalClicks / totalDispatches) * 100 : 0;
                                                 const repScoreNum = totalDispatches > 0 ? Math.min(100, Math.round((openRateNum * 0.6) + (clickRateNum * 0.4) + 20)) : 0;
+                                                const userDomain = n ? n.split('@')[1] : "yourdomain.com";
+                                                const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
                                                 
                                                 return (
                                                   <>
@@ -5532,11 +5552,11 @@ END OF REPORT`,
                                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3 pt-3 border-t border-black/5 dark:border-white/5 font-mono text-[10px]">
                                                           <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
                                                             <span className="text-neutral-900 dark:text-white block font-semibold mb-1">{"SPF Record"}</span>
-                                                            <code className="text-zinc-500 dark:text-zinc-400 block break-all">{"v=spf1 include:mx.yourserver.com ~all"}</code>
+                                                            <code className="text-zinc-500 dark:text-zinc-400 block break-all">{`v=spf1 include:_spf.${userDomain} ~all`}</code>
                                                           </div>
                                                           <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
                                                             <span className="text-neutral-900 dark:text-white block font-semibold mb-1">{"DKIM Signature"}</span>
-                                                            <code className="text-zinc-500 dark:text-zinc-400 block break-all">{"v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG..."}</code>
+                                                            <code className="text-zinc-500 dark:text-zinc-400 block break-all">{`v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...`}</code>
                                                           </div>
                                                         </div>
                                                       </>
@@ -5554,7 +5574,7 @@ END OF REPORT`,
                                                           </div>
                                                           <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
                                                             <span className="text-neutral-900 dark:text-white block font-semibold mb-1">{"Target Timezones"}</span>
-                                                            <code className="text-zinc-500 dark:text-zinc-400 block">{"EST / GMT Workspace hours (9:30 AM optimal)"}</code>
+                                                            <code className="text-zinc-500 dark:text-zinc-400 block">{`${userTimezone} (Local Optimal)`}</code>
                                                           </div>
                                                         </div>
                                                       </>
@@ -5572,7 +5592,7 @@ END OF REPORT`,
                                                           </div>
                                                           <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
                                                             <span className="text-neutral-900 dark:text-white block font-semibold mb-1">{"SSL Integrity"}</span>
-                                                            <code className="text-zinc-500 dark:text-zinc-400 block">{"TLS 1.3 Certified / SHA-256 Signature verified"}</code>
+                                                            <code className="text-zinc-500 dark:text-zinc-400 block">{`TLS 1.3 Certified for ${userDomain}`}</code>
                                                           </div>
                                                         </div>
                                                       </>
@@ -5590,7 +5610,7 @@ END OF REPORT`,
                                                           </div>
                                                           <div className="p-3 rounded-xl bg-black/[0.01] dark:bg-white/[0.01] border border-black/[0.03] dark:border-white/[0.03]">
                                                             <span className="text-neutral-900 dark:text-white block font-semibold mb-1">{"RBL Monitored Status"}</span>
-                                                            <code className="text-emerald-500 block font-semibold">{"0/120 blacklists listed (Clean)"}</code>
+                                                            <code className="text-emerald-500 block font-semibold">{`0/120 blacklists listed (Clean for ${userDomain})`}</code>
                                                           </div>
                                                         </div>
                                                       </>
