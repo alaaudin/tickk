@@ -1764,7 +1764,7 @@ END OF REPORT`,
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.95, opacity: 0 }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
-                className="backdrop-blur-2xl bg-white/80 dark:bg-[#0B0F19]/80 border border-black/10 dark:border-white/10 p-8 rounded-2xl max-w-md w-full shadow-[0_20px_40px_-10px_rgba(0,0,0,0.2)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),0_20px_40px_-10px_rgba(0,0,0,0.5)] ring-1 ring-black/5 dark:ring-white/5 relative overflow-hidden"
+                className="backdrop-blur-2xl bg-white/70 dark:bg-black/60 border border-black/10 dark:border-white/10 p-8 rounded-2xl max-w-md w-full shadow-[0_20px_40px_-10px_rgba(0,0,0,0.2)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),0_20px_40px_-10px_rgba(0,0,0,0.5)] ring-1 ring-black/5 dark:ring-white/5 relative overflow-hidden"
               >
                 <div className="flex flex-col items-center text-center">
                   <motion.div 
