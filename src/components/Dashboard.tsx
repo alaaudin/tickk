@@ -409,6 +409,17 @@ export default function Dashboard({
     [d, p] = O.useState("last_30_days"),
     [m, b] = O.useState("last_30_days"),
     v = () => {
+      const totalDispatches = U.length;
+      const totalOpens = U.filter((t: any) => t.logs && t.logs.length > 0).length;
+      const totalClicks = U.filter((t: any) => t.logs && t.logs.some((l: any) => l.is_click || l.url || (l.action && l.action.includes('click')))).length;
+      const deliveryRateNum = totalDispatches > 0 ? 100 : 0;
+      const openRateNum = totalDispatches > 0 ? (totalOpens / totalDispatches) * 100 : 0;
+      const clickRateNum = totalDispatches > 0 ? (totalClicks / totalDispatches) * 100 : 0;
+      const repScoreNum = totalDispatches > 0 ? Math.min(100, Math.round((openRateNum * 0.6) + (clickRateNum * 0.4) + 20)) : 0;
+      let statusText = "Critical";
+      if (repScoreNum >= 70) statusText = "Excellent";
+      else if (repScoreNum >= 30) statusText = "Average";
+
       const F =
         `PREMIUM PERFORMANCE INTELLIGENCE REPORT
 Date: ` +
@@ -417,22 +428,22 @@ Date: ` +
 
 EXECUTIVE SUMMARY
 -----------------
-Account Status: Excellent (98/100)
-Delivery Rate: 99.9%
-Signal Open Ratio: 78.4%
-Click Conversion: 42.1%
+Account Status: ${statusText} (${repScoreNum}/100)
+Delivery Rate: ${deliveryRateNum}%
+Signal Open Ratio: ${openRateNum.toFixed(1)}%
+Click Conversion: ${clickRateNum.toFixed(1)}%
 
 MESSAGING METRICS OVERVIEW
 --------------------------
-Total Dispatches: 1,240
-Total Opens: 980
-Total Clicks: 412
+Total Dispatches: ${totalDispatches}
+Total Opens: ${totalOpens}
+Total Clicks: ${totalClicks}
 
 DEVICE DISTRIBUTION
 -------------------
-Desktop Outlook / Windows: 56%
-Mobile AppleMail / iOS: 31%
-Web Browser Chrome / Safari: 13%
+Desktop Outlook / Windows: 0%
+Mobile AppleMail / iOS: 0%
+Web Browser Chrome / Safari: 0%
 
 END OF REPORT`,
         ye = new Blob([F], {
@@ -5272,7 +5283,18 @@ END OF REPORT`,
                                   {
                                     <span className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider bg-black/5 dark:bg-white/10 text-neutral-700 dark:text-neutral-200 font-bold px-3 py-1.5 rounded-full font-mono backdrop-blur-md border border-black/5 dark:border-white/10">
                                       {<S5 className="w-3 h-3" />}
-                                      {" Excellent Score"}
+                                      {(() => {
+                                        const td = U.length;
+                                        if (td === 0) return " Awaiting Data";
+                                        const to = U.filter((t: any) => t.logs && t.logs.length > 0).length;
+                                        const tc = U.filter((t: any) => t.logs && t.logs.some((l: any) => l.is_click || l.url || (l.action && l.action.includes('click')))).length;
+                                        const orn = td > 0 ? (to / td) * 100 : 0;
+                                        const crn = td > 0 ? (tc / td) * 100 : 0;
+                                        const rsn = td > 0 ? Math.min(100, Math.round((orn * 0.6) + (crn * 0.4) + 20)) : 0;
+                                        if (rsn >= 70) return " Excellent Score";
+                                        if (rsn >= 30) return " Average Score";
+                                        return " Critical Score";
+                                      })()}
                                     </span>
                                   }
                                 </div>
@@ -5313,22 +5335,37 @@ END OF REPORT`,
                                           const totalOpens = U.filter((t: any) => t.logs && t.logs.length > 0).length;
                                           const totalClicks = U.filter((t: any) => t.logs && t.logs.some((l: any) => l.is_click || l.url || (l.action && l.action.includes('click')))).length;
                                           
-                                          const deliveryRateNum = totalDispatches > 0 ? 99.9 : 0;
+                                          const deliveryRateNum = totalDispatches > 0 ? 100 : 0;
                                           const openRateNum = totalDispatches > 0 ? (totalOpens / totalDispatches) * 100 : 0;
                                           const clickRateNum = totalDispatches > 0 ? (totalClicks / totalDispatches) * 100 : 0;
-                                          const repScoreNum = totalDispatches > 0 ? 98 : 0;
+                                          const repScoreNum = totalDispatches > 0 ? Math.min(100, Math.round((openRateNum * 0.6) + (clickRateNum * 0.4) + 20)) : 0;
 
                                           if (totalDispatches === 0) {
                                             return (
-                                              <p className="text-[15px] text-neutral-500 dark:text-neutral-400 leading-relaxed font-normal">
-                                                No dispatch data available yet. Start tracking emails to see your performance metrics here.
-                                              </p>
+                                              <div className="flex flex-col space-y-2">
+                                                <p className="text-[15px] text-rose-500 dark:text-rose-400 leading-relaxed font-medium">
+                                                  Critical / Empty State: System awaits dispatch data.
+                                                </p>
+                                                <p className="text-[14px] text-neutral-500 dark:text-neutral-400 leading-relaxed font-normal">
+                                                  No dispatch data available yet. Start tracking emails to synchronize your real-time performance metrics and reputation intelligence.
+                                                </p>
+                                              </div>
                                             );
+                                          }
+
+                                          let levelText = "Critical";
+                                          let descText = "requires immediate attention. Spam filters may be flagging your content";
+                                          if (repScoreNum >= 70) {
+                                            levelText = "High Success";
+                                            descText = "is flawless with zero blacklists or spam reports";
+                                          } else if (repScoreNum >= 30) {
+                                            levelText = "Average Performance";
+                                            descText = "is stable, but could be improved for optimal inbox placement";
                                           }
                                           
                                           return (
                                             <p className="text-[15px] text-neutral-700 dark:text-neutral-300 leading-relaxed font-normal">
-                                              Your account is currently performing at an <strong className="text-neutral-900 dark:text-white font-semibold">Excellent level (Score: {repScoreNum}/100)</strong>. Your emails are successfully reaching the inbox with a <span className="text-neutral-900 dark:text-white font-medium border-b border-neutral-300 dark:border-neutral-600">{deliveryRateNum}% delivery rate</span>, meaning they are bypassing spam filters effectively. People are engaging with your content—your <strong className="text-neutral-900 dark:text-white font-semibold">open rate is {openRateNum.toFixed(1)}%</strong> and <strong className="text-neutral-900 dark:text-white font-semibold">link click rate is {clickRateNum.toFixed(1)}%</strong>. Overall, your sending reputation is flawless with zero blacklists or spam reports.
+                                              Your account is currently performing at a <strong className="text-neutral-900 dark:text-white font-semibold">{levelText} level (Score: {repScoreNum}/100)</strong>. Your emails are successfully reaching the inbox with a <span className="text-neutral-900 dark:text-white font-medium border-b border-neutral-300 dark:border-neutral-600">{deliveryRateNum}% delivery rate</span>, meaning they are bypassing spam filters effectively. People are engaging with your content—your <strong className="text-neutral-900 dark:text-white font-semibold">open rate is {openRateNum.toFixed(1)}%</strong> and <strong className="text-neutral-900 dark:text-white font-semibold">link click rate is {clickRateNum.toFixed(1)}%</strong>. Overall, your sending reputation {descText}.
                                             </p>
                                           );
                                         })()}
@@ -5341,10 +5378,10 @@ END OF REPORT`,
                                           const totalOpens = U.filter((t: any) => t.logs && t.logs.length > 0).length;
                                           const totalClicks = U.filter((t: any) => t.logs && t.logs.some((l: any) => l.is_click || l.url || (l.action && l.action.includes('click')))).length;
                                           
-                                          const deliveryRateNum = totalDispatches > 0 ? 99.9 : 0;
+                                          const deliveryRateNum = totalDispatches > 0 ? 100 : 0;
                                           const openRateNum = totalDispatches > 0 ? (totalOpens / totalDispatches) * 100 : 0;
                                           const clickRateNum = totalDispatches > 0 ? (totalClicks / totalDispatches) * 100 : 0;
-                                          const repScoreNum = totalDispatches > 0 ? 98 : 0;
+                                          const repScoreNum = totalDispatches > 0 ? Math.min(100, Math.round((openRateNum * 0.6) + (clickRateNum * 0.4) + 20)) : 0;
 
                                           const getColorClass = (val: number) => {
                                             if (val >= 70) return "text-emerald-400";
