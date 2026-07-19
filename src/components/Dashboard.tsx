@@ -546,7 +546,7 @@ END OF REPORT`,
     [ct, pn] = O.useState(null),
     [Tt, Qn] = O.useState(null),
     [Jn, qt] = O.useState("Saqib Memon"),
-    [ba, Bi] = O.useState(501),
+    [ba, Bi] = O.useState(301),
     [Wn, Lr] = O.useState(n),
     [Vr, Ta] = O.useState(""),
     [ga, cc] = O.useState(""),
@@ -983,17 +983,16 @@ END OF REPORT`,
           });
           if (ye.ok) {
             const Be = await ye.json();
-            (X((pt) => [Be.feedback || Be.ticket, ...pt]),
-              ge(!1),
-              ve(""),
-              oe(""),
-              Ee("bug"),
-              Be.newCredits !== void 0 && Bi(Be.newCredits),
-              s(
-                "Your feedback has been received and you've earned 99 bonus credits!",
-                "success",
-              ),
-              Xe && Im());
+            $s();
+            ge(!1);
+            ve("");
+            oe("");
+            Ee("bug");
+            s(
+              "Your feedback has been received and you've earned 99 bonus credits!",
+              "success"
+            );
+            Xe && Im();
           } else {
             s("Failed to submit feedback. Server error.", "error");
           }
@@ -2114,7 +2113,7 @@ END OF REPORT`,
                   {
                     <div className="flex items-center gap-3">
                       {(() => {
-                        const currentCredits = ba !== 501 ? ba : (profile?.credits ?? 0);
+                        const currentCredits = ba !== 301 ? ba : (profile?.credits ?? 0);
                         const maxCredits = profile?.max_credits ?? 301;
                         const pct = (currentCredits / maxCredits) * 100;
                         
@@ -7529,7 +7528,7 @@ END OF REPORT`,
                                           }
                                           {
                                             <span className="text-base font-bold font-display text-neutral-900 dark:text-white">
-                                              {ba !== 501 ? ba : (profile?.credits ?? 0)}
+                                              {ba !== 301 ? ba : (profile?.credits ?? 0)}
                                               {" / mo"}
                                             </span>
                                           }
@@ -7753,7 +7752,7 @@ END OF REPORT`,
                                                   {
                                                     <En_Icon className="w-3.5 h-3.5 text-emerald-500 shrink-0 stroke-[3px]" />
                                                   }
-                                                  {ba !== 501 ? ba : (profile?.credits ?? 0)}
+                                                  {ba !== 301 ? ba : (profile?.credits ?? 0)}
                                                   {" tracked dispatches / mo"}
                                                 </div>
                                               }
@@ -8152,7 +8151,7 @@ END OF REPORT`,
                                       {
                                         <p className="text-xs text-zinc-500 mt-0.5">
                                           {
-                                            "Beta users start with 501 free emails. Submit a useful bug report or feature request and we'll grant you an extra 99 credits instantly."
+                                            "Beta users start with 301 free emails. Submit a useful bug report or feature request and we'll grant you an extra 99 credits instantly."
                                           }
                                         </p>
                                       }
@@ -8169,7 +8168,7 @@ END OF REPORT`,
                                   }
                                   {
                                     <span className="text-xl font-bold font-display text-neutral-900 dark:text-white">
-                                      {ba !== 501 ? ba : (profile?.credits ?? 0)}
+                                      {ba !== 301 ? ba : (profile?.credits ?? 0)}
                                     </span>
                                   }
                                 </div>
@@ -8356,7 +8355,7 @@ END OF REPORT`,
                                                   {
                                                     <span className="font-semibold text-neutral-900 dark:text-zinc-300">
                                                       {
-                                                        "501 free email tracking credits"
+                                                        "301 free email tracking credits"
                                                       }
                                                     </span>
                                                   }
