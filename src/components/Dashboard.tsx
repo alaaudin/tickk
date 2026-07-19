@@ -1764,29 +1764,27 @@ END OF REPORT`,
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="backdrop-blur-xl bg-[#0B0F19]/60 border border-white/[0.08] p-8 rounded-2xl max-w-md w-full shadow-2xl relative overflow-hidden"
+              className="backdrop-blur-2xl bg-[#0B0F19]/80 border border-white/10 p-8 rounded-2xl max-w-md w-full shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),0_20px_40px_-10px_rgba(0,0,0,0.5)] ring-1 ring-white/5 relative overflow-hidden"
             >
               <div className="flex flex-col items-center text-center">
                 <motion.div 
-                  animate={{ scale: [1, 1.05, 1], boxShadow: ["0px 0px 0px rgba(0,0,0,0)", "0px 0px 20px rgba(0,0,0,0.05)", "0px 0px 0px rgba(0,0,0,0)"] }}
+                  animate={{ scale: [1, 1.05, 1], boxShadow: ["0px 0px 0px rgba(0,0,0,0)", "0px 0px 20px rgba(255,255,255,0.05)", "0px 0px 0px rgba(0,0,0,0)"] }}
                   transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-                  className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mb-6 border border-white/10"
+                  className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mb-6 border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)]"
                 >
                   <Award className="w-10 h-10 text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
                 </motion.div>
                 
-                <h3 className="text-3xl font-display font-light text-white mb-3 tracking-tight">Bug Verified!</h3>
-                <p className="text-zinc-300 mb-6 text-sm leading-relaxed">
-                  Your feedback on <span className="font-semibold text-white">"{showRewardPopup.subject}"</span> was incredibly helpful.
+                <h3 className="text-3xl font-sans font-semibold text-white mb-3 tracking-tight">Bug Verified!</h3>
+                <p className="text-zinc-300 mb-6 text-sm leading-relaxed font-sans">
+                  Aap ki madad ka shukriya! Aap ne hamari bohot help ki hai, to <span className="font-semibold text-white">ye lijiye aap ka inaam</span>:
                   <br/><br/>
-                  As a token of our appreciation, please accept this gift:
-                  <br/>
-                  <span className="text-xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FF007A] via-[#7928CA] to-[#00DFD8] drop-shadow-[0_0_10px_rgba(0,0,0,0.1)] mt-2 inline-block">99 Premium Credits Added</span>
+                  <span className="text-xl font-sans font-bold text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.3)] mt-2 inline-block">99 Premium Credits Added</span>
                 </p>
                 
                 <button
                   onClick={handleRewardPopupClose}
-                  className="w-full bg-white text-black hover:bg-neutral-200 py-3 rounded-xl font-bold font-display transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg"
+                  className="w-full bg-white text-black hover:bg-neutral-200 py-3 rounded-xl font-bold font-sans transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg border border-white/20"
                 >
                   Got it, thanks!
                 </button>
