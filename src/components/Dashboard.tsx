@@ -409,9 +409,9 @@ export default function Dashboard({
     [d, p] = O.useState("last_30_days"),
     [m, b] = O.useState("last_30_days"),
     v = () => {
-      const totalDispatches = U.length;
-      const totalOpens = U.filter((t: any) => t.logs && t.logs.length > 0).length;
-      const totalClicks = U.filter((t: any) => t.logs && t.logs.some((l: any) => l.is_click || l.url || (l.action && l.action.includes('click')))).length;
+      const totalDispatches = U?.length || 0;
+      const totalOpens = (U || []).filter((t: any) => t.logs && t.logs.length > 0).length;
+      const totalClicks = (U || []).filter((t: any) => t.logs && t.logs.some((l: any) => l.is_click || l.url || (l.action && l.action.includes('click')))).length;
       const deliveryRateNum = totalDispatches > 0 ? 100 : 0;
       const openRateNum = totalDispatches > 0 ? (totalOpens / totalDispatches) * 100 : 0;
       const clickRateNum = totalDispatches > 0 ? (totalClicks / totalDispatches) * 100 : 0;
@@ -5284,10 +5284,10 @@ END OF REPORT`,
                                     <span className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider bg-black/5 dark:bg-white/10 text-neutral-700 dark:text-neutral-200 font-bold px-3 py-1.5 rounded-full font-mono backdrop-blur-md border border-black/5 dark:border-white/10">
                                       {<S5 className="w-3 h-3" />}
                                       {(() => {
-                                        const td = U.length;
+                                        const td = U?.length || 0;
                                         if (td === 0) return " Awaiting Data";
-                                        const to = U.filter((t: any) => t.logs && t.logs.length > 0).length;
-                                        const tc = U.filter((t: any) => t.logs && t.logs.some((l: any) => l.is_click || l.url || (l.action && l.action.includes('click')))).length;
+                                        const to = (U || []).filter((t: any) => t.logs && t.logs.length > 0).length;
+                                        const tc = (U || []).filter((t: any) => t.logs && t.logs.some((l: any) => l.is_click || l.url || (l.action && l.action.includes('click')))).length;
                                         const orn = td > 0 ? (to / td) * 100 : 0;
                                         const crn = td > 0 ? (tc / td) * 100 : 0;
                                         const rsn = td > 0 ? Math.min(100, Math.round((orn * 0.6) + (crn * 0.4) + 20)) : 0;
@@ -5331,9 +5331,9 @@ END OF REPORT`,
                                   {
                                     <div className="p-6 bg-black/[0.02] dark:bg-white/[0.02] backdrop-blur-2xl rounded-2xl border border-black/[0.05] dark:border-white/[0.05] shadow-[0_8px_32px_rgba(0,0,0,0.04)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
                                         {(() => {
-                                          const totalDispatches = U.length;
-                                          const totalOpens = U.filter((t: any) => t.logs && t.logs.length > 0).length;
-                                          const totalClicks = U.filter((t: any) => t.logs && t.logs.some((l: any) => l.is_click || l.url || (l.action && l.action.includes('click')))).length;
+                                          const totalDispatches = U?.length || 0;
+                                          const totalOpens = (U || []).filter((t: any) => t.logs && t.logs.length > 0).length;
+                                          const totalClicks = (U || []).filter((t: any) => t.logs && t.logs.some((l: any) => l.is_click || l.url || (l.action && l.action.includes('click')))).length;
                                           
                                           const deliveryRateNum = totalDispatches > 0 ? 100 : 0;
                                           const openRateNum = totalDispatches > 0 ? (totalOpens / totalDispatches) * 100 : 0;
@@ -5375,9 +5375,9 @@ END OF REPORT`,
                                     <>
                                       <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
                                         {(() => {
-                                          const totalDispatches = U.length;
-                                          const totalOpens = U.filter((t: any) => t.logs && t.logs.length > 0).length;
-                                          const totalClicks = U.filter((t: any) => t.logs && t.logs.some((l: any) => l.is_click || l.url || (l.action && l.action.includes('click')))).length;
+                                          const totalDispatches = U?.length || 0;
+                                          const totalOpens = (U || []).filter((t: any) => t.logs && t.logs.length > 0).length;
+                                          const totalClicks = (U || []).filter((t: any) => t.logs && t.logs.some((l: any) => l.is_click || l.url || (l.action && l.action.includes('click')))).length;
                                           
                                           const deliveryRateNum = totalDispatches > 0 ? 100 : 0;
                                           const openRateNum = totalDispatches > 0 ? (totalOpens / totalDispatches) * 100 : 0;
