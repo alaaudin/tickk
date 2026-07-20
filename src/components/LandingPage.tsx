@@ -393,7 +393,7 @@ export default function LandingPage({ onNavigateToAuth, onQuickStart, onNavigate
           </h1>
           
           <p className="text-neutral-600 dark:text-neutral-400 text-lg leading-relaxed max-w-xl mb-8 font-sans">
-            An executive-tier email tracking platform. Inject silent telemetry, log global geolocation metrics, and map real-time click pathways without bloat. Perfect for corporate founders, legal counsel, and elite sales desks.
+            Tickk is a premium email tracking platform designed to provide real-time telemetry, log global geolocation metrics, and map click pathways without bloat. Perfect for corporate founders, legal counsel, and elite sales desks.
           </p>
 
           <form 
