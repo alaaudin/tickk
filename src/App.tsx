@@ -106,13 +106,7 @@ export default function App() {
     setView('auth');
   };
 
-  if (window.location.pathname === '/privacy') {
-    return <PrivacyPolicy />;
-  }
 
-  if (window.location.pathname === '/terms') {
-    return <TermsOfService />;
-  }
 
   return (
     <ToastProvider>
@@ -161,11 +155,23 @@ export default function App() {
         )}
 
         {view === 'privacy' && (
-          <PrivacyPolicy />
+          <PrivacyPolicy 
+            onBack={() => {
+              window.history.pushState({}, '', '/');
+              setView('landing');
+            }}
+            theme={theme}
+          />
         )}
 
         {view === 'terms' && (
-          <TermsOfService />
+          <TermsOfService 
+            onBack={() => {
+              window.history.pushState({}, '', '/');
+              setView('landing');
+            }}
+            theme={theme}
+          />
         )}
 
         {view === 'update-password' && (
