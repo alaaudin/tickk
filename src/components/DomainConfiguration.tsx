@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Globe, Server, Check, Copy, RefreshCw, Shield, AlertCircle } from "lucide-react";
+import { supabase } from "../supabaseClient";
 
 export default function DomainConfiguration() {
   const [domain, setDomain] = useState("");
@@ -14,17 +15,23 @@ export default function DomainConfiguration() {
     e.preventDefault();
     if (domain.trim().length > 3) {
       try {
+        const { data: { session } } = await supabase.auth.getSession();
+        const token = session?.access_token;
         const response = await fetch('/api/domains/add', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ domain })
+          headers: { 
+            'Content-Type': 'application/json',
+            ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+          },
+          body: JSON.stringify({ domain_name: domain })
         });
         if (response.ok) {
-          const data = await response.json();
+          const resData = await response.json();
+          const instr = resData.instructions;
           setDnsRecords([
             { type: "TXT", name: "@", value: "v=spf1 include:relay.tickk.io ~all" },
-            { type: "TXT", name: "tk._domainkey", value: data.txtToken || "k=rsa; p=..." },
-            { type: "CNAME", name: "tracking", value: data.cnameValue || "nodes.tickk.io" }
+            { type: "TXT", name: instr?.txt?.name || "tk._domainkey", value: instr?.txt?.target || "k=rsa; p=..." },
+            { type: "CNAME", name: instr?.cname?.name || "tracking", value: instr?.cname?.target || "nodes.tickk.io" }
           ]);
           setIsRegistered(true);
         } else {
@@ -39,10 +46,15 @@ export default function DomainConfiguration() {
   const handleVerify = async () => {
     setIsVerifying(true);
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
       const response = await fetch('/api/domains/verify', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ domain })
+        headers: { 
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify({ domain_name: domain })
       });
       if (response.ok) {
         const data = await response.json();
@@ -76,7 +88,7 @@ export default function DomainConfiguration() {
         </p>
       </div>
 
-      <div className="bg-[#050506] rounded-2xl border border-zinc-800/60 shadow-xl overflow-hidden relative">
+      <div className="bg-black/40 backdrop-blur-3xl rounded-2xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] overflow-hidden relative">
         {/* Glassmorphic Accents */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-zinc-800/10 rounded-full blur-[80px] pointer-events-none mix-blend-screen" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-zinc-900/20 rounded-full blur-[60px] pointer-events-none mix-blend-screen" />
