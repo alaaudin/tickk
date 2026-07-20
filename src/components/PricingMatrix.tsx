@@ -30,9 +30,11 @@ export default function PricingMatrix({ onNavigateToAuth, onBack }: PricingMatri
       <div ref={containerRef} className="max-w-7xl mx-auto w-full relative">
         
         {/* Standard Blur Overlay */}
-        <div 
-          className="absolute inset-0 z-50 backdrop-blur-md bg-black/40 flex items-center justify-center overflow-hidden rounded-[inherit] pointer-events-none select-none"
-        />
+        <div className="absolute inset-0 z-50 backdrop-blur-xl bg-black/40 flex items-center justify-center overflow-hidden rounded-[inherit] select-none">
+          <h3 className="text-xl sm:text-2xl font-light font-display text-white tracking-tight">
+            Coming in the next version
+          </h3>
+        </div>
 
         {/* Pricing Tiers Section */}
         <div className="text-center max-w-2xl mx-auto mb-20">
