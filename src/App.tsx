@@ -106,6 +106,34 @@ export default function App() {
     setView('auth');
   };
 
+  if (window.location.pathname === '/privacy') {
+    return (
+      <div className="min-h-screen bg-[#0B0F19] text-slate-300 p-8 max-w-4xl mx-auto font-sans">
+        <h1 className="text-3xl font-bold text-white mb-6">Privacy Policy - Tickk</h1>
+        <div className="space-y-4 leading-relaxed">
+          <p>This Data Privacy Protocol dictates the collection, processing, and safeguarding of telemetry data across the Tickk infrastructure.</p>
+          <p>We ensure strict compliance with global cyber telemetry mandates and absolute data encryption.</p>
+          <p>Tickk infrastructure exclusively processes deterministic signaling data intrinsic to the evaluation of outbound digital correspondence, without examining the semantic contents of your communications.</p>
+          <p>All transient data streams are protected by AES-256 encryption at rest and TLS 1.3 in transit.</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (window.location.pathname === '/terms') {
+    return (
+      <div className="min-h-screen bg-[#0B0F19] text-slate-300 p-8 max-w-4xl mx-auto font-sans">
+        <h1 className="text-3xl font-bold text-white mb-6">Terms of Service - Tickk</h1>
+        <div className="space-y-4 leading-relaxed">
+          <p>By accessing the Tickk beta platform, you agree to these Terms of Service.</p>
+          <p>This service is provided for telemetry evaluation and monitoring. Users must comply with all applicable local and international communication laws.</p>
+          <p>Tickk reserves the right to terminate accounts that violate our acceptable use guidelines, including sending malicious payloads or spam.</p>
+          <p>The platform is provided "as is" without warranty during the beta phase.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <ToastProvider>
     <div className="bg-white dark:bg-[#0c0c0e] bg-gradient-to-b from-white via-white to-white dark:from-[#0c0c0e] dark:via-[#09090b] dark:to-[#050506] text-[#111] dark:text-zinc-100 min-h-screen font-sans antialiased transition-colors duration-300 relative overflow-x-hidden">
