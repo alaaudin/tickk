@@ -481,7 +481,25 @@ END OF REPORT`,
     },
     [g, w] = O.useState([]),
     [showBanner, setShowBanner] = O.useState(!0),
-    [E, S] = O.useState([]);
+    [E, S] = O.useState([]),
+    [showConnectModal, setShowConnectModal] = O.useState(!1),
+    [authProgress, setAuthProgress] = O.useState<any>(null);
+
+  O.useEffect(() => {
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      const authSuccess = urlParams.get("auth_success");
+      const connectedEmail = urlParams.get("connected_email");
+      if (authSuccess && connectedEmail) {
+        setAuthProgress({ provider: authSuccess, email: connectedEmail });
+        window.history.replaceState({}, document.title, window.location.pathname);
+        setTimeout(() => {
+          setAuthProgress(null);
+          s("Email account connected securely.", "success");
+        }, 5000);
+      }
+    }
+  }, [s]);
 
   O.useEffect(() => {
     const checkRewardedTickets = async () => {
@@ -2223,6 +2241,21 @@ END OF REPORT`,
                           </div>
                         );
                       })()}
+                      {authProgress && (
+                        <div className="hidden lg:flex items-center gap-2 backdrop-blur-md bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-lg text-xs font-medium text-emerald-500 dark:text-emerald-400">
+                          <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                          </span>
+                          Connected {authProgress.email}
+                        </div>
+                      )}
+                      <button
+                        onClick={() => setShowConnectModal(!0)}
+                        className="hidden lg:flex items-center gap-2 backdrop-blur-md bg-white text-black hover:bg-neutral-200 dark:bg-white/10 dark:text-white dark:hover:bg-white/20 border border-transparent dark:border-white/[0.08] px-4 py-1.5 rounded-lg text-xs font-semibold transition-colors duration-300 shadow-sm cursor-pointer"
+                      >
+                        Connect Account
+                      </button>
                       <T8 theme={r} toggleTheme={o} />
                     </div>
                   }
@@ -10273,6 +10306,69 @@ END OF REPORT`,
                 >
                   Got it
                 </button>
+              </div>
+            </Lt.div>
+          </div>
+        )}
+      </Hi>
+
+      <Hi mode="wait">
+        {showConnectModal && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <Lt.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowConnectModal(!1)}
+              className="absolute inset-0 bg-black/40 backdrop-blur-xl"
+            />
+            <Lt.div
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              className="relative w-full max-w-md overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0B0F19]/80 shadow-2xl p-6"
+            >
+              <div className="flex justify-between items-center mb-6 relative z-10">
+                <h3 className="text-xl font-bold text-white tracking-tight">Connect Account</h3>
+                <button onClick={() => setShowConnectModal(!1)} className="text-white/60 hover:text-white transition-colors cursor-pointer p-1">
+                  <Bd className="w-5 h-5" />
+                </button>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4 relative z-10">
+                <button onClick={() => window.location.href = API_BASE + "/api/auth/google"} className="group cursor-pointer relative flex flex-col items-center justify-center gap-3 rounded-xl border border-white/[0.08] bg-white/[0.02] p-4 transition-all hover:bg-white/[0.05] hover:border-white/[0.15]">
+                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+                    <GmailLogo className="w-6 h-6" />
+                  </div>
+                  <span className="text-sm font-semibold text-white">Gmail</span>
+                </button>
+                
+                <button onClick={() => window.location.href = API_BASE + "/api/auth/outlook"} className="group cursor-pointer relative flex flex-col items-center justify-center gap-3 rounded-xl border border-white/[0.08] bg-white/[0.02] p-4 transition-all hover:bg-white/[0.05] hover:border-white/[0.15]">
+                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+                    <OutlookLogo className="w-6 h-6" />
+                  </div>
+                  <span className="text-sm font-semibold text-white">Outlook</span>
+                </button>
+                
+                <div className="relative flex flex-col items-center justify-center gap-3 rounded-xl border border-white/[0.04] bg-white/[0.01] p-4 opacity-50 select-none overflow-hidden">
+                  <div className="absolute inset-0 backdrop-blur-[2px] z-10 flex items-center justify-center">
+                    <span className="bg-black/80 text-white/90 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded">Coming Soon</span>
+                  </div>
+                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
+                    <YahooLogo className="w-6 h-6 text-[#6001D2]" />
+                  </div>
+                  <span className="text-sm font-semibold text-white">Yahoo</span>
+                </div>
+                
+                <div className="relative flex flex-col items-center justify-center gap-3 rounded-xl border border-white/[0.04] bg-white/[0.01] p-4 opacity-50 select-none overflow-hidden">
+                  <div className="absolute inset-0 backdrop-blur-[2px] z-10 flex items-center justify-center">
+                    <span className="bg-black/80 text-white/90 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded">Coming Soon</span>
+                  </div>
+                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
+                    <AppleLogo className="w-6 h-6 text-black" />
+                  </div>
+                  <span className="text-sm font-semibold text-white">iCloud</span>
+                </div>
               </div>
             </Lt.div>
           </div>
