@@ -7496,23 +7496,10 @@ END OF REPORT`,
                           </div>
                           
                           <div className="relative w-full h-[500px] bg-neutral-100/50 dark:bg-[#0a0a0c]/50 rounded-2xl border border-neutral-200/50 dark:border-white/5 flex flex-col items-center justify-center overflow-hidden">
-                            <div className="absolute inset-0 z-50 bg-[#0a0a0c] flex items-center justify-center overflow-hidden rounded-[inherit] pointer-events-none select-none">
-                              <div className="absolute font-black text-[120px] sm:text-[180px] tracking-tighter text-white/5 whitespace-nowrap rotate-[-12deg] pointer-events-none">
-                                PREMIUM
-                              </div>
-                              
-                              <div className="relative z-10 flex flex-col items-center justify-center">
-                                <div className="mb-6 transform rotate-6 bg-red-600/90 border-2 border-red-500 shadow-[0_0_20px_rgba(220,38,38,0.4)] px-4 py-1">
-                                  <span className="text-white font-black tracking-widest text-2xl uppercase mix-blend-screen">DISABLED</span>
-                                </div>
-                                
-                                <h3 className="text-xl font-bold font-sans tracking-widest text-white mb-2 uppercase">
-                                  PREMIUM MODULE
-                                </h3>
-                                <p className="text-xs text-zinc-500 font-mono tracking-[0.3em] uppercase">
-                                  COMING SOON
-                                </p>
-                              </div>
+                            <div className="absolute inset-0 z-50 backdrop-blur-xl bg-black/40 flex items-center justify-center overflow-hidden rounded-[inherit] select-none">
+                              <h3 className="text-xl sm:text-2xl font-light font-display text-white tracking-tight">
+                                Coming in the next version
+                              </h3>
                             </div>
                           </div>
                         </div>
@@ -7522,25 +7509,12 @@ END OF REPORT`,
                           {/* Full Blur Shield with Anti-Tamper */}
                           <div
                             id="pricing-tamper-shield"
-                            className="absolute inset-0 z-50 bg-[#0a0a0c] flex items-center justify-center overflow-hidden rounded-[inherit] pointer-events-none select-none"
+                            className="absolute inset-0 z-50 backdrop-blur-xl bg-black/40 flex items-center justify-center overflow-hidden rounded-[inherit] select-none"
                             style={{ minHeight: '100%' }}
                           >
-                            <div className="absolute font-black text-[120px] sm:text-[180px] tracking-tighter text-white/5 whitespace-nowrap rotate-[-12deg] pointer-events-none">
-                              PREMIUM
-                            </div>
-                            
-                            <div className="relative z-10 flex flex-col items-center justify-center">
-                              <div className="mb-6 transform rotate-6 bg-red-600/90 border-2 border-red-500 shadow-[0_0_20px_rgba(220,38,38,0.4)] px-4 py-1">
-                                <span className="text-white font-black tracking-widest text-2xl uppercase mix-blend-screen">DISABLED</span>
-                              </div>
-                              
-                              <h3 className="text-xl font-bold font-sans tracking-widest text-white mb-2 uppercase">
-                                BETA SUPPORTER PROGRAM ACTIVE
-                              </h3>
-                              <p className="text-xs text-zinc-500 font-mono tracking-[0.3em] uppercase">
-                                ENTERPRISE PLANS COMING SOON
-                              </p>
-                            </div>
+                            <h3 className="text-xl sm:text-2xl font-light font-display text-white tracking-tight">
+                              Coming in the next version
+                            </h3>
                           </div>
                           {
                             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
