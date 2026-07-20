@@ -90,12 +90,23 @@ export default function DomainConfiguration() {
         </p>
       </div>
 
-      <div className="bg-black/40 backdrop-blur-3xl rounded-2xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] overflow-hidden relative">
+      <div className="bg-white/5 dark:bg-black/40 backdrop-blur-3xl rounded-2xl border border-black/5 dark:border-white/10 shadow-xl dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)] overflow-hidden relative">
+        
+        {/* COMING SOON OVERLAY */}
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/40 dark:bg-black/50 backdrop-blur-[6px]">
+          <div className="bg-white/80 dark:bg-zinc-900/90 backdrop-blur-2xl border border-black/10 dark:border-white/10 px-6 py-3.5 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)] flex items-center gap-3">
+            <Server className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <span className="text-sm font-semibold font-display text-neutral-900 dark:text-white tracking-wide">
+              Enterprise Custom Domains — Coming Soon in Beta v2
+            </span>
+          </div>
+        </div>
+
         {/* Glassmorphic Accents */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-zinc-800/10 rounded-full blur-[80px] pointer-events-none mix-blend-screen" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-zinc-900/20 rounded-full blur-[60px] pointer-events-none mix-blend-screen" />
 
-        <div className="p-8 relative z-10">
+        <div className="p-8 relative z-10 opacity-40 pointer-events-none select-none blur-[2px] grayscale-[20%]">
           <AnimatePresence mode="wait">
             {!isRegistered ? (
               <motion.form 
