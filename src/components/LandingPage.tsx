@@ -1387,8 +1387,8 @@ export default function LandingPage({ onNavigateToAuth, onQuickStart, onNavigate
                 <h4 className="text-xs font-semibold uppercase tracking-wider text-neutral-900 dark:text-white">Company</h4>
                 <a href="#" className="text-sm text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors">About Us</a>
                 <a href="#" className="text-sm text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors">Security</a>
-                <button onClick={() => onNavigateToLegal?.('privacy')} className="text-sm text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors text-left">Privacy Policy</button>
-                <button onClick={() => onNavigateToLegal?.('terms')} className="text-sm text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors text-left">Terms of Service</button>
+                <a href="/privacy" className="text-sm text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors text-left">Privacy Policy</a>
+                <a href="/terms" className="text-sm text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors text-left">Terms of Service</a>
               </div>
             </div>
           </div>
