@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "motion/react";
 import { Globe, Server, Check, Copy, RefreshCw, Shield, AlertCircle } from "lucide-react";
 import { supabase } from "../supabaseClient";
 
+const API_BASE = import.meta.env.VITE_API_URL || "https://tickk-backend.onrender.com";
+
 export default function DomainConfiguration() {
   const [domain, setDomain] = useState("");
   const [isRegistered, setIsRegistered] = useState(false);
@@ -17,7 +19,7 @@ export default function DomainConfiguration() {
       try {
         const { data: { session } } = await supabase.auth.getSession();
         const token = session?.access_token;
-        const response = await fetch('/api/domains/add', {
+        const response = await fetch(`${API_BASE}/api/domains/add`, {
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json',
@@ -48,7 +50,7 @@ export default function DomainConfiguration() {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       const token = session?.access_token;
-      const response = await fetch('/api/domains/verify', {
+      const response = await fetch(`${API_BASE}/api/domains/verify`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
