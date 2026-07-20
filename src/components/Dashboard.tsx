@@ -19,6 +19,7 @@ import {
 
 import React, { useState, useEffect } from "react";
 import { useProfile } from "../hooks/useProfile";
+import { supabase } from "../supabaseClient";
 import { CustomSelect } from "./CustomSelect";
 
 import { motion, AnimatePresence } from "motion/react";
@@ -10336,14 +10337,19 @@ END OF REPORT`,
               </div>
               
               <div className="grid grid-cols-2 gap-4 relative z-10">
-                <button onClick={() => window.location.href = API_BASE + "/api/auth/google"} className="group cursor-pointer relative flex flex-col items-center justify-center gap-3 rounded-xl border border-white/[0.08] bg-white/[0.02] p-4 transition-all hover:bg-white/[0.05] hover:border-white/[0.15]">
+                <button onClick={async () => {
+                  const { data: { user } } = await supabase.auth.getUser();
+                  if (user) {
+                    window.location.href = `https://tickk-backend.onrender.com/api/auth/google?userId=${user.id}`;
+                  }
+                }} className="group cursor-pointer relative flex flex-col items-center justify-center gap-3 rounded-xl border border-white/[0.08] bg-white/[0.02] p-4 transition-all hover:bg-white/[0.05] hover:border-white/[0.15]">
                   <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
                     <GmailLogo className="w-6 h-6" />
                   </div>
                   <span className="text-sm font-semibold text-white">Gmail</span>
                 </button>
                 
-                <button onClick={() => window.location.href = API_BASE + "/api/auth/outlook"} className="group cursor-pointer relative flex flex-col items-center justify-center gap-3 rounded-xl border border-white/[0.08] bg-white/[0.02] p-4 transition-all hover:bg-white/[0.05] hover:border-white/[0.15]">
+                <button onClick={() => window.location.href = `${API_BASE}/api/auth/outlook?userId=${supabaseUserId}`} className="group cursor-pointer relative flex flex-col items-center justify-center gap-3 rounded-xl border border-white/[0.08] bg-white/[0.02] p-4 transition-all hover:bg-white/[0.05] hover:border-white/[0.15]">
                   <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
                     <OutlookLogo className="w-6 h-6" />
                   </div>
