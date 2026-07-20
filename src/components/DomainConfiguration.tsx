@@ -15,7 +15,7 @@ export default function DomainConfiguration() {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (domain.trim().length > 3) {
+    if (domain.trim().length > 3 && domain.includes('.')) {
       try {
         const { data: { session } } = await supabase.auth.getSession();
         const token = session?.access_token;
@@ -131,7 +131,7 @@ export default function DomainConfiguration() {
                   </div>
                   <button 
                     type="submit"
-                    disabled={domain.trim().length < 4}
+                    disabled={!(domain.trim().length > 3 && domain.includes('.'))}
                     className="w-full bg-zinc-100 hover:bg-white text-zinc-900 font-medium py-3 rounded-xl text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
                     <Server className="w-4 h-4" />
