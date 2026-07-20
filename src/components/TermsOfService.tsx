@@ -4,9 +4,16 @@ import { motion } from "motion/react";
 
 export default function TermsOfService() {
   return (
-    <div className="bg-[#0B0F19] text-neutral-200 min-h-screen flex flex-col font-sans transition-colors duration-300 relative overflow-hidden dark">
+    <div className="bg-[#0B0F19] text-neutral-200 min-h-screen flex flex-col font-sans relative overflow-hidden">
       
-      <header className="sticky top-0 z-50 bg-[#0c0c0e]/80 backdrop-blur-md border-b border-[#1e1e22] px-6 lg:px-16 py-4 flex items-center justify-between transition-colors duration-300">
+      {/* Ambient background blobs matching Landing Page */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        <div className="absolute w-[500px] sm:w-[700px] h-[500px] sm:h-[700px] rounded-full blur-[140px] sm:blur-[200px] mix-blend-screen opacity-[0.07] animate-blob-slow bg-white top-[-8%] left-[-8%]" />
+        <div className="absolute w-[550px] sm:w-[800px] h-[550px] sm:h-[800px] rounded-full blur-[150px] sm:blur-[220px] mix-blend-screen opacity-[0.06] animate-blob-slow-reverse bg-neutral-100 bottom-[-12%] right-[-8%]" />
+        <div className="absolute w-[450px] sm:w-[650px] h-[450px] sm:h-[650px] rounded-full blur-[120px] sm:blur-[180px] mix-blend-screen opacity-[0.05] animate-blob-slow bg-zinc-200 top-[30%] left-[50%] -translate-x-1/2" />
+      </div>
+
+      <header className="sticky top-0 z-50 bg-[#0c0c0e]/80 backdrop-blur-md border-b border-[#1e1e22] px-6 lg:px-16 py-4 flex items-center justify-between relative z-10">
         <a
           href="/"
           className="flex items-center gap-2 text-sm font-medium hover:text-white text-neutral-400 transition-colors cursor-pointer group"
@@ -25,17 +32,17 @@ export default function TermsOfService() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="bg-zinc-950/40 backdrop-blur-3xl border border-white/10 rounded-3xl p-10 lg:p-16 shadow-[0_30px_80px_rgba(0,0,0,0.4)] transition-colors duration-300"
+          className="bg-white text-slate-800 w-full max-w-3xl rounded-xl p-10 shadow-2xl border border-slate-200/50 space-y-6 mx-auto relative z-10"
         >
-          <div className="flex items-center gap-3 mb-8 border-b border-white/10 pb-6">
-            <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center transition-colors duration-300">
-              <ShieldAlert className="w-5 h-5 text-zinc-300" />
+          <div className="flex items-center gap-3 mb-8 border-b border-slate-200/50 pb-6">
+            <div className="w-10 h-10 rounded-full bg-slate-50 border border-slate-200/50 flex items-center justify-center">
+              <ShieldAlert className="w-5 h-5 text-slate-700" />
             </div>
             <div>
-              <span className="text-[10px] font-mono font-bold tracking-widest text-zinc-500 uppercase">
+              <span className="text-[10px] font-mono font-bold tracking-widest text-slate-500 uppercase">
                 Legal Notice & Compliance
               </span>
-              <h1 className="text-3xl font-semibold font-display tracking-tight text-white mt-1 transition-colors duration-300">
+              <h1 className="text-3xl font-bold font-mono tracking-wide text-slate-900 mt-1">
                 Terms of Infrastructure Use
               </h1>
             </div>
@@ -43,7 +50,7 @@ export default function TermsOfService() {
 
           <article className="max-w-none space-y-10">
             <section className="space-y-4">
-              <p className="text-zinc-400 leading-relaxed text-sm sm:text-base font-sans">
+              <p className="text-slate-700 leading-relaxed text-sm sm:text-base font-sans">
                 This document constitutes a binding operational covenant ("Terms")
                 between you (the "Operator") and Tickk ("the Infrastructure"). By
                 provisioning an account, mobilizing a tracking pixel, or routing
@@ -56,10 +63,10 @@ export default function TermsOfService() {
             </section>
 
             <section className="space-y-4">
-              <h2 className="text-lg font-medium text-zinc-200 tracking-wide uppercase font-mono border-l-2 border-zinc-700 pl-4">
+              <h2 className="text-lg text-slate-900 font-bold font-mono tracking-wide uppercase border-l-2 border-slate-300 pl-4">
                 I. Permitted Operational Scope
               </h2>
-              <p className="text-zinc-400 leading-relaxed text-sm sm:text-base font-sans">
+              <p className="text-slate-700 leading-relaxed text-sm sm:text-base font-sans">
                 The Tickk Infrastructure is strictly engineered for lawful,
                 transparent, and professional communication auditing. Operators are
                 granted a non-exclusive, revocable license to deploy our
@@ -72,10 +79,10 @@ export default function TermsOfService() {
             </section>
 
             <section className="space-y-4">
-              <h2 className="text-lg font-medium text-zinc-200 tracking-wide uppercase font-mono border-l-2 border-zinc-700 pl-4">
+              <h2 className="text-lg text-slate-900 font-bold font-mono tracking-wide uppercase border-l-2 border-slate-300 pl-4">
                 II. Prohibited Deployments
               </h2>
-              <p className="text-zinc-400 leading-relaxed text-sm sm:text-base font-sans">
+              <p className="text-slate-700 leading-relaxed text-sm sm:text-base font-sans">
                 Any utilization of the Infrastructure to execute malicious
                 payloads, facilitate phishing syndicates, deploy unsolicited mass
                 transmissions (SPAM), or circumvent digital security perimeters is
@@ -88,10 +95,10 @@ export default function TermsOfService() {
             </section>
 
             <section className="space-y-4">
-              <h2 className="text-lg font-medium text-zinc-200 tracking-wide uppercase font-mono border-l-2 border-zinc-700 pl-4">
+              <h2 className="text-lg text-slate-900 font-bold font-mono tracking-wide uppercase border-l-2 border-slate-300 pl-4">
                 III. SLA & Infrastructure Volatility
               </h2>
-              <p className="text-zinc-400 leading-relaxed text-sm sm:text-base font-sans">
+              <p className="text-slate-700 leading-relaxed text-sm sm:text-base font-sans">
                 While we employ sophisticated redundancies to ensure continuous
                 operational stability, the Tickk proxy relays and dashboard
                 consoles are provided on an "AS IS" and "AS AVAILABLE" basis. We
@@ -104,10 +111,10 @@ export default function TermsOfService() {
             </section>
 
             <section className="space-y-4">
-              <h2 className="text-lg font-medium text-zinc-200 tracking-wide uppercase font-mono border-l-2 border-zinc-700 pl-4">
+              <h2 className="text-lg text-slate-900 font-bold font-mono tracking-wide uppercase border-l-2 border-slate-300 pl-4">
                 IV. Sovereign Modifications
               </h2>
-              <p className="text-zinc-400 leading-relaxed text-sm sm:text-base font-sans">
+              <p className="text-slate-700 leading-relaxed text-sm sm:text-base font-sans">
                 We reserve the unilateral right to amend, augment, or recalibrate
                 these Terms at our absolute discretion, ensuring alignment with
                 evolving cyber-regulatory frameworks. Continued utilization of the
@@ -116,8 +123,8 @@ export default function TermsOfService() {
               </p>
             </section>
 
-            <section className="pt-8 border-t border-white/10 transition-colors duration-300">
-              <p className="text-[11px] font-mono text-zinc-600 uppercase tracking-widest text-center transition-colors duration-300">
+            <section className="pt-8 border-t border-slate-200/50">
+              <p className="text-[11px] font-mono text-slate-500 uppercase tracking-widest text-center">
                 Protocol enacted: July 14, 2026. Document ID: TK-TOS-10V
               </p>
             </section>
