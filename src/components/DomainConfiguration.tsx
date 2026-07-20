@@ -93,7 +93,7 @@ export default function DomainConfiguration() {
       <div className="bg-black/40 backdrop-blur-3xl rounded-2xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] overflow-hidden relative">
         
         {/* Standard Blur Overlay */}
-        <div className="absolute inset-0 z-50 backdrop-blur-3xl bg-black/60 flex items-center justify-center overflow-hidden rounded-[inherit] select-none">
+        <div className="absolute inset-0 z-50 backdrop-blur-[120px] bg-black/70 flex items-center justify-center overflow-hidden rounded-[inherit] select-none">
           <h3 className="text-xl sm:text-2xl font-light font-display text-white tracking-tight">
             Coming in the next version
           </h3>
