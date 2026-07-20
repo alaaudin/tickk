@@ -8,26 +8,55 @@ export default function DomainConfiguration() {
   const [isVerifying, setIsVerifying] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [dnsRecords, setDnsRecords] = useState<{type: string, name: string, value: string}[]>([]);
 
-  const dnsRecords = [
-    { type: "TXT", name: "@", value: "v=spf1 include:relay.tickk.io ~all" },
-    { type: "TXT", name: "tk._domainkey", value: "k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA..." },
-    { type: "CNAME", name: "tracking", value: "nodes.tickk.io" }
-  ];
-
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     if (domain.trim().length > 3) {
-      setIsRegistered(true);
+      try {
+        const response = await fetch('/api/domains/add', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ domain })
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setDnsRecords([
+            { type: "TXT", name: "@", value: "v=spf1 include:relay.tickk.io ~all" },
+            { type: "TXT", name: "tk._domainkey", value: data.txtToken || "k=rsa; p=..." },
+            { type: "CNAME", name: "tracking", value: data.cnameValue || "nodes.tickk.io" }
+          ]);
+          setIsRegistered(true);
+        } else {
+          console.error("Failed to provision domain");
+        }
+      } catch (error) {
+        console.error("Error provisioning domain:", error);
+      }
     }
   };
 
-  const handleVerify = () => {
+  const handleVerify = async () => {
     setIsVerifying(true);
-    setTimeout(() => {
+    try {
+      const response = await fetch('/api/domains/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ domain })
+      });
+      if (response.ok) {
+        const data = await response.json();
+        if (data.verified) {
+          setIsVerified(true);
+        }
+      } else {
+        console.error("Verification failed");
+      }
+    } catch (error) {
+      console.error("Error verifying domain:", error);
+    } finally {
       setIsVerifying(false);
-      setIsVerified(true);
-    }, 2000);
+    }
   };
 
   const handleCopy = (text: string, index: number) => {
