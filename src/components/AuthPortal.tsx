@@ -526,6 +526,11 @@ export default function AuthPortal({ initialMode, onAuthSuccess, onNavigateHome,
                   </p>
                 </div>
                 
+                <div className="mt-4 flex justify-center gap-4 text-[10px] text-slate-400/80">
+                  <a href="/privacy" className="hover:text-white transition-colors cursor-pointer">Privacy</a>
+                  <span>&bull;</span>
+                  <a href="/terms" className="hover:text-white transition-colors cursor-pointer">Terms</a>
+                </div>
               </div>
             )}
           </motion.div>

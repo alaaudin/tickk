@@ -2080,6 +2080,11 @@ END OF REPORT`,
                   {"Sign Out"}
                 </button>
               }
+              <div className={`mt-4 ${U ? 'hidden' : 'flex'} items-center justify-center gap-4 text-[10px] text-zinc-500/80`}>
+                <a href="/privacy" className="hover:text-zinc-300 transition-colors">Privacy</a>
+                <span>&bull;</span>
+                <a href="/terms" className="hover:text-zinc-300 transition-colors">Terms</a>
+              </div>
             </div>
           }
         </aside>

@@ -13,7 +13,12 @@ import { supabase } from "./supabaseClient";
 type ViewType = 'landing' | 'auth' | 'dashboard' | 'privacy' | 'terms' | 'update-password' | 'pricing';
 
 export default function App() {
-  const [view, setView] = useState<ViewType>('landing');
+  const [view, setView] = useState<ViewType>(() => {
+    const path = window.location.pathname;
+    if (path === '/privacy') return 'privacy';
+    if (path === '/terms') return 'terms';
+    return 'landing';
+  });
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
