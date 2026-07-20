@@ -7496,7 +7496,7 @@ END OF REPORT`,
                           </div>
                           
                           <div className="relative w-full h-[500px] bg-neutral-100/50 dark:bg-[#0a0a0c]/50 rounded-2xl border border-neutral-200/50 dark:border-white/5 flex flex-col items-center justify-center overflow-hidden">
-                            <div className="absolute inset-0 z-50 backdrop-blur-xl bg-black/40 flex items-center justify-center overflow-hidden rounded-[inherit] select-none">
+                            <div className="absolute inset-0 z-50 backdrop-blur-3xl bg-black/60 flex items-center justify-center overflow-hidden rounded-[inherit] select-none">
                               <h3 className="text-xl sm:text-2xl font-light font-display text-white tracking-tight">
                                 Coming in the next version
                               </h3>
@@ -7509,7 +7509,7 @@ END OF REPORT`,
                           {/* Full Blur Shield with Anti-Tamper */}
                           <div
                             id="pricing-tamper-shield"
-                            className="absolute inset-0 z-50 backdrop-blur-xl bg-black/40 flex items-center justify-center overflow-hidden rounded-[inherit] select-none"
+                            className="absolute inset-0 z-50 backdrop-blur-3xl bg-black/60 flex items-center justify-center overflow-hidden rounded-[inherit] select-none"
                             style={{ minHeight: '100%' }}
                           >
                             <h3 className="text-xl sm:text-2xl font-light font-display text-white tracking-tight">
