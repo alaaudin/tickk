@@ -26,8 +26,21 @@ export default function ExtensionAuth() {
   }, []);
 
   useEffect(() => {
-    if (session && !isSuccess) {
-      exchangeTokenAndConnect(session.access_token);
+    const checkAndConnect = async () => {
+      const { data: { session: currentSession } } = await supabase.auth.getSession();
+      
+      if (!currentSession || !currentSession.access_token) {
+        setSession(null);
+        return;
+      }
+      
+      if (!isSuccess) {
+        exchangeTokenAndConnect(currentSession.access_token);
+      }
+    };
+    
+    if (session) {
+      checkAndConnect();
     }
   }, [session]);
 
@@ -35,13 +48,13 @@ export default function ExtensionAuth() {
     try {
       setError(null);
       setIsExchanging(true);
-      const backendUrl = import.meta.env.VITE_API_URL || "https://tickk-backend.onrender.com";
-      const response = await fetch(`${backendUrl}/api/extension/auth-token-exchange`, {
+      const BACKEND_URL = "https://tickk-backend.onrender.com";
+      const response = await fetch(`${BACKEND_URL}/api/extension/auth-token-exchange`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        }
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ accessToken: token })
       });
       
       if (!response.ok) {
