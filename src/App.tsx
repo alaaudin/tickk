@@ -16,9 +16,9 @@ type ViewType = 'landing' | 'auth' | 'dashboard' | 'privacy' | 'terms' | 'update
 export default function App() {
   const [view, setView] = useState<ViewType>(() => {
     const path = window.location.pathname;
-    if (path === '/privacy') return 'privacy';
-    if (path === '/terms') return 'terms';
-    if (path === '/extension-auth') return 'extension-auth';
+    if (path.startsWith('/privacy')) return 'privacy';
+    if (path.startsWith('/terms')) return 'terms';
+    if (path.startsWith('/extension-auth')) return 'extension-auth';
     return 'landing';
   });
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
@@ -44,7 +44,10 @@ export default function App() {
           createdAt: new Date().toISOString()
         });
         setToken(session.access_token);
-        setView('dashboard');
+        // Only navigate to dashboard if we are not specifically on extension-auth
+        if (!window.location.pathname.startsWith('/extension-auth')) {
+          setView('dashboard');
+        }
       }
     });
 
