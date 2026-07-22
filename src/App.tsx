@@ -7,16 +7,18 @@ import PricingMatrix from "./components/PricingMatrix";
 import { ToastProvider } from "./components/Toast";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import TermsOfService from "./components/TermsOfService";
+import ExtensionAuth from "./pages/ExtensionAuth";
 import { User } from "./types";
 import { supabase } from "./supabaseClient";
 
-type ViewType = 'landing' | 'auth' | 'dashboard' | 'privacy' | 'terms' | 'update-password' | 'pricing';
+type ViewType = 'landing' | 'auth' | 'dashboard' | 'privacy' | 'terms' | 'update-password' | 'pricing' | 'extension-auth';
 
 export default function App() {
   const [view, setView] = useState<ViewType>(() => {
     const path = window.location.pathname;
     if (path === '/privacy') return 'privacy';
     if (path === '/terms') return 'terms';
+    if (path === '/extension-auth') return 'extension-auth';
     return 'landing';
   });
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
@@ -190,6 +192,10 @@ export default function App() {
             }}
             onBack={() => setView('landing')}
           />
+        )}
+
+        {view === 'extension-auth' && (
+          <ExtensionAuth />
         )}
       </div>
     </div>

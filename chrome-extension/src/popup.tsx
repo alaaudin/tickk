@@ -1,11 +1,10 @@
 /// <reference types="chrome" />
 import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Moon, Sun, Key, ExternalLink, Mail, Check, CheckCheck, Activity, LogOut } from 'lucide-react';
+import { Moon, Sun, ExternalLink, Mail, Check, CheckCheck, Activity, LogOut } from 'lucide-react';
 import './index.css';
 
 const Popup = () => {
-  const [apiKey, setApiKey] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const credits = 400;
@@ -34,6 +33,21 @@ const Popup = () => {
           setIsAuthenticated(true);
         }
       });
+      
+      // Listen for changes from background script
+      const storageListener = (changes: { [key: string]: chrome.storage.StorageChange }) => {
+        if (changes.tickk_api_key && changes.tickk_api_key.newValue) {
+          setIsAuthenticated(true);
+        } else if (changes.tickk_api_key && !changes.tickk_api_key.newValue) {
+          setIsAuthenticated(false);
+        }
+      };
+      
+      chrome.storage.onChanged.addListener(storageListener);
+      
+      return () => {
+        chrome.storage.onChanged.removeListener(storageListener);
+      };
     } else {
       // Fallback for local development testing
       const localKey = localStorage.getItem('tickk_api_key');
@@ -57,20 +71,15 @@ const Popup = () => {
     });
   };
 
-  const handleSaveApiKey = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!apiKey.trim()) return;
-    
-    if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
-      chrome.storage.local.set({ tickk_api_key: apiKey }, () => {
-        setIsAuthenticated(true);
-      });
+  const openAuthPage = () => {
+    const url = 'https://tickk-ivory.vercel.app/extension-auth';
+    if (typeof chrome !== 'undefined' && chrome.tabs) {
+      chrome.tabs.create({ url });
     } else {
-      // Fallback for local testing
-      localStorage.setItem('tickk_api_key', apiKey);
-      setIsAuthenticated(true);
+      window.open(url, '_blank');
     }
   };
+
 
   const handleLogout = () => {
     if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
@@ -124,43 +133,23 @@ const Popup = () => {
       {/* Main Content */}
       <main className="flex-1 flex flex-col p-5 overflow-y-auto">
         {!isAuthenticated ? (
-          <div className="flex-1 flex flex-col justify-center max-w-sm mx-auto w-full pt-4">
-            <div className="w-12 h-12 bg-neutral-100 dark:bg-[#27272a] rounded-xl flex items-center justify-center mb-4 border border-neutral-200 dark:border-[#3f3f46]">
-              <Key className="w-6 h-6 text-neutral-700 dark:text-neutral-300" />
+          <div className="flex-1 flex flex-col justify-center max-w-sm mx-auto w-full pt-4 text-center">
+            <div className="w-12 h-12 bg-neutral-100 dark:bg-[#27272a] rounded-xl flex items-center justify-center mx-auto mb-4 border border-neutral-200 dark:border-[#3f3f46]">
+              <div className="w-6 h-6 rounded-md bg-neutral-900 dark:bg-white flex items-center justify-center">
+                <Check className="w-4 h-4 text-white dark:text-neutral-900" strokeWidth={3} />
+              </div>
             </div>
             <h2 className="text-xl font-display font-bold mb-2">Connect your account</h2>
-            <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-6">
-              Enter your Tickk API key to enable seamless email tracking directly from your inbox.
+            <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-8">
+              Connect Tickk to enable invisible Gmail tracking.
             </p>
             
-            <form onSubmit={handleSaveApiKey} className="space-y-4">
-              <div className="space-y-2">
-                <label htmlFor="apiKey" className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
-                  API Key
-                </label>
-                <input
-                  id="apiKey"
-                  type="password"
-                  value={apiKey}
-                  onChange={(e) => setApiKey(e.target.value)}
-                  placeholder="tk_live_..."
-                  className="w-full px-3 py-2 text-sm rounded-lg border border-neutral-200 dark:border-[#27272a] bg-white dark:bg-[#121215] focus:outline-none focus:ring-2 focus:ring-neutral-900/10 dark:focus:ring-white/10 transition-all placeholder:text-neutral-400"
-                  required
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full py-2.5 px-4 bg-neutral-900 hover:bg-neutral-800 dark:bg-white dark:hover:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium rounded-lg transition-all flex items-center justify-center gap-2"
-              >
-                Connect Extension
-              </button>
-            </form>
-            
-            <div className="mt-6 text-center">
-              <a href="https://tickk-ivory.vercel.app/settings/api" target="_blank" rel="noreferrer" className="text-xs text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white underline underline-offset-2 transition-colors">
-                Get your API key from the Dashboard
-              </a>
-            </div>
+            <button
+              onClick={openAuthPage}
+              className="w-full py-2.5 px-4 bg-neutral-900 hover:bg-neutral-800 dark:bg-white dark:hover:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium rounded-lg transition-all flex items-center justify-center gap-2"
+            >
+              Connect Account
+            </button>
           </div>
         ) : (
           <div className="flex flex-col h-full gap-5">
