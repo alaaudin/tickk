@@ -25,5 +25,16 @@
       "https://tickk-ivory.vercel.app/*",
       "http://localhost:5173/*"
     ]
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://mail.google.com/*"
+      ],
+      "js": [
+        "assets/contentScript.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
 }
