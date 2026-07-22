@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import { Check, CheckCircle2, Loader2, ArrowRight } from 'lucide-react';
+import { Check, CheckCircle2, Loader2, ArrowRight, AlertCircle } from 'lucide-react';
 import { useToast } from '../components/Toast';
 
 export default function ExtensionAuth() {
   const [session, setSession] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [authEmail, setAuthEmail] = useState('');
-  const [authPassword, setAuthPassword] = useState('');
-  const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isExchanging, setIsExchanging] = useState(false);
   
   const { toast } = useToast();
 
@@ -34,6 +33,8 @@ export default function ExtensionAuth() {
 
   const exchangeTokenAndConnect = async (token: string) => {
     try {
+      setError(null);
+      setIsExchanging(true);
       const backendUrl = import.meta.env.VITE_API_URL || "https://tickk-backend.onrender.com";
       const response = await fetch(`${backendUrl}/api/extension/auth-token-exchange`, {
         method: 'POST',
@@ -44,7 +45,7 @@ export default function ExtensionAuth() {
       });
       
       if (!response.ok) {
-        throw new Error('Failed to exchange token');
+        throw new Error(`Failed to exchange token: ${response.status}`);
       }
       
       const data = await response.json();
@@ -61,28 +62,18 @@ export default function ExtensionAuth() {
         window.postMessage({ type: "TICKK_AUTH_SUCCESS", apiKey: data.apiKey }, "*");
         
         setIsSuccess(true);
+      } else {
+        throw new Error('No API key returned');
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('Extension auth error:', err);
-      toast("Failed to connect extension. Please try again.", "error");
+      setError(err.message || "Could not sync with authentication server.");
+    } finally {
+      setIsExchanging(false);
     }
   };
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsAuthenticating(true);
-    
-    const { error } = await supabase.auth.signInWithPassword({
-      email: authEmail,
-      password: authPassword
-    });
-    
-    setIsAuthenticating(false);
-    
-    if (error) {
-      toast(error.message, "error");
-    }
-  };
+
 
   if (isLoading) {
     return (
@@ -122,62 +113,47 @@ export default function ExtensionAuth() {
                 Close Tab
               </button>
             </div>
-          ) : !session ? (
-            <div className="relative z-10">
-              <div className="mb-8 text-center">
-                <div className="w-12 h-12 bg-neutral-100 dark:bg-[#27272a] rounded-xl flex items-center justify-center mx-auto mb-4 border border-neutral-200 dark:border-[#3f3f46]">
-                  <div className="w-6 h-6 rounded-md bg-neutral-900 dark:bg-white flex items-center justify-center">
-                    <Check className="w-4 h-4 text-white dark:text-neutral-900" strokeWidth={3} />
-                  </div>
-                </div>
-                <h2 className="text-2xl font-light font-display tracking-tight mb-2">
-                  Connect Tickk Extension
-                </h2>
-                <p className="text-sm text-neutral-500 dark:text-zinc-400">
-                  Sign in to connect Tickk Extension
-                </p>
+          ) : error ? (
+            <div className="text-center relative z-10">
+              <div className="w-16 h-16 bg-red-50 dark:bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner border border-red-200 dark:border-red-500/20">
+                <AlertCircle className="w-8 h-8 text-red-600 dark:text-red-400" strokeWidth={1.5} />
               </div>
-
-              <form onSubmit={handleLogin} className="space-y-5">
-                <div className="space-y-1.5">
-                  <label className="text-[13px] font-medium text-neutral-700 dark:text-zinc-300 ml-1">Email</label>
-                  <input
-                    type="email"
-                    required
-                    value={authEmail}
-                    onChange={(e) => setAuthEmail(e.target.value)}
-                    className="w-full bg-white dark:bg-[#0c0c0e] border border-neutral-200 dark:border-zinc-800 text-neutral-900 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-neutral-900 dark:focus:border-white focus:ring-1 transition-all"
-                    placeholder="name@company.com"
-                  />
+              <h2 className="text-2xl font-light font-display tracking-tight mb-4">
+                Connection Failed
+              </h2>
+              <p className="text-sm text-neutral-500 dark:text-zinc-400 mb-8 leading-relaxed">
+                Could not sync with authentication server. Ensure backend is live.
+              </p>
+              <button 
+                onClick={() => exchangeTokenAndConnect(session?.access_token)}
+                className="w-full bg-neutral-900 hover:bg-black dark:bg-white dark:hover:bg-neutral-200 text-white dark:text-black py-3 rounded-xl text-[13px] font-medium transition-all shadow-sm"
+              >
+                Retry Connection
+              </button>
+            </div>
+          ) : !session ? (
+            <div className="relative z-10 text-center">
+              <div className="w-12 h-12 bg-neutral-100 dark:bg-[#27272a] rounded-xl flex items-center justify-center mx-auto mb-4 border border-neutral-200 dark:border-[#3f3f46]">
+                <div className="w-6 h-6 rounded-md bg-neutral-900 dark:bg-white flex items-center justify-center">
+                  <Check className="w-4 h-4 text-white dark:text-neutral-900" strokeWidth={3} />
                 </div>
-                
-                <div className="space-y-1.5">
-                  <label className="text-[13px] font-medium text-neutral-700 dark:text-zinc-300 ml-1">Password</label>
-                  <input
-                    type="password"
-                    required
-                    value={authPassword}
-                    onChange={(e) => setAuthPassword(e.target.value)}
-                    className="w-full bg-white dark:bg-[#0c0c0e] border border-neutral-200 dark:border-zinc-800 text-neutral-900 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-neutral-900 dark:focus:border-white focus:ring-1 transition-all"
-                    placeholder="••••••••"
-                  />
-                </div>
+              </div>
+              <h2 className="text-2xl font-light font-display tracking-tight mb-2">
+                Connect Tickk Extension
+              </h2>
+              <p className="text-sm text-neutral-500 dark:text-zinc-400 mb-8 leading-relaxed">
+                Please sign in to your Tickk account first.
+              </p>
 
-                <button
-                  type="submit"
-                  disabled={isAuthenticating}
-                  className="w-full h-12 mt-6 bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 font-semibold rounded-xl flex items-center justify-center transition-all disabled:opacity-50"
-                >
-                  {isAuthenticating ? (
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                  ) : (
-                    <span className="flex items-center gap-2">
-                      Sign In & Connect
-                      <ArrowRight className="w-4 h-4" />
-                    </span>
-                  )}
-                </button>
-              </form>
+              <button
+                onClick={() => window.location.href = '/'}
+                className="w-full h-12 bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 font-semibold rounded-xl flex items-center justify-center transition-all"
+              >
+                <span className="flex items-center gap-2">
+                  Go to Login
+                  <ArrowRight className="w-4 h-4" />
+                </span>
+              </button>
             </div>
           ) : (
             <div className="text-center relative z-10 py-10">
