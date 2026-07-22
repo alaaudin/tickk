@@ -85,12 +85,10 @@ const Popup = () => {
     if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
       chrome.storage.local.remove(['tickk_api_key'], () => {
         setIsAuthenticated(false);
-        setApiKey('');
       });
     } else {
       localStorage.removeItem('tickk_api_key');
       setIsAuthenticated(false);
-      setApiKey('');
     }
   };
 
