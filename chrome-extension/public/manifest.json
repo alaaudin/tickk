@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Tickk",
+  "version": "1.0.0",
+  "description": "Tickk Email Tracking Extension",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://tickk-ivory.vercel.app/*",
+    "https://tickk-backend.onrender.com/*",
+    "https://mail.google.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
