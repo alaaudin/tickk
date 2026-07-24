@@ -324,7 +324,7 @@ export default function LandingPage({ onNavigateToAuth, onQuickStart, onNavigate
       {/* Header Navigation */}
       <header className="sticky top-0 z-50 bg-[#fafafa]/80 dark:bg-[#0c0c0e]/80 backdrop-blur-md border-b border-[#e5e5e5] dark:border-[#1e1e22] px-6 lg:px-16 py-4 flex items-center justify-between transition-colors duration-300">
         <div className="flex items-center gap-8">
-          <span className="flex items-center gap-2 select-none">
+          <span className="flex items-center gap-2 select-none" aria-label="Tickk">
             <img src="/logo.svg" alt="Tickk" className="h-4 dark:invert" />
           </span>
           <nav className="hidden md:flex items-center gap-6 text-sm text-neutral-600 dark:text-neutral-400 font-medium">
@@ -393,7 +393,7 @@ export default function LandingPage({ onNavigateToAuth, onQuickStart, onNavigate
           </h1>
           
           <p className="text-neutral-600 dark:text-neutral-400 text-lg leading-relaxed max-w-xl mb-8 font-sans">
-            Tickk is a premium email tracking platform designed to provide real-time telemetry, log global geolocation metrics, and map click pathways without bloat. Perfect for corporate founders, legal counsel, and elite sales desks.
+            Tickk helps you track Mail opens and link clicks in real-time.
           </p>
 
           <form 
