@@ -1895,14 +1895,15 @@ END OF REPORT`,
                   className={`p-6 border-b border-neutral-200 dark:border-zinc-900 flex ${U ? "flex-col items-center gap-6" : "items-center justify-between"} transition-all duration-500`}
                 >
                   {!U && (
-                    <span className="flex items-center gap-2 select-none overflow-hidden whitespace-nowrap">
+                    <span className="flex items-center gap-2.5 select-none overflow-hidden whitespace-nowrap">
                       {
                         <img
                           src="/logo.svg"
-                          alt="Tickk"
-                          className="h-4 dark:invert"
+                          alt="Tickk Logo"
+                          className="h-5 dark:invert"
                         />
                       }
+                      <span className="font-display font-semibold text-xl tracking-tight text-neutral-900 dark:text-white">Tickk</span>
                     </span>
                   )}
                   {U && (

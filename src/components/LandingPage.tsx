@@ -324,8 +324,9 @@ export default function LandingPage({ onNavigateToAuth, onQuickStart, onNavigate
       {/* Header Navigation */}
       <header className="sticky top-0 z-50 bg-[#fafafa]/80 dark:bg-[#0c0c0e]/80 backdrop-blur-md border-b border-[#e5e5e5] dark:border-[#1e1e22] px-6 lg:px-16 py-4 flex items-center justify-between transition-colors duration-300">
         <div className="flex items-center gap-8">
-          <span className="flex items-center gap-2 select-none" aria-label="Tickk">
-            <img src="/logo.svg" alt="Tickk" className="h-4 dark:invert" />
+          <span className="flex items-center gap-2.5 select-none" aria-label="Tickk">
+            <img src="/logo.svg" alt="Tickk Logo" className="h-5 dark:invert" />
+            <span className="font-display font-semibold text-xl tracking-tight text-neutral-900 dark:text-white">Tickk</span>
           </span>
           <nav className="hidden md:flex items-center gap-6 text-sm text-neutral-600 dark:text-neutral-400 font-medium">
             <a href="#features" className="hover:text-neutral-900 dark:hover:text-white transition-colors">Features</a>
@@ -388,6 +389,7 @@ export default function LandingPage({ onNavigateToAuth, onQuickStart, onNavigate
           </div>
           
           <h1 className="font-display font-light tracking-tight text-neutral-900 dark:text-white subpixel-antialiased text-4xl sm:text-5xl lg:text-6xl leading-[1.1] mb-6">
+            <span className="font-semibold text-neutral-950 dark:text-white">Tickk: </span>
             <span className="bg-gradient-to-r from-neutral-950 via-zinc-700 to-zinc-500 dark:from-white dark:via-zinc-200 dark:to-zinc-500 bg-clip-text text-transparent">Premium email intelligence.</span><br />
             <TypewriterEffect />
           </h1>
@@ -1342,8 +1344,9 @@ export default function LandingPage({ onNavigateToAuth, onQuickStart, onNavigate
             
             {/* Brand Column */}
             <div className="lg:col-span-4 flex flex-col items-start text-left">
-              <span className="flex items-center gap-3 select-none mb-4">
-                <img src="/logo.svg" alt="Tickk" className="h-5 dark:invert" />
+              <span className="flex items-center gap-2.5 select-none" aria-label="Tickk">
+                <img src="/logo.svg" alt="Tickk Logo" className="h-6 dark:invert" />
+                <span className="font-display font-semibold text-xl tracking-tight text-neutral-900 dark:text-white">Tickk</span>
               </span>
               <p className="text-neutral-500 dark:text-neutral-400 text-sm leading-relaxed mb-6 font-sans max-w-xs">
                 The apex tier of email intelligence. Silent telemetry, absolute read receipts, and geographic tracking engineered for the boardroom.
