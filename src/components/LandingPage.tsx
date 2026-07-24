@@ -326,7 +326,6 @@ export default function LandingPage({ onNavigateToAuth, onQuickStart, onNavigate
         <div className="flex items-center gap-8">
           <span className="flex items-center gap-2 select-none" aria-label="Tickk">
             <img src="/logo.svg" alt="Tickk" className="h-4 dark:invert" />
-            <span className="font-semibold text-lg tracking-tight">Tickk</span>
           </span>
           <nav className="hidden md:flex items-center gap-6 text-sm text-neutral-600 dark:text-neutral-400 font-medium">
             <a href="#features" className="hover:text-neutral-900 dark:hover:text-white transition-colors">Features</a>
