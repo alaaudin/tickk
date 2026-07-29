@@ -17,7 +17,8 @@ const app = express();
 
 // 🔴 SERVER.TS KE BILKUL TOP PAR PASTE KARO (Right after const app = express())
 app.get('/.well-known/microsoft-identity-association.json', (req, res) => {
-  res.setHeader('Content-Type', 'application/json');
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
   return res.status(200).send(JSON.stringify({
     associatedApplications: [
