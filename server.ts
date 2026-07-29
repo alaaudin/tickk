@@ -705,6 +705,17 @@ Based on this, suggest a concise, professional, and context-aware follow-up emai
   }
 });
 
+// --- MICROSOFT VERIFICATION ---
+app.get("/.well-known/microsoft-identity-association.json", (req, res) => {
+  res.status(200).json({
+    associatedApplications: [
+      {
+        applicationId: "d2edaa3c-0730-454d-81b9-67a2eda3c59"
+      }
+    ]
+  });
+});
+
 // --- VITE DEV OR PRODUCTION STATIC FILES ---
 if (process.env.NODE_ENV !== "production") {
   const vite = await createViteServer({
