@@ -12,6 +12,17 @@ export default function Onboarding() {
   const redirectProvider = queryParams.get('provider');
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const provider = params.get('provider');
+    
+    if (provider === 'gmail') {
+      setTimeout(() => { window.location.href = 'https://mail.google.com'; }, 2000);
+    } else if (provider === 'outlook') {
+      setTimeout(() => { window.location.href = 'https://outlook.live.com'; }, 2000);
+    }
+  }, []);
+
+  useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setCheckingSession(false);
@@ -39,11 +50,14 @@ export default function Onboarding() {
   const handleProviderLogin = async (provider: 'google' | 'azure') => {
     setIsLoading(provider);
     try {
-      const redirectParam = provider === 'google' ? 'gmail' : 'outlook';
+      const targetUrl = provider === 'google' 
+        ? 'https://tickk.online/onboarding?provider=gmail'
+        : 'https://tickk.online/onboarding?provider=outlook';
+
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/onboarding?provider=${redirectParam}`,
+          redirectTo: targetUrl,
         },
       });
       if (error) {
@@ -68,15 +82,6 @@ export default function Onboarding() {
   if (session && redirectProvider) {
     const providerLabel = redirectProvider === 'gmail' ? 'Gmail' : 'Outlook';
     const email = session.user?.email || '';
-
-    // Auto-redirect after 2 seconds
-    setTimeout(() => {
-      if (redirectProvider === 'gmail') {
-        window.location.href = 'https://mail.google.com';
-      } else if (redirectProvider === 'outlook') {
-        window.location.href = 'https://outlook.live.com';
-      }
-    }, 2000);
 
     return (
       <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-white dark:bg-[#0c0c0e] text-neutral-900 dark:text-white">
