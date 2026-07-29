@@ -14,21 +14,23 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = process.env.PORT || 5174;
 
-app.use(express.json());
-
-// --- MICROSOFT VERIFICATION ---
-app.get("/.well-known/microsoft-identity-association.json", (req, res) => {
+// 🔴 SERVER.TS KE BILKUL TOP PAR PASTE KARO (Right after const app = express())
+app.get('/.well-known/microsoft-identity-association.json', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
-  res.status(200).json({
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+  return res.status(200).send(JSON.stringify({
     associatedApplications: [
       {
         applicationId: "d2edaa3c-0730-454d-81b9-67a2eda3c59"
       }
     ]
-  });
+  }));
 });
+
+const PORT = process.env.PORT || 5174;
+
+app.use(express.json());
 
 // Initialize Supabase Client
 const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || "";
