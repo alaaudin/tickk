@@ -149,11 +149,12 @@ export default function Onboarding() {
                 {isLoading === 'google' ? (
                   <Loader2 className="w-10 h-10 animate-spin text-neutral-500" />
                 ) : (
-                  <svg className="w-10 h-10 group-hover:scale-105 transition-transform duration-200" viewBox="0 0 75 75" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M63.75 37.5C63.75 35.06 63.53 32.72 63.14 30.47H37.5V43.82H52.2C51.48 47.84 49.28 51.25 45.94 53.55V61.22H55.23C60.68 56.17 63.75 48.97 63.75 37.5Z" fill="#4285F4"/>
-                    <path d="M37.5 68.75C46.78 68.75 54.56 65.69 60.03 60.47L50.74 52.8C47.68 54.86 43.78 56.11 37.5 56.11C28.55 56.11 20.89 50.98 18.2 43.84H8.59V51.72C14.03 62.47 24.78 68.75 37.5 68.75Z" fill="#34A853"/>
-                    <path d="M18.2 43.78C17.52 41.72 17.11 39.53 17.11 37.25C17.11 34.97 17.52 32.78 18.2 30.72V22.84H8.59C6.23 27.5 4.92 32.72 4.92 37.25C4.92 41.78 6.23 47 8.59 51.66L18.2 43.78Z" fill="#FBBC05"/>
-                    <path d="M37.5 18.44C43.59 18.44 49.05 20.47 53.34 24.38L60.2 17.52C54.53 12.27 46.72 9.25 37.5 9.25C24.78 9.25 14.03 15.53 8.59 26.28L18.2 34.16C20.89 27 28.55 21.88 37.5 21.88V18.44Z" fill="#EA4335"/>
+                  <svg className="w-10 h-10 group-hover:scale-105 transition-transform duration-200" viewBox="52 42 88 66" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="#4285f4" d="M58 108h14V74L52 59v43c0 3.32 2.69 6 6 6"/>
+                    <path fill="#34a853" d="M120 108h14c3.32 0 6-2.69 6-6V59l-20 15"/>
+                    <path fill="#fbbc04" d="M120 48v26l20-15v-8c0-7.42-8.47-11.65-14.4-7.2"/>
+                    <path fill="#ea4335" d="M72 74V48l24 18 24-18v26L96 92"/>
+                    <path fill="#c5221f" d="M52 51v8l20 15V48l-5.6-4.2c-5.94-4.46-14.4-.22-14.4 7.2"/>
                   </svg>
                 )}
                 <div className="text-center">
@@ -175,11 +176,16 @@ export default function Onboarding() {
                 {isLoading === 'azure' ? (
                   <Loader2 className="w-10 h-10 animate-spin text-neutral-500" />
                 ) : (
-                  <svg className="w-10 h-10 group-hover:scale-105 transition-transform duration-200" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1 4.8L9.68 3.62V11.52H1V4.8Z" fill="#0078D4"/>
-                    <path d="M10.72 3.47L22 1.5V11.52H10.72V3.47Z" fill="#0078D4"/>
-                    <path d="M1 12.48H9.68V20.38L1 19.2V12.48Z" fill="#0078D4"/>
-                    <path d="M10.72 12.48H22V22.5L10.72 20.53V12.48Z" fill="#0078D4"/>
+                  <svg className="w-10 h-10 group-hover:scale-105 transition-transform duration-200" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M28.596 2H11.404A1.404 1.404 0 0 0 10 3.404V5.5l9.69 3.463L30 5.5V3.404A1.404 1.404 0 0 0 28.596 2z" fill="#0364b8"/>
+                    <path d="M31.652 17.405a1.869 1.869 0 0 0-.736-.825L30 16.054V5.5l-9.31 5.508L10 5.5v10.554l-.916.526a1.869 1.869 0 0 0-.736.825L2 19.498V28.5a1.5 1.5 0 0 0 1.5 1.5h25a1.5 1.5 0 0 0 1.5-1.5v-8.876z" fill="#0a2767"/>
+                    <path d="M10 5.5v12.032L2 22V7.5a2 2 0 0 1 2-2z" fill="#28a8ea"/>
+                    <path d="M20 5.5H10v12.032l10 5.968V5.5z" fill="#0078d4"/>
+                    <path d="M30 5.5H20v18l10-5.968V5.5z" fill="#0364b8"/>
+                    <path d="M30 17.532V5.5l-10 6.032 10 6.032z" opacity=".5" fill="#0a2767"/>
+                    <path d="M20.006 17.405L10 11.532V23.5l10.006-6.095z" opacity=".5" fill="#0a2767"/>
+                    <path d="M30 17.532l-10 6.032L10 17.532 2 22l8 5.5h12l8-5.5z" fill="#0078d4"/>
+                    <path d="M10 23.468L2 19.498v9.002a1.5 1.5 0 0 0 1.5 1.5h25a1.5 1.5 0 0 0 1.5-1.5v-9.002L20.006 23.5z" fill="#0364b8"/>
                   </svg>
                 )}
                 <div className="text-center">
