@@ -8,10 +8,11 @@ import { ToastProvider } from "./components/Toast";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import TermsOfService from "./components/TermsOfService";
 import ExtensionAuth from "./pages/ExtensionAuth";
+import Onboarding from "./pages/Onboarding";
 import { User } from "./types";
 import { supabase } from "./supabaseClient";
 
-type ViewType = 'landing' | 'auth' | 'dashboard' | 'privacy' | 'terms' | 'update-password' | 'pricing' | 'extension-auth';
+type ViewType = 'landing' | 'auth' | 'dashboard' | 'privacy' | 'terms' | 'update-password' | 'pricing' | 'extension-auth' | 'onboarding';
 
 export default function App() {
   const [view, setView] = useState<ViewType>(() => {
@@ -19,6 +20,7 @@ export default function App() {
     if (path.startsWith('/privacy')) return 'privacy';
     if (path.startsWith('/terms')) return 'terms';
     if (path.startsWith('/extension-auth')) return 'extension-auth';
+    if (path.startsWith('/onboarding')) return 'onboarding';
     return 'landing';
   });
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
@@ -45,7 +47,7 @@ export default function App() {
         });
         setToken(session.access_token);
         // Only navigate to dashboard if we are not specifically on extension-auth
-        if (!window.location.pathname.startsWith('/extension-auth')) {
+        if (!window.location.pathname.startsWith('/extension-auth') && !window.location.pathname.startsWith('/onboarding')) {
           setView('dashboard');
         }
       }
@@ -199,6 +201,10 @@ export default function App() {
 
         {view === 'extension-auth' && (
           <ExtensionAuth />
+        )}
+
+        {view === 'onboarding' && (
+          <Onboarding />
         )}
       </div>
     </div>
