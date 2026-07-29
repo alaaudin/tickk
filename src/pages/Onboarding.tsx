@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import { Check, Loader2, ArrowLeft, Mail, Shield } from 'lucide-react';
+import { Check, Loader2, ArrowLeft, Shield } from 'lucide-react';
 
 export default function Onboarding() {
   const [isLoading, setIsLoading] = useState<string | null>(null);
@@ -125,11 +125,11 @@ export default function Onboarding() {
           <div className="relative z-10">
             {/* Header */}
             <div className="text-center mb-8">
-              <div className="w-12 h-12 bg-neutral-100 dark:bg-[#27272a] rounded-xl flex items-center justify-center mx-auto mb-4 border border-neutral-200 dark:border-[#3f3f46]">
-                <div className="w-6 h-6 rounded-md bg-neutral-900 dark:bg-white flex items-center justify-center">
-                  <Check className="w-4 h-4 text-white dark:text-neutral-900" strokeWidth={3} />
-                </div>
-              </div>
+              <img
+                src="/logo.svg"
+                alt="Tickk"
+                className="h-8 mx-auto mb-5 dark:invert"
+              />
               <h1 className="text-2xl font-display font-bold tracking-tight mb-2">
                 Connect Your Email
               </h1>
@@ -144,20 +144,17 @@ export default function Onboarding() {
               <button
                 onClick={() => handleProviderLogin('google')}
                 disabled={isLoading !== null}
-                className="group relative flex flex-col items-center gap-4 p-6 rounded-2xl border-2 border-neutral-200/60 dark:border-zinc-700/50 bg-white/60 dark:bg-[#18181b]/60 hover:border-red-400/60 dark:hover:border-red-500/40 hover:bg-red-50/30 dark:hover:bg-red-500/5 transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                className="group relative flex flex-col items-center gap-4 p-6 rounded-2xl border border-neutral-200/60 dark:border-zinc-800/80 bg-white/60 dark:bg-zinc-900/40 hover:border-neutral-400 dark:hover:border-zinc-600 hover:bg-neutral-50 dark:hover:bg-zinc-900/80 transition-all duration-200 ease-in-out cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading === 'google' ? (
-                  <Loader2 className="w-10 h-10 animate-spin text-red-500" />
+                  <Loader2 className="w-10 h-10 animate-spin text-neutral-500" />
                 ) : (
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-50 to-red-100 dark:from-red-500/10 dark:to-red-500/5 flex items-center justify-center border border-red-200/60 dark:border-red-500/20 group-hover:scale-110 transition-transform duration-300">
-                    {/* Google Icon */}
-                    <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none">
-                      <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
-                      <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                      <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                      <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-                    </svg>
-                  </div>
+                  <svg className="w-10 h-10 group-hover:scale-105 transition-transform duration-200" viewBox="0 0 75 75" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M63.75 37.5C63.75 35.06 63.53 32.72 63.14 30.47H37.5V43.82H52.2C51.48 47.84 49.28 51.25 45.94 53.55V61.22H55.23C60.68 56.17 63.75 48.97 63.75 37.5Z" fill="#4285F4"/>
+                    <path d="M37.5 68.75C46.78 68.75 54.56 65.69 60.03 60.47L50.74 52.8C47.68 54.86 43.78 56.11 37.5 56.11C28.55 56.11 20.89 50.98 18.2 43.84H8.59V51.72C14.03 62.47 24.78 68.75 37.5 68.75Z" fill="#34A853"/>
+                    <path d="M18.2 43.78C17.52 41.72 17.11 39.53 17.11 37.25C17.11 34.97 17.52 32.78 18.2 30.72V22.84H8.59C6.23 27.5 4.92 32.72 4.92 37.25C4.92 41.78 6.23 47 8.59 51.66L18.2 43.78Z" fill="#FBBC05"/>
+                    <path d="M37.5 18.44C43.59 18.44 49.05 20.47 53.34 24.38L60.2 17.52C54.53 12.27 46.72 9.25 37.5 9.25C24.78 9.25 14.03 15.53 8.59 26.28L18.2 34.16C20.89 27 28.55 21.88 37.5 21.88V18.44Z" fill="#EA4335"/>
+                  </svg>
                 )}
                 <div className="text-center">
                   <span className="text-sm font-semibold text-neutral-800 dark:text-neutral-200 block mb-1">
@@ -173,20 +170,17 @@ export default function Onboarding() {
               <button
                 onClick={() => handleProviderLogin('azure')}
                 disabled={isLoading !== null}
-                className="group relative flex flex-col items-center gap-4 p-6 rounded-2xl border-2 border-neutral-200/60 dark:border-zinc-700/50 bg-white/60 dark:bg-[#18181b]/60 hover:border-blue-400/60 dark:hover:border-blue-500/40 hover:bg-blue-50/30 dark:hover:bg-blue-500/5 transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                className="group relative flex flex-col items-center gap-4 p-6 rounded-2xl border border-neutral-200/60 dark:border-zinc-800/80 bg-white/60 dark:bg-zinc-900/40 hover:border-neutral-400 dark:hover:border-zinc-600 hover:bg-neutral-50 dark:hover:bg-zinc-900/80 transition-all duration-200 ease-in-out cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading === 'azure' ? (
-                  <Loader2 className="w-10 h-10 animate-spin text-blue-500" />
+                  <Loader2 className="w-10 h-10 animate-spin text-neutral-500" />
                 ) : (
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-500/10 dark:to-blue-500/5 flex items-center justify-center border border-blue-200/60 dark:border-blue-500/20 group-hover:scale-110 transition-transform duration-300">
-                    {/* Microsoft Icon */}
-                    <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none">
-                      <rect x="1" y="1" width="10" height="10" fill="#F25022"/>
-                      <rect x="13" y="1" width="10" height="10" fill="#7FBA00"/>
-                      <rect x="1" y="13" width="10" height="10" fill="#00A4EF"/>
-                      <rect x="13" y="13" width="10" height="10" fill="#FFB900"/>
-                    </svg>
-                  </div>
+                  <svg className="w-10 h-10 group-hover:scale-105 transition-transform duration-200" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 4.8L9.68 3.62V11.52H1V4.8Z" fill="#0078D4"/>
+                    <path d="M10.72 3.47L22 1.5V11.52H10.72V3.47Z" fill="#0078D4"/>
+                    <path d="M1 12.48H9.68V20.38L1 19.2V12.48Z" fill="#0078D4"/>
+                    <path d="M10.72 12.48H22V22.5L10.72 20.53V12.48Z" fill="#0078D4"/>
+                  </svg>
                 )}
                 <div className="text-center">
                   <span className="text-sm font-semibold text-neutral-800 dark:text-neutral-200 block mb-1">
