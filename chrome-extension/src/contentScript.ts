@@ -9,26 +9,86 @@ const injectToggle = (composeWindow: HTMLElement) => {
   const sendButtonTable = composeWindow.querySelector('.gU.Up');
   if (!sendButtonTable) return;
 
-  // Create Toggle UI matching Tickk Dashboard tokens
-  const toggleContainer = document.createElement('div');
-  toggleContainer.className = 'tickk-toggle-container';
-  toggleContainer.style.display = 'inline-flex';
-  toggleContainer.style.alignItems = 'center';
-  toggleContainer.style.marginLeft = '16px';
-  toggleContainer.style.cursor = 'pointer';
-  toggleContainer.style.fontFamily = 'Inter, -apple-system, sans-serif';
-  toggleContainer.style.fontSize = '13px';
-  toggleContainer.style.color = '#52525b';
-  toggleContainer.style.fontWeight = '500';
-  toggleContainer.style.userSelect = 'none';
+  // Main container (relative for absolute positioning of popup)
+  const container = document.createElement('div');
+  container.className = 'tickk-toggle-container';
+  container.style.position = 'relative';
+  container.style.display = 'inline-flex';
+  container.style.alignItems = 'center';
+  container.style.marginLeft = '16px';
+  container.style.fontFamily = 'Inter, -apple-system, sans-serif';
+
+  // 1. Header Pill Badge
+  const pillBadge = document.createElement('button');
+  pillBadge.style.backgroundColor = 'rgba(24, 24, 27, 0.9)'; // bg-zinc-900/90
+  pillBadge.style.color = '#e4e4e7'; // text-zinc-200
+  pillBadge.style.border = '1px solid #27272a'; // border-zinc-800
+  pillBadge.style.borderRadius = '9999px'; // rounded-full
+  pillBadge.style.padding = '4px 12px'; // px-3 py-1
+  pillBadge.style.fontSize = '12px'; // text-xs
+  pillBadge.style.cursor = 'pointer';
+  pillBadge.style.display = 'inline-flex';
+  pillBadge.style.alignItems = 'center';
+  pillBadge.style.gap = '6px';
+  pillBadge.style.fontWeight = '500';
+  pillBadge.style.transition = 'all 0.2s ease-in-out';
+  // Note: Hover state is handled via event listeners below
+
+  const statusDot = document.createElement('div');
+  statusDot.style.width = '6px';
+  statusDot.style.height = '6px';
+  statusDot.style.borderRadius = '50%';
+  statusDot.style.backgroundColor = isTickkEnabled ? '#10b981' : '#71717a'; // emerald-500 : zinc-500
+  statusDot.style.transition = 'background-color 0.2s';
+  
+  const pillText = document.createElement('span');
+  pillText.innerText = 'Tickk';
+
+  pillBadge.appendChild(statusDot);
+  pillBadge.appendChild(pillText);
+
+  // Hover effects for Pill Badge
+  pillBadge.addEventListener('mouseenter', () => {
+    pillBadge.style.borderColor = 'rgba(16, 185, 129, 0.5)'; // hover:border-emerald-500/50
+  });
+  pillBadge.addEventListener('mouseleave', () => {
+    pillBadge.style.borderColor = '#27272a';
+  });
+
+  // 2. Compose Floating Pop-up
+  const popup = document.createElement('div');
+  popup.style.position = 'absolute';
+  popup.style.bottom = 'calc(100% + 8px)';
+  popup.style.left = '50%';
+  popup.style.transform = 'translateX(-50%)';
+  popup.style.backgroundColor = '#09090b'; // bg-zinc-950
+  popup.style.border = '1px solid #27272a'; // border-zinc-800
+  popup.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.5)'; // shadow-2xl
+  popup.style.borderRadius = '12px'; // rounded-xl
+  popup.style.padding = '12px'; // p-3
+  popup.style.minWidth = '140px';
+  popup.style.display = 'none'; // hidden initially
+  popup.style.zIndex = '99999';
+
+  // Toggle switch inside popup
+  const toggleRow = document.createElement('div');
+  toggleRow.style.display = 'flex';
+  toggleRow.style.alignItems = 'center';
+  toggleRow.style.justifyContent = 'space-between';
+  toggleRow.style.cursor = 'pointer';
+
+  const toggleLabel = document.createElement('span');
+  toggleLabel.innerText = 'Track Opens';
+  toggleLabel.style.color = '#e4e4e7';
+  toggleLabel.style.fontSize = '13px';
+  toggleLabel.style.fontWeight = '500';
 
   const toggleTrack = document.createElement('div');
   toggleTrack.style.width = '32px';
   toggleTrack.style.height = '18px';
-  toggleTrack.style.backgroundColor = isTickkEnabled ? '#000000' : '#e4e4e7';
+  toggleTrack.style.backgroundColor = isTickkEnabled ? '#10b981' : '#3f3f46'; // emerald-500 or zinc-700
   toggleTrack.style.borderRadius = '999px';
   toggleTrack.style.position = 'relative';
-  toggleTrack.style.marginRight = '8px';
   toggleTrack.style.transition = 'background-color 0.2s';
 
   const toggleThumb = document.createElement('div');
@@ -43,21 +103,34 @@ const injectToggle = (composeWindow: HTMLElement) => {
   toggleThumb.style.boxShadow = '0 1px 2px rgba(0,0,0,0.1)';
 
   toggleTrack.appendChild(toggleThumb);
+  toggleRow.appendChild(toggleLabel);
+  toggleRow.appendChild(toggleTrack);
+  popup.appendChild(toggleRow);
 
-  const toggleLabel = document.createElement('span');
-  toggleLabel.innerText = `Track Mail: ${isTickkEnabled ? 'ON' : 'OFF'}`;
-  
-  toggleContainer.appendChild(toggleTrack);
-  toggleContainer.appendChild(toggleLabel);
-
-  toggleContainer.addEventListener('click', () => {
-    isTickkEnabled = !isTickkEnabled;
-    toggleTrack.style.backgroundColor = isTickkEnabled ? '#000000' : '#e4e4e7';
-    toggleThumb.style.left = isTickkEnabled ? '16px' : '2px';
-    toggleLabel.innerText = `Track Mail: ${isTickkEnabled ? 'ON' : 'OFF'}`;
+  // Interaction Logic
+  pillBadge.addEventListener('click', (e) => {
+    e.stopPropagation();
+    popup.style.display = popup.style.display === 'none' ? 'block' : 'none';
   });
 
-  sendButtonTable.appendChild(toggleContainer);
+  document.addEventListener('click', () => {
+    popup.style.display = 'none';
+  });
+
+  popup.addEventListener('click', (e) => {
+    e.stopPropagation();
+  });
+
+  toggleRow.addEventListener('click', () => {
+    isTickkEnabled = !isTickkEnabled;
+    toggleTrack.style.backgroundColor = isTickkEnabled ? '#10b981' : '#3f3f46';
+    toggleThumb.style.left = isTickkEnabled ? '16px' : '2px';
+    statusDot.style.backgroundColor = isTickkEnabled ? '#10b981' : '#71717a';
+  });
+
+  container.appendChild(pillBadge);
+  container.appendChild(popup);
+  sendButtonTable.appendChild(container);
   
   interceptSendButton(composeWindow);
 };
