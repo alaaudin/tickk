@@ -7,6 +7,10 @@ export default function Onboarding() {
   const [session, setSession] = useState<any>(null);
   const [checkingSession, setCheckingSession] = useState(true);
 
+  // Extract provider from URL if it exists
+  const queryParams = new URLSearchParams(window.location.search);
+  const redirectProvider = queryParams.get('provider');
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
@@ -35,10 +39,11 @@ export default function Onboarding() {
   const handleProviderLogin = async (provider: 'google' | 'azure') => {
     setIsLoading(provider);
     try {
+      const redirectParam = provider === 'google' ? 'gmail' : 'outlook';
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/onboarding`,
+          redirectTo: `${window.location.origin}/onboarding?provider=${redirectParam}`,
         },
       });
       if (error) {
@@ -60,10 +65,18 @@ export default function Onboarding() {
   }
 
   // Success state after OAuth redirect
-  if (session) {
-    const provider = session.user?.app_metadata?.provider;
+  if (session && redirectProvider) {
+    const providerLabel = redirectProvider === 'gmail' ? 'Gmail' : 'Outlook';
     const email = session.user?.email || '';
-    const providerLabel = provider === 'google' ? 'Gmail' : provider === 'azure' ? 'Outlook' : 'Email';
+
+    // Auto-redirect after 2 seconds
+    setTimeout(() => {
+      if (redirectProvider === 'gmail') {
+        window.location.href = 'https://mail.google.com';
+      } else if (redirectProvider === 'outlook') {
+        window.location.href = 'https://outlook.live.com';
+      }
+    }, 2000);
 
     return (
       <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-white dark:bg-[#0c0c0e] text-neutral-900 dark:text-white">
@@ -82,7 +95,7 @@ export default function Onboarding() {
                 <Check className="w-8 h-8 text-green-600 dark:text-green-400" strokeWidth={1.5} />
               </div>
               <h2 className="text-2xl font-light font-display tracking-tight mb-2">
-                Connected Successfully!
+                Account Connected Successfully!
               </h2>
               <p className="text-sm text-neutral-500 dark:text-zinc-400 mb-2 leading-relaxed">
                 Your {providerLabel} account is now linked.
@@ -91,15 +104,19 @@ export default function Onboarding() {
                 {email}
               </p>
 
-              <div className="space-y-3">
-                <button
-                  onClick={() => { window.location.href = '/'; }}
-                  className="w-full bg-neutral-900 hover:bg-black dark:bg-white dark:hover:bg-neutral-200 text-white dark:text-black py-3 rounded-xl text-[13px] font-medium transition-all shadow-sm"
-                >
-                  Go to Dashboard
-                </button>
-                <p className="text-[11px] text-neutral-400 dark:text-zinc-500">
-                  You can close this tab and return to your inbox.
+              <div className="space-y-4">
+                <div className="flex items-center justify-center gap-2 text-sm text-neutral-500 dark:text-zinc-400">
+                  <Loader2 className="w-4 h-4 animate-spin text-neutral-400" />
+                  <span>Opening your inbox in 2 seconds...</span>
+                </div>
+                <p className="text-[11px] text-neutral-400 dark:text-zinc-500 mt-4">
+                  If you are not redirected,{' '}
+                  <a 
+                    href={redirectProvider === 'gmail' ? 'https://mail.google.com' : 'https://outlook.live.com'}
+                    className="text-neutral-600 dark:text-zinc-300 underline underline-offset-2"
+                  >
+                    click here
+                  </a>.
                 </p>
               </div>
             </div>
