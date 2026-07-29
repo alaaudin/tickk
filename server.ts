@@ -18,6 +18,18 @@ const PORT = process.env.PORT || 5174;
 
 app.use(express.json());
 
+// --- MICROSOFT VERIFICATION ---
+app.get("/.well-known/microsoft-identity-association.json", (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.status(200).json({
+    associatedApplications: [
+      {
+        applicationId: "d2edaa3c-0730-454d-81b9-67a2eda3c59"
+      }
+    ]
+  });
+});
+
 // Initialize Supabase Client
 const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || "";
 const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || "";
@@ -705,16 +717,6 @@ Based on this, suggest a concise, professional, and context-aware follow-up emai
   }
 });
 
-// --- MICROSOFT VERIFICATION ---
-app.get("/.well-known/microsoft-identity-association.json", (req, res) => {
-  res.status(200).json({
-    associatedApplications: [
-      {
-        applicationId: "d2edaa3c-0730-454d-81b9-67a2eda3c59"
-      }
-    ]
-  });
-});
 
 // --- VITE DEV OR PRODUCTION STATIC FILES ---
 if (process.env.NODE_ENV !== "production") {
