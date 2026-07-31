@@ -343,26 +343,38 @@ const resumeSend = (sendButton: HTMLElement, originalText: string) => {
   }, 1000);
 };
 
-// Observe DOM for compose windows
-const observer = new MutationObserver((mutations) => {
-  for (const mutation of mutations) {
-    for (const node of Array.from(mutation.addedNodes)) {
-      if (node instanceof HTMLElement) {
-        // Gmail compose window container often uses role="dialog"
-        if (node.getAttribute('role') === 'dialog' || node.classList.contains('M9') || node.querySelector('.M9')) {
-          const composeWindow = node.getAttribute('role') === 'dialog' ? node : (node.querySelector('[role="dialog"]') || node);
-          injectToggle(composeWindow as HTMLElement);
-        } else if (node.classList.contains('gU') || node.querySelector('.gU.Up')) {
-          // Sometimes the footer is injected later
-          const composeWindow = node.closest('[role="dialog"]') as HTMLElement;
-          if (composeWindow) injectToggle(composeWindow);
-        }
-      }
+// ─── Robust DOM Polling for Compose Windows ───
+const checkForComposeWindows = () => {
+  // Gmail's send button container is highly stable (.gU.Up)
+  const sendButtonTables = document.querySelectorAll('.gU.Up');
+  
+  sendButtonTables.forEach((table) => {
+    // Avoid double injection
+    if (table.querySelector('.tickk-host-container')) return;
+
+    // Find a suitable parent container for context (usually role="dialog" or the form itself)
+    const composeWindow = table.closest('[role="dialog"]') || table.closest('form') || table.parentElement;
+    
+    if (composeWindow) {
+      injectToggle(composeWindow as HTMLElement);
     }
-  }
+  });
+};
+
+// Use MutationObserver to trigger the scan, rather than relying on exact node structure
+let scanTimeout: number | null = null;
+const observer = new MutationObserver(() => {
+  // Debounce the scan to avoid performance hits during heavy DOM changes
+  if (scanTimeout) cancelAnimationFrame(scanTimeout);
+  scanTimeout = requestAnimationFrame(() => {
+    checkForComposeWindows();
+  });
 });
 
 observer.observe(document.body, {
   childList: true,
   subtree: true
 });
+
+// Also run once on load just in case
+checkForComposeWindows();
