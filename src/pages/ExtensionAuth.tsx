@@ -64,15 +64,24 @@ export default function ExtensionAuth() {
       const data = await response.json();
       
       if (data.apiKey) {
-        // Broadcast to extension
-        const EXTENSION_ID = import.meta.env.VITE_EXTENSION_ID || "your_extension_id_here";
+        // Broadcast to extension via chrome.runtime.sendMessage
+        // Send the raw accessToken so background.js can exchange it itself
+        // (this keeps the API key off the postMessage channel for security)
+        const EXTENSION_ID = import.meta.env.VITE_EXTENSION_ID || "";
         
-        if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessage) {
-          chrome.runtime.sendMessage(EXTENSION_ID, { type: "TICKK_AUTH_SUCCESS", apiKey: data.apiKey });
+        if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessage && EXTENSION_ID) {
+          try {
+            chrome.runtime.sendMessage(EXTENSION_ID, {
+              type: "AUTH_TOKEN",
+              accessToken: token,
+            });
+          } catch (e) {
+            console.warn('[Tickk] Could not send message to extension:', e);
+          }
         }
         
         // Also fallback to postMessage just in case
-        window.postMessage({ type: "TICKK_AUTH_SUCCESS", apiKey: data.apiKey }, "*");
+        window.postMessage({ type: "AUTH_TOKEN", accessToken: token }, "*");
         
         setIsSuccess(true);
       } else {

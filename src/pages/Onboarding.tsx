@@ -31,15 +31,18 @@ export default function Onboarding() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       if (session) {
-        // If user just authenticated, broadcast to extension and show success
+        // If user just authenticated, broadcast to extension
+        // Send the raw accessToken so background.js can exchange it for a persistent API key
         const EXTENSION_ID = import.meta.env.VITE_EXTENSION_ID || "";
         if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessage && EXTENSION_ID) {
-          chrome.runtime.sendMessage(EXTENSION_ID, {
-            type: "TICKK_AUTH_SUCCESS",
-            apiKey: session.access_token,
-            provider: session.user?.app_metadata?.provider || 'email',
-            email: session.user?.email || '',
-          });
+          try {
+            chrome.runtime.sendMessage(EXTENSION_ID, {
+              type: "AUTH_TOKEN",
+              accessToken: session.access_token,
+            });
+          } catch (e) {
+            console.warn('[Tickk] Could not send message to extension:', e);
+          }
         }
       }
     });
