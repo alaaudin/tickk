@@ -19,9 +19,9 @@ export default function Onboarding() {
     if (!provider || !connectedEmail) return;
 
     const targetUrl = provider === 'gmail' 
-      ? `https://mail.google.com/#inbox?tickk_email=${encodeURIComponent(connectedEmail)}`
+      ? `https://mail.google.com/mail/u/0/?tickk_email=${encodeURIComponent(connectedEmail)}`
       : provider === 'outlook'
-        ? `https://outlook.live.com?tickk_email=${encodeURIComponent(connectedEmail)}`
+        ? `https://outlook.live.com/mail/0/?tickk_email=${encodeURIComponent(connectedEmail)}`
         : null;
 
     if (!targetUrl) return;
@@ -165,7 +165,7 @@ export default function Onboarding() {
                 <p className="text-[11px] text-neutral-400 dark:text-zinc-500 mt-4">
                   If you are not redirected,{' '}
                   <a 
-                    href={redirectProvider === 'gmail' ? 'https://mail.google.com' : 'https://outlook.live.com'}
+                    href={redirectProvider === 'gmail' ? `https://mail.google.com/mail/u/0/?tickk_email=${encodeURIComponent(email)}` : `https://outlook.live.com/mail/0/?tickk_email=${encodeURIComponent(email)}`}
                     className="text-neutral-600 dark:text-zinc-300 underline underline-offset-2"
                   >
                     click here
