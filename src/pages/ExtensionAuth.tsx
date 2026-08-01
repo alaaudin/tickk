@@ -83,6 +83,14 @@ export default function ExtensionAuth() {
         // Also fallback to postMessage just in case
         window.postMessage({ type: "AUTH_TOKEN", accessToken: token }, "*");
         
+        // Cache email in localStorage so tickk-sync.js content script can always find it
+        try {
+          localStorage.setItem('tickk_user_email_cache', session?.user?.email || '');
+          console.log('[Tickk ExtensionAuth] Email cached for extension sync:', session?.user?.email);
+        } catch (e) {
+          console.warn('[Tickk] Could not cache email:', e);
+        }
+        
         setIsSuccess(true);
       } else {
         throw new Error('No API key returned');

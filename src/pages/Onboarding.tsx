@@ -14,13 +14,51 @@ export default function Onboarding() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const provider = params.get('provider');
+    const connectedEmail = session?.user?.email || '';
     
-    if (provider === 'gmail') {
-      setTimeout(() => { window.location.href = 'https://mail.google.com'; }, 2000);
-    } else if (provider === 'outlook') {
-      setTimeout(() => { window.location.href = 'https://outlook.live.com'; }, 2000);
-    }
-  }, []);
+    if (!provider || !connectedEmail) return;
+
+    const targetUrl = provider === 'gmail' 
+      ? `https://mail.google.com/#inbox?tickk_email=${encodeURIComponent(connectedEmail)}`
+      : provider === 'outlook'
+        ? `https://outlook.live.com?tickk_email=${encodeURIComponent(connectedEmail)}`
+        : null;
+
+    if (!targetUrl) return;
+
+    // Send email to tickk-sync.js content script via postMessage
+    // Content script will write to chrome.storage.local and confirm back
+    window.postMessage({ 
+      type: 'TICKK_AUTH_SYNC', 
+      email: connectedEmail,
+      accessToken: session.access_token
+    }, '*');
+    console.log('[Tickk Onboarding] postMessage sent to content script:', connectedEmail);
+
+    // Wait for content script confirmation, THEN redirect
+    let redirected = false;
+    const onConfirm = (event: MessageEvent) => {
+      if (event.data?.type === 'TICKK_SYNC_CONFIRMED' && !redirected) {
+        redirected = true;
+        console.log('[Tickk Onboarding] ✅ Sync confirmed! Redirecting...');
+        window.removeEventListener('message', onConfirm);
+        window.location.href = targetUrl;
+      }
+    };
+    window.addEventListener('message', onConfirm);
+
+    // Safety timeout: redirect after 3s even if no confirmation (URL param fallback)
+    setTimeout(() => {
+      if (!redirected) {
+        redirected = true;
+        console.log('[Tickk Onboarding] ⏱️ Timeout — redirecting with URL fallback');
+        window.removeEventListener('message', onConfirm);
+        window.location.href = targetUrl;
+      }
+    }, 3000);
+
+    return () => window.removeEventListener('message', onConfirm);
+  }, [session]);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -31,8 +69,15 @@ export default function Onboarding() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       if (session) {
-        // If user just authenticated, broadcast to extension
-        // Send the raw accessToken so background.js can exchange it for a persistent API key
+        // ─── Channel 1: postMessage to tickk-sync.js content script (INSTANT) ───
+        window.postMessage({ 
+          type: 'TICKK_AUTH_SYNC', 
+          email: session.user?.email || '',
+          accessToken: session.access_token 
+        }, '*');
+        console.log('[Tickk Onboarding] postMessage sent on auth change:', session.user?.email);
+
+        // ─── Channel 2: chrome.runtime.sendMessage to background.js ───
         const EXTENSION_ID = import.meta.env.VITE_EXTENSION_ID || "";
         if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessage && EXTENSION_ID) {
           try {
