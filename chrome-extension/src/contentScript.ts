@@ -1,4 +1,4 @@
-/// <reference types="chrome" />
+﻿/// <reference types="chrome" />
 
 let isTickkEnabled = true;
 
@@ -299,7 +299,7 @@ const interceptSendButton = (composeWindow: HTMLElement) => {
       if (!recipient && toElement) recipient = toElement.textContent || '';
       const subject = subjectField ? subjectField.value : '';
 
-      const response = await fetch("https://tickk-backend.onrender.com/api/track/create", {
+      const response = await fetch("https://tickk-k5zw.onrender.com/api/track/create", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -317,7 +317,7 @@ const interceptSendButton = (composeWindow: HTMLElement) => {
           const bodyElement = composeWindow.querySelector('.Am.Al.editable');
           if (bodyElement) {
             const pixel = document.createElement('img');
-            pixel.src = `https://tickk-backend.onrender.com/api/track/pixel?id=${data.id}`;
+            pixel.src = `https://tickk-k5zw.onrender.com/api/track/pixel?id=${data.id}`;
             pixel.width = 1;
             pixel.height = 1;
             pixel.style.display = 'none';

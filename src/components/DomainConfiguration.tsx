@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Globe, Server, Check, Copy, RefreshCw, Shield, AlertCircle } from "lucide-react";
 import { supabase } from "../supabaseClient";
 
-const API_BASE = import.meta.env.VITE_API_URL || "https://tickk-backend.onrender.com";
+const API_BASE = import.meta.env.VITE_API_URL || "https://tickk-k5zw.onrender.com";
 
 export default function DomainConfiguration() {
   const [domain, setDomain] = useState("");

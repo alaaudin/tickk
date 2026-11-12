@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { CustomSelect } from "./CustomSelect";
 import { CustomDateTimePicker } from "./CustomDateTimePicker";
 import { 
@@ -32,7 +32,7 @@ export default function ManualEmailDispatch({ profile }: { profile?: any }) {
   const generateQuickReply = async (item: any) => {
     try {
       setGeneratingReply(item.id);
-      const backendUrl = import.meta.env.VITE_API_URL || "https://tickk-backend.onrender.com";
+      const backendUrl = import.meta.env.VITE_API_URL || "https://tickk-k5zw.onrender.com";
       const response = await fetch(`${backendUrl}/api/suggest-reply`, {
         method: 'POST',
         headers: {

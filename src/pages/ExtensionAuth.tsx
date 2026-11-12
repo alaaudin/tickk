@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import { Check, CheckCircle2, Loader2, ArrowRight, AlertCircle } from 'lucide-react';
 import { useToast } from '../components/Toast';
@@ -48,7 +48,7 @@ export default function ExtensionAuth() {
     try {
       setError(null);
       setIsExchanging(true);
-      const BACKEND_URL = "https://tickk-backend.onrender.com";
+      const BACKEND_URL = "https://tickk-k5zw.onrender.com";
       const response = await fetch(`${BACKEND_URL}/api/extension/auth-token-exchange`, {
         method: 'POST',
         headers: {

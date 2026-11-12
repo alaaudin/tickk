@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+﻿import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../supabaseClient';
 
 export interface UserProfile {
@@ -8,7 +8,7 @@ export interface UserProfile {
   [key: string]: any;
 }
 
-const API_BASE = import.meta.env.VITE_API_URL || "https://tickk-backend.onrender.com";
+const API_BASE = import.meta.env.VITE_API_URL || "https://tickk-k5zw.onrender.com";
 
 export function useProfile(userId: string | undefined, token?: string) {
   const [profile, setProfile] = useState<UserProfile | null>(null);

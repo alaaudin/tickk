@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+﻿import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Mail, Lock, Eye, EyeOff, ArrowRight, ArrowLeft, Building2, Check, ShieldCheck, Copy, CheckCircle2, User } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
@@ -78,7 +78,7 @@ export default function AuthPortal({ initialMode, onAuthSuccess, onNavigateHome,
         return;
       }
       
-      const backendUrl = import.meta.env.VITE_API_URL || "https://tickk-backend.onrender.com";
+      const backendUrl = import.meta.env.VITE_API_URL || "https://tickk-k5zw.onrender.com";
       try {
         const response = await fetch(`${backendUrl}/api/auth/send-otp`, {
           method: 'POST',
@@ -130,7 +130,7 @@ export default function AuthPortal({ initialMode, onAuthSuccess, onNavigateHome,
         onAuthSuccess(data.user as any, data.session.access_token);
       }
     } else if (mode === 'forgot') {
-      const backendUrl = import.meta.env.VITE_API_URL || "https://tickk-backend.onrender.com";
+      const backendUrl = import.meta.env.VITE_API_URL || "https://tickk-k5zw.onrender.com";
       try {
         const response = await fetch(`${backendUrl}/api/auth/reset-password`, {
           method: 'POST',
@@ -155,7 +155,7 @@ export default function AuthPortal({ initialMode, onAuthSuccess, onNavigateHome,
   };
   const handleResendLink = async () => {
     setIsLoading(true);
-    const backendUrl = import.meta.env.VITE_API_URL || "https://tickk-backend.onrender.com";
+    const backendUrl = import.meta.env.VITE_API_URL || "https://tickk-k5zw.onrender.com";
     try {
       const response = await fetch(`${backendUrl}/api/auth/send-otp`, {
         method: 'POST',

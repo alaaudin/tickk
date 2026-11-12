@@ -1,4 +1,4 @@
-import { ThemeToggle } from "./ThemeToggle";
+﻿import { ThemeToggle } from "./ThemeToggle";
 import { useToast } from "./Toast";
 import GlobalReachMap from "./GlobalReachMap";
 import PrivacySettingsPanel from "./PrivacySettingsPanel";
@@ -162,7 +162,7 @@ interface DashboardProps {
   toggleTheme: () => void;
 }
 
-const API_BASE = import.meta.env.VITE_API_URL || "https://tickk-backend.onrender.com";
+const API_BASE = import.meta.env.VITE_API_URL || "https://tickk-k5zw.onrender.com";
 
 const mapBackendTracker = (raw: any): any => ({
   id: raw.id,
@@ -10323,7 +10323,7 @@ END OF REPORT`,
                 <button onClick={async () => {
                   const { data: { user } } = await supabase.auth.getUser();
                   if (user) {
-                    window.location.href = `https://tickk-backend.onrender.com/api/auth/google?userId=${user.id}`;
+                    window.location.href = `https://tickk-k5zw.onrender.com/api/auth/google?userId=${user.id}`;
                   }
                 }} className="group cursor-pointer relative flex flex-col items-center justify-center gap-3 rounded-xl border border-white/[0.08] bg-white/[0.02] p-4 transition-all hover:bg-white/[0.05] hover:border-white/[0.15]">
                   <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">

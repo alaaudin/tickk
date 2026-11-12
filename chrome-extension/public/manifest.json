@@ -1,4 +1,4 @@
-{
+﻿{
   "manifest_version": 3,
   "name": "Tickk",
   "version": "1.0.0",
@@ -10,7 +10,7 @@
   ],
   "host_permissions": [
     "https://tickk-ivory.vercel.app/*",
-    "https://tickk-backend.onrender.com/*",
+    "https://tickk-k5zw.onrender.com/*",
     "https://mail.google.com/*"
   ],
   "action": {
